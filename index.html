@@ -1,170 +1,1214 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>مِنَصَّة الأَلْعاب التَّعْليمِيَّة</title>
-    <style>
-        @font-face { 
-            font-family: 'AraKom'; 
-            src: url('arakom.ttf') format('truetype'); 
-        }
-        
-        :root {
-            --bg: #f8fafc; 
-            --card-bg: #ffffff; 
-            --accent: #3b82f6;
-            --text-main: #1e293b; 
-            --text-muted: #64748b; 
-            --border: #e2e8f0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>kidefarapca.com</title>
 
-        * { 
-            box-sizing: border-box; 
-            transition: all 0.2s ease; 
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FV9JD15KLW"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-        body {
-            font-family: 'AraKom', sans-serif; 
-            background-color: var(--bg);
-            color: var(--text-main); 
-            margin: 0; 
-            display: flex;
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh; 
-            padding: 20px;
-        }
+  gtag('config', 'G-FV9JD15KLW');
+</script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Harmattan:wght@400;700&family=Marhey:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
-        .header { 
-            text-align: center; 
-            margin-bottom: 30px; 
-            margin-top: 20px;
-        }
+  <style>
+    :root {
+      --header-height: 140px; /* JS tarafından güncellenecek */
+    }
+    html{box-sizing:border-box;scroll-behavior:smooth}
+    *,*:before,*:after{box-sizing:inherit}
+    body{
+      /* Ana yazı tipi 'Marhey' olarak değiştirildi */
+      font-family:'Marhey',sans-serif;
+      margin:0;color:#333;line-height:1.6;overflow-x:hidden;
+      background:#F7F9FC;
+      background-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill-rule="evenodd"%3E%3Cg fill="%234D96FF" fill-opacity="0.05"%3E%3Cpath opacity=".5" d="M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z"/%3E%3Cpath d="M6 5V0h1v5h4V0h1v5h4V0h1v5h4V0h1v5h4V0h1v5h4V0h1v5h4V0h1v5h4V0h1v5h4V0h1v5h5v1h-5v4h5v1h-5v4h5v1h-5v4h5v1h-5v4h5v1h-5v4h5v1h-5v4h5v1h-4v5h-1v-5h-4v5h-1v-5h-4v5h-1v-5h-4v5h-1v-5h-4v5H6v-1h4v-4H6v-1h4v-4H6v-1h4v-4H6v-1h4v-4H6V5z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+    }
+    .container{
+      max-width:1280px;
+      padding:15px;
+      /* Header ile içerik arasına boşluk eklendi */
+      margin: 25px auto 0; 
+    }
+    
+    .site-header{
+      background:linear-gradient(90deg, #FFC107 0%, #F39C12 50%, #EF5350 100%);
+      color:#fff;padding:8px 0;
+      border-bottom: 2px solid #E53935;
+      box-shadow:0 4px 8px rgba(0,0,0,.1);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .site-header .container{
+      display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+      /* Header'ın içindeki container'ın üst boşluğunu sıfırla */
+      margin-top: 0;
+    }
+    .site-header h1{font-family:'Marhey',sans-serif;font-size:2.5em;margin:0;font-weight:700}
+    .arabic-welcome{font-family:'Harmattan',sans-serif;font-size:2em;font-weight:700;margin:0}
 
-        .header h1 { 
-            font-size: clamp(2rem, 8vw, 3.5rem); 
-            color: var(--accent); 
-            margin: 0; 
-        }
+    #one-cikan-card {
+      display: block;
+      text-decoration: none;
+      background-color: #E6FAF5 !important; 
+      padding: 25px;
+      margin-top: 15px;
+      border-radius: 15px;
+      box-shadow: 0 6px 12px rgba(0,0,0,.08);
+      scroll-margin-top: calc(var(--header-height) + 20px);
+      text-align: center; 
+    }
+    #one-cikan-card .featured-badge {
+      background: #FFC107;
+      color: #333;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      display: inline-block;
+    }
+    #one-cikan-card .default-game-emoji {
+      font-size: 3em;
+    }
+    #one-cikan-card .default-game-content h3 {
+      font-size: 2.2em;
+      min-height: 0;
+      color: #16A085;
+    }
+    #one-cikan-card .game-card-description {
+      font-size: 1.0em;
+      min-height: 0;
+      max-width: 600px;
+      margin: 10px auto 20px;
+      color: #555;
+    }
+    #one-cikan-card .status-badge.available {
+      font-size: 1.1em;
+      padding: 12px 30px;
+      border-radius: 30px;
+    }
 
-        .header p { 
-            color: var(--text-muted); 
-            font-size: clamp(1.2rem, 5vw, 2rem); 
-            margin-top: 5px; 
-        }
+    .content-section{
+      background:#fff;padding:20px;margin-top:15px;border-radius:15px;border:1px solid #E9EEF5;box-shadow:0 6px 12px rgba(0,0,0,.08);
+      scroll-margin-top: calc(var(--header-height) + 20px); 
+    }
+    .content-section h2{
+      font-family:'Marhey',sans-serif;color:#16A085;margin:0 0 15px;padding:8px 10px;font-size:1.8em;
+      backdrop-filter:blur(6px);background:rgba(255,255,255,0.75);
+      border-radius:8px;border:1px solid #E0E6ED;position:sticky;
+      top: calc(var(--header-height) + 10px); 
+      z-index:20;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
+      animation:headingFade .35s ease-out;transform-origin:center;
+    }
+    @keyframes headingFade{
+      0%{opacity:0;transform:scale(.92) translateY(4px)}
+      100%{opacity:1;transform:scale(1) translateY(0)}
+    }
 
-       .grid-container {
-    display: grid;
-    width: 100%;
-    max-width: 900px;
-    gap: 15px;
-    grid-template-columns: repeat(6, 1fr); /* 6 birimli bir sistem kuruyoruz */
+    .game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px;margin-top:15px}
+    
+    @media (min-width: 769px) {
+      .game-grid { 
+        padding: 15px;
+      }
+      .game-grid .kss-card,
+      .game-grid .game-card-soon {
+        min-height: 220px;
+      }
+    }
+    
+    .game-card,.youtube-card{
+      border:1px solid #E9EEF5;border-radius:12px;padding:15px;text-align:center;text-decoration:none;color:#333;
+      box-shadow:0 4px 8px rgba(0,0,0,.08);transition:transform .3s, box-shadow .3s;display:flex;flex-direction:column;
+      min-height:120px;
+      justify-content:flex-start; 
+      position: relative;
+      z-index: 1;
+    }
+    .youtube-card { background: #fff; } 
+    
+    /* SADECE fare ile üzerine gelinebilen geniş ekranlarda büyüt */
+    @media (min-width: 769px) and (hover: hover) {
+      .game-card:hover,.youtube-card:hover{
+        transform: scale(1.02);
+        box-shadow:0 8px 16px rgba(0,0,0,.12);
+        z-index: 10;
+      }
+    }
+    .game-card-soon:hover {
+      transform: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,.08);
+      z-index: 1; 
+    }
+
+    .game-card h3{font-family:'Marhey',sans-serif;color:#27AE60;font-size:1.3em;margin:0 0 5px}
+    .game-card .level-info{font-size:.9em;color:#555;margin:0 0 10px}
+
+    .status-badge{
+      padding:6px 12px;border-radius:20px;font-weight:700;font-size:.85em;
+      text-transform:uppercase;
+      margin-top: 10px; 
+      position: relative;
+      z-index: 5; 
+    }
+    .status-badge.available{background:#20C997;color:#fff}
+    .status-badge.soon{background:#FFC107;color:#333}
+
+    .soft-green-block{
+      padding: 0 15px 15px 15px; 
+      border-radius:10px
+    }
+
+    .subsection-title{
+      font-family:'Marhey',sans-serif;color:#F39C12;font-size:1.5em;margin:22px 0 8px;border-bottom:2px solid #E9EEF5;padding-bottom:5px
+    }
+    .subhead{margin-top:4px;font-size:.95em;color:#555}
+
+    .youtube-card{cursor:pointer}
+    .youtube-card span{pointer-events:none}
+    .youtube-channels{display:flex;justify-content:space-around;gap:20px;flex-wrap:wrap;margin-top:15px}
+
+    .site-footer{text-align:center;margin-top:40px;padding:25px 0;background:#EF5350;color:#fff}
+    .site-footer p{margin:0;font-size:.95em}
+
+    @media (max-width:992px){
+      .site-header h1{font-size:2.2em}.arabic-welcome{font-size:1.8em}
+      .game-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+    }
+    
+    @media (max-width:768px){
+      .content-section h2{font-size:1.2em;}
+      .game-grid{
+        grid-template-columns: none; 
+      }
+      .game-card h3{font-size:0.8em}
+      
+      .desktop-only { display: none !important; }
+      
+      #one-cikan-card .default-game-content h3 { font-size: 1.4em; }
+      #one-cikan-card .game-card-description { font-size: 1em; }
+      
+      /* --- FONT KÜÇÜLTME DEĞİŞİKLİĞİ (YENİ) --- */
+      .default-game-emoji, .kss-level-emoji { 
+          font-size: 0.8em; /* 1.5em idi */
+          min-height: 25px; /* 40px idi */
+      }
+      .default-game-content h3, .kss-level-name { 
+          font-size: 0.40em; /* 0.9em idi */
+          min-height: 1.3em; /* 3 satıra yakın */
+      }
+      .kss-level-number { 
+          font-size: 0.3em; /* 1.2em idi */
+          min-height: 15px; /* 25px idi */
+      }
+      .game-card-description { 
+          font-size: 0.3em; /* 0.7em idi */
+          min-height: 2.0em; 
+      }
+      .status-badge {
+          font-size: 0.8em; /* 0.8em idi */
+          padding: 4px 8px; /* 4px 10px idi */
+          margin-top: 4px; /* 8px idi */
+      }
+      .book-cover-img {
+          max-width: 55px; /* 60px idi */
+          min-height: 35px; /* 40px idi */
+      }
+      
+      /* "Kelimenin Serüveni" ara başlığını küçült */
+      .subsection-title {
+          font-size: 1.0em; /* 1.5em (base) idi */
+          margin: 15px 0 5px;
+      }
+      .subhead {
+          font-size: 0.8em; /* .95em (base) idi */
+          margin-top: 0;
+      }
+      /* --- FONT KÜÇÜLTME SONU --- */
+      
+      
+      /* Mobil Kaydırma Stilleri */
+      .mobile-scroll-grid-single {
+          display: flex;
+          overflow-x: auto;
+          padding: 10px 0 10px 0;
+          -webkit-overflow-scrolling: touch;
+          scroll-snap-type: x mandatory;
+          margin-top: 15px;
+          flex-wrap: nowrap; 
+          
+          /* --- KART BOŞLUK DEĞİŞİKLİĞİ --- */
+          gap: 6px; /* 8px idi */
+          
+          padding-left: 2px; 
+          padding-right: 2px; 
+          clip-path: inset(0 0 0 0);
+      }
+      .mobile-scroll-grid-single .game-card {
+       -webkit-tap-highlight-color: transparent;
+          flex-shrink: 0;
+          
+          /* Kartı biraz daha daralt */
+          width: 50%; /* 55% idi */
+          max-width: 140px; /* 150px idi */
+
+          scroll-snap-align: center;
+          
+          /* Kartın iç boşluğunu azalt (yeni) */
+          padding: 8px; /* 10px idi */
+          /* Kartın min yüksekliğini sıfırla (yeni) */
+          min-height: auto; 
+
+          transform: scale(0.80); 
+          transition: transform 0.25s ease-out; 
+          z-index: 1;
+      }
+      
+      .mobile-scroll-grid-single .game-card.is-centered {
+          transform: scale(0.80); 
+          z-index: 2;
+      }
+      
+      .mobile-scroll-grid-single .game-card:hover,
+      .mobile-scroll-grid-single .game-card:active {
+          transform: none; 
+      }
+      .mobile-scroll-grid-single .game-card.is-centered:hover {
+          transform: scale(0.9); 
+      }
+      
+      @media (hover: none) {
+          .game-card:hover,.youtube-card:hover{
+            transform: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,.08);
+          }
+          .mobile-scroll-grid-single .game-card:hover {
+            transform: scale(0.77); 
+          }
+          .mobile-scroll-grid-single .game-card.is-centered:hover {
+            transform: scale(0.9); 
+          }
+          #one-cikan-card:hover {
+            transform: scale(1.02); 
+          }
+      }
+    }
+    
+    @media (max-width:576px){
+      .site-header .container{flex-direction:column;gap:8px}
+      .site-header h1{font-size:2em}.arabic-welcome{font-size:1.6em}
+      
+      .container{
+        padding:10px;
+        margin-top: 15px; 
+      }
+      .site-header .container {
+        margin-top: 0;
+      }
+      .content-section{padding:15px}
+      .youtube-channels{flex-direction:column;align-items:center}
+      .youtube-card{width:100%}
+      
+      .kss-card { min-height: 190px; }
+      .game-card-soon { min-height: 190px; }
+      
+      /* Mobil kart genişliği ayarı */
+      .mobile-scroll-grid-single .game-card {
+        width: 48%; /* 50% idi */
+      }
+    }
+
+    .floating-tool-button{
+      position:fixed;bottom:25px;right:25px;z-index:1000;background:#2ECC71;color:#fff;
+      padding:12px 20px;text-decoration:none;font-weight:700;font-size:1em;border-radius:30px;
+      box-shadow:0 4px 12px rgba(0,0,0,.2);transition:.3s
+    }
+    .floating-tool-button:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 6px 16px rgba(0,0,0,.25);background:#1ABC9C}
+  
+    #etkilesimli-kitaplar {
+      border-color: #F9E6A0;
+    }
+
+    .book-cover-img {
+      max-width: 80px; 
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px; 
+    }
+    
+    .kss-card {
+      background: transparent;
+      min-height: 190px; 
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; 
+    }
+    
+    .kss-level-content,
+    .default-game-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start; 
+      padding-top: 10px; 
+      flex-grow: 1;
+    }
+
+    .kss-level-number {
+      font-family: 'Marhey', sans-serif;
+      font-size: 1.8em;
+      font-weight: 700;
+      color: #F39C12;
+      line-height: 1.1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px; 
+    }
+    
+    .kss-level-name,
+    .default-game-content h3 {
+       font-size: 1.3em;
+       margin-top: 4px;
+       margin-bottom: 5px; 
+       min-height: 2.6em; 
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       width: 100%;
+    }
+    
+    .kss-level-name {
+      margin-top: 4px; 
+    }
+    
+    .kss-level-emoji,
+    .default-game-emoji {
+      font-size: 2.2em;
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px; 
+    }
+
+    .kss-level-emoji {
+      margin-top: 8px; 
+    }
+
+    .game-card-description {
+      font-size: 0.85em;
+      font-style: italic;
+      color: #666;
+      margin-top: 4px;
+      padding: 0 5px;
+      flex-grow: 1; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3em; 
+    }
+    
+    .game-card-soon {
+      background: #F0F4F8;
+      justify-content: center;
+      align-items: center;
+      cursor: not-allowed;
+      min-height: 190px; 
+      padding-top: 20px;
+    }
+    .game-card-soon .soon-icon {
+      font-size: 2.5em;
+    }
+    .game-card-soon h3 {
+      font-family: 'Marhey', sans-serif;
+      color: #555;
+      font-size: 1.2em;
+      margin-top: 8px;
+    }
+    
+    
+    .game-grid > .game-card:not(.game-card-soon):nth-of-type(9n+1) { background-color: #EBF5FF; } 
+    .game-grid > .game-card:not(.game-card-soon):nth-of-type(9n+2) { background-color: #F4F0FF; } 
+    .game-grid > .game-card:not(.game-card-soon):nth-of-type(9n+3) { background-color: #FFF9E6; } 
+    .game-grid > .game-card:not(.game-card-soon):nth-of-type(9n+4) { background-color: #FFF4E8; } 
+    .game-grid > .game-card:not(.game-card-soon):nth-of-type(9n+5) { background-color: #E6F7FF; } 
+    .game-grid > .game-card:not(.game-card-soon):nth-of-type(9n+6) { background-color: #E6FAF5; } 
+    .game-grid > .game-card:not(.game-card-soon):nth-of-type(9n+7) { background-color: #FFF0F0; } 
+    .game-grid > .game-card:not(.game-card-soon):nth-of-type(9n+8) { background-color: #F0F5E6; } 
+    .game-grid > .game-card:not(.game-card-soon):nth-of-type(9n+9) { background-color: #FFEBF9; } 
+
+    
+    .mobile-scroll-grid-single {
+        overflow-x: scroll; 
+        scrollbar-width: thin;
+        scrollbar-color: #b0c0d8 #F0F4F8; 
+    }
+
+    .mobile-scroll-grid-single::-webkit-scrollbar {
+        height: 8px; 
+    }
+    .mobile-scroll-grid-single::-webkit-scrollbar-track {
+        background: #F0F4F8; 
+        border-radius: 10px;
+    }
+    .mobile-scroll-grid-single::-webkit-scrollbar-thumb {
+        background-color: #b0c0d8; 
+        border-radius: 10px;
+        border: 2px solid #F0F4F8; 
+    }
+    .mobile-scroll-grid-single::-webkit-scrollbar-thumb:hover {
+        background-color: #98a9c2;
+    }
+    
+    
+    .one-cikan-container {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    #one-cikan-card {
+      display: flex; 
+      flex-direction: column;
+      max-width: 320px; 
+      width: 95%; 
+      margin-top: 0; 
+      padding: 15px; 
+      border: 2px solid #FFC107;
+      transform: scale(1.02);
+      justify-content: flex-start;
+      min-height: 190px; 
+    }
+
+    #one-cikan-card .default-game-content {
+      padding-top: 10px;
+      align-items: center;
+      flex-grow: 1;
+      justify-content: flex-start;
+    }
+    #one-cikan-card .default-game-content h3 {
+        font-size: 1.3em; 
+        color: #27AE60; 
+        min-height: 2.6em; 
+    }
+    #one-cikan-card .game-card-description {
+      font-size: 0.85em; 
+      max-width: none; 
+      margin: 4px 0 0 0; 
+      color: #666; 
+      flex-grow: 1; 
+      min-height: 3em; 
+    }
+
+    #one-cikan-card .featured-badge {
+      margin-bottom: 10px;
+      font-size: 0.85em; 
+      padding: 6px 12px; 
+    }
+    #one-cikan-card .status-badge.available {
+      font-size: 0.85em; 
+      padding: 6px 12px; 
+      border-radius: 20px;
+      margin-top: 10px; 
+    }
+
+    .game-card.is-selected {
+        transform: scale(1.08); 
+        box-shadow: 0 10px 20px rgba(0,0,0,.15);
+        z-index: 10;
+    }
+    #one-cikan-card.is-selected {
+        transform: scale(1.05); 
+        box-shadow: 0 10px 20px rgba(243, 156, 18, 0.5);
+    }
+    
+    
+    /* --- YouTube Kanalları Masaüstü Düzenlemesi --- */
+    @media (min-width: 769px) {
+      
+      .youtube-grid-desktop {
+        display: flex; 
+        justify-content: center; 
+        gap: 25px; 
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+
+      .youtube-grid-desktop .game-card {
+        flex-basis: 380px; 
+        flex-grow: 0; 
+        flex-shrink: 0; 
+        transform: scale(1) !important;
+      }
+      
+      .youtube-grid-desktop .game-card:hover {
+          transform: scale(1.02) !important; 
+      }
+    }
+    /* --- YouTube Düzenlemesi Son --- */
+    @keyframes modalPop {
+  from {transform: scale(0.5); opacity: 0;}
+  to {transform: scale(1); opacity: 1;}
 }
-
-       .game-card {
-    background: var(--card-bg); 
-    border: 1px solid var(--border);
-    border-radius: 20px; 
-    padding: 20px; 
-    text-align: center;
-    text-decoration: none; 
-    color: inherit; 
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-    grid-column: span 2; /* Her kart normalde 2 birim kaplar (6/2 = 3 sütun) */
-}
-
-.game-card:nth-child(4) {
-    grid-column: 2 / span 2; /* 2. birimden başla, 2 birim kapla */
-}
-
-.game-card:nth-child(5) {
-    grid-column: 4 / span 2; /* 4. birimden başla, 2 birim kapla */
-}
-
-        .game-card:hover { 
-            transform: translateY(-5px); 
-            border-color: var(--accent);
-            box-shadow: 0 10px 15px rgba(0,0,0,0.05);
-        }
-
-        .icon-circle {
-            width: clamp(60px, 15vw, 80px); 
-            height: clamp(60px, 15vw, 80px); 
-            background: #eff6ff;
-            border-radius: 18px; 
-            display: flex; 
-            align-items: center;
-            justify-content: center; 
-            margin-bottom: 12px; 
-            font-size: clamp(2rem, 10vw, 2.8rem);
-        }
-
-        .game-card h2 { 
-            margin: 0; 
-            font-size: clamp(1.1rem, 4vw, 1.5rem);
-            font-weight: bold;
-        }
-
-        /* MOBİL AYARLARI (768px altı) */
-        @media (max-width: 768px) {
-            .grid-container {
-                /* Mobil: 2 Sütun */
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-            
-            .header { margin-bottom: 20px; }
-            
-            .game-card { padding: 15px; }
-        }
-
-        /* ÇOK KÜÇÜK EKRANLAR */
-        @media (max-width: 350px) {
-            .grid-container {
-                grid-template-columns: 1fr; /* Çok küçükse tek sütun */
-            }
-        }
-    </style>
+  </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>الوَحْدَة الأولى</h1>
-        <p> مَلْعَب اللُّغَة العَرَبِيَّة </p>
-    </div>
+<header class="site-header">
+  <div class="container">
+    <h1>kidefarapca.com</h1>
+    <p class="arabic-welcome">أهلاً وسهلاً</p>
+    
+  </div>
+</header>
 
-    <div class="grid-container">
-        <a href="kelime.html" class="game-card">
-            <div class="icon-circle">🎯</div>
-            <h2>صَيْد الرُّموز</h2>
+<div class="container">
+  <main>
+    
+   
+    <section id="etkilesimli-kitaplar" class="content-section">
+      <h2>📚 Etkileşimli Kitaplar | 🎓 Akademi </h2>
+      <div class="game-grid mobile-scroll-grid-single">
+        
+        <a href="flipbookkidef.html" class="game-card kss-card">
+          <div class="default-game-content">
+            <img src="kidef.jpg" alt="Kidef Arapça Etkileşimli Kitap Kapak" class="book-cover-img" />
+            <h3>Kidef Arapça 📒 (Beta)</h3>
+            <span class="status-badge available">İncele</span>
+          </div>
         </a>
 
-        <a href="saat.html" class="game-card">
-            <div class="icon-circle">⏰</div>
-            <h2>قِراءَة السّاعَة</h2>
+        <a href="flipbooks/pratiksayfalar/flipbookpratiksayfalar.html" class="game-card kss-card">
+          <div class="default-game-content">
+            <img src="flipbooks/pratiksayfalar/pratiksayfalar.png" alt="Pratik Sayfalar Kitap Kapak" class="book-cover-img" />
+            <h3>Pratik Sayfalar 📖</h3>
+            <span class="status-badge available">İncele</span>
+          </div>
+        </a>
+
+        <a href="ydtarapca.html" class="game-card kss-card desktop-only">
+        <div class="default-game-content">
+              <div class="default-game-emoji">🎓</div>
+                <h3>YDT Arapça</h3>
+               <span class="game-card-description">Sınav hazırlık ve soru pratikleri.</span>
+             <span class="status-badge available">Hemen Başla</span>
+           </div>
+       </a>
+
+        <a href="https://online.fliphtml5.com/kidefarapca/yks_ydt_arp_2025_kitapcik_Bh8V/" class="game-card kss-card" target="_blank" rel="noopener noreferrer">
+          <div class="default-game-content">
+            <div class="default-game-emoji">🎓</div>
+              <h3>YDT 2025 📚</h3>
+          <span class="game-card-description">YKS-YDT Arapça Deneme Kitapçığı</span>
+          <span class="status-badge available" style="background: linear-gradient(45deg, #FF5722, #FF9800);">Hemen İncele</span>
+            </div>
+        </a>
+
+       <a href="https://online.fliphtml5.com/kidefarapca/yks_ydt_arp_2024_kitapcik_Bm8PV-2/" class="game-card kss-card" target="_blank" rel="noopener noreferrer">
+          <div class="default-game-content">
+            <div class="default-game-emoji">🎓</div>
+              <h3>YDT 2024 📚</h3>
+          <span class="game-card-description">YKS-YDT Arapça Deneme Kitapçığı</span>
+          <span class="status-badge available" style="background: linear-gradient(45deg, #FF5722, #FF9800);">Hemen İncele</span>
+            </div>
+        </a>
+
+       
+        </div>
+    </section>
+ <section id="temel-beceriler" class="content-section">
+      <h2>🧠 Beceriler & Dilbilgisi | 🧑🏻‍🏫👩‍🏫 Öğretmen Özel</h2>
+      <div class="game-grid mobile-scroll-grid-single">
+        
+        
+        <a href="alfabe.html" class="game-card kss-card">
+          <div class="default-game-content">
+            <div class="default-game-emoji">📖🔤</div>
+            <h3>Alfabe</h3>
+            <span class="game-card-description">Harfleri Pekiştir.</span>
+            <span class="status-badge available">Hemen Başla</span>
+          </div>
+        </a>
+
+        <a href="dinleveyaz.html" class="game-card kss-card">
+          <div class="default-game-content">
+            <div class="default-game-emoji">🎧✍️</div>
+            <h3>Dinle ve Yaz</h3>
+            <span class="game-card-description">Duyduğun kelimeyi yaz.</span>
+            <span class="status-badge available">Hemen Başla</span>
+          </div>
+        </a>
+
+       <a href="dinlevesec.html" class="game-card kss-card">
+          <div class="default-game-content">
+            <div class="default-game-emoji">🎧👆</div>
+            <h3>Dinle ve Seç</h3>
+            <span class="game-card-description">Kelimeyi oluşturan harfleri seç!</span>
+            <span class="status-badge available">Hemen Başla</span>
+          </div>
+        </a>
+        
+        <a href="sozluksimulasyonu.html" class="game-card kss-card">
+          <div class="default-game-content">
+            <div class="default-game-emoji">🔎</div>
+            <h3>Sözlük Simülasyonu</h3>
+            <span class="game-card-description">Kelimenin yalın halini bul!</span>
+            <span class="status-badge available">Hemen Başla</span>
+          </div>
         </a>
 
         
 
-        <a href="alisveris.html" class="game-card">
-            <div class="icon-circle">🛒</div>
-            <h2>سوق المُفْرَدات</h2>
+       <a href="aksamiseba.html" class="game-card kss-card">
+            <div class="default-game-content">
+              <div class="default-game-emoji">🧩</div>
+              <h3>Aksâmı Seb'a</h3>
+              <span class="game-card-description">Fiillerin 7 halini keşfet!</span>
+              <span class="status-badge available">Hemen Başla</span>
+            </div>
+          </a>
+ 
+           <a href="muhadese.html" class="game-card kss-card">
+          <div class="default-game-content">
+            <div class="default-game-emoji">🔀</div>
+            <h3>Simültane Çeviri</h3>
+            <span class="game-card-description"> İHL & İHO Çeviri ve Kelime </span>
+            <span class="status-badge available">İncele!</span>
+          </div>
+        </a>
+  
+            <a href="mezidfiiller.html" class="game-card kss-card desktop-only">
+        <div class="default-game-content">
+              <div class="default-game-emoji">🛠️</div>
+                <h3>Mezid Fiiller</h3>
+               <span class="game-card-description">Türemiş fiilleri keşfet!</span>
+             <span class="status-badge available">Hemen Başla</span>
+           </div>
+       </a>
+        </div>
+       
+    </section>
+    
+    <section id="oyunlar" class="content-section">
+      <h2>🎮 Oyunlar</h2>
+
+      <div class="soft-green-block">
+        <div class="game-grid mobile-scroll-grid-single">
+
+          <a href="hangiharf.html" class="game-card kss-card">
+            <div class="default-game-content">
+              <div class="default-game-emoji">⚔️</div>
+              <h3>Hangi Harf?</h3>
+              <span class="game-card-description">Hızlıca doğru harfi bul.</span>
+              <span class="status-badge available">Hemen Oyna</span>
+            </div>
+          </a>
+
+          <a href="klavyeoyunu.html" class="game-card kss-card">
+            <div class="default-game-content">
+              <div class="default-game-emoji">⌨️</div>
+              <h3>Klavye Oyunu</h3>
+              <span class="game-card-description">Arapça klavye pratiği yap.</span>
+              <span class="status-badge available">Hemen Oyna</span>
+            </div>
+          </a>
+
+          <a href="testkapismasi.html" class="game-card kss-card">
+            <div class="default-game-content">
+              <div class="default-game-emoji">⚔️</div>
+              <h3>Test Kapışması</h3>
+              <span class="game-card-description">İki kişilik kelime testi.</span>
+              <span class="status-badge available">Hemen Oyna</span>
+            </div>
+          </a>
+
+          <a href="hafizakartlari.html" class="game-card kss-card">
+            <div class="default-game-content">
+              <div class="default-game-emoji">⚔️</div>
+              <h3>Hafıza Kartları</h3>
+              <span class="game-card-description">Kelime kartlarını eşleştir.</span>
+              <span class="status-badge available">Hemen Oyna</span>
+            </div>
+          </a>
+
+          <a href="renkler.html" class="game-card kss-card">
+            <div class="default-game-content">
+              <div class="default-game-emoji">⚔️</div>
+              <h3>Renkler</h3>
+              <span class="game-card-description">Renkleri öğren.</span>
+              <span class="status-badge available">Hemen Oyna</span>
+            </div>
+          </a>
+
+          <a href="isimx4.html" class="game-card kss-card">
+            <div class="default-game-content">
+              <div class="default-game-emoji">⚔️</div>
+              <h3>İsim x 4</h3>
+              <span class="game-card-description"> İsmin 4 özelliğini analiz et!</span>
+              <span class="status-badge available">Hemen Oyna</span>
+            </div>
+          </a>
+
+        </div>
+
+        <h3 class="subsection-title"> Kelimenin Serüveni • Kökten kalıba adım adım 👣</h3>
+        <p class="subhead desktop-only" style="text-align: center; margin-top: -5px; font-size: 1.1em;"></p>
+
+
+        <div class="game-grid mobile-scroll-grid-single" aria-label="Kelimenin Serüveni seviyeleri">
+          
+          <a href="harekeavcisi.html" class="game-card kss-card">
+            <div class="kss-level-content">
+              <div class="kss-level-number">1</div>
+              <div class="kss-level-name">Hareke Avcısı</div>
+              <div class="kss-level-emoji">🎯</div>
+              <span class="game-card-description">Doğru harekeleri yakala.</span>
+              <span class="status-badge available">Hemen Oyna</span>
+            </div>
+          </a>
+          
+          <a href="kokutani.html" class="game-card kss-card">
+            <div class="kss-level-content">
+              <div class="kss-level-number">2</div>
+              <div class="kss-level-name">Kökü Tanı</div>
+              <div class="kss-level-emoji">🔎</div>
+              <span class="game-card-description"> Kökten türeyen kelimeleri bul!</span>
+              <span class="status-badge available">Hemen Oyna</span>
+            </div>
+          </a>
+
+          <a href="kaliplartablosu.html" class="game-card kss-card">
+            <div class="kss-level-content">
+              <div class="kss-level-number">3</div>
+              <div class="kss-level-name">Kalıplar Tablosu</div>
+              <div class="kss-level-emoji">🛠️</div>
+              <span class="game-card-description">Kökü doğru kalıba sürükle!</span>
+              <span class="status-badge available">Hemen Oyna</span>
+            </div>
+          </a>
+          
+          <a href="zamanlayaris.html" class="game-card kss-card">
+            <div class="kss-level-content">
+              <div class="kss-level-number">4</div>
+              <div class="kss-level-name">Zamanla Yarış</div>
+              <div class="kss-level-emoji">⏱️</div>
+              <span class="game-card-description">Kök&kalıptan gövdeye!</span>
+              <span class="status-badge available">Hemen Oyna</span>
+            </div>
+          </a>
+          
+        </div>
+      </div>
+    </section>
+
+   
+    <section id="sinifici-materyaller" class="content-section">
+      <h2>🛠️ Sınıfiçi Materyaller</h2>
+      <div class="game-grid mobile-scroll-grid-single">
+        <a href="kssi.html" class="game-card kss-card">
+          <div class="default-game-content">
+            <div class="default-game-emoji">🗺️</div>
+            <h3>Kelimenin Serüveni</h3>
+            <span class="game-card-description">Sunum ve etkinlikler. (6 Seviye)</span>
+            <span class="status-badge available">İncele!</span>
+          </div>
+        </a>
+        </div>
+    </section>
+
+<section id="sinifici-materyaller" class="content-section">
+      <h2>📖 Değerler Eğitimi</h2>
+      <div class="game-grid mobile-scroll-grid-single">
+        
+<a href="kisasureler.html" class="game-card kss-card">
+          <div class="default-game-content">
+            <div class="default-game-emoji">✨</div>
+            <h3>Kısa Sureler</h3>
+            <span class="game-card-description">Ezberini güçlendir 🦾</span>
+            <span class="status-badge available">Hemen Başla</span>
+          </div>
         </a>
 
-        <a href="sestesti.html" class="game-card">
-            <div class="icon-circle">🎧</div>
-            <h2>اخْتِبار الاِسْتِماع</h2>
+<a href="namaz.html" class="game-card kss-card">
+  <div class="default-game-content">
+    <div class="default-game-emoji">🤲</div>
+    <h3>Namaz</h3>
+    <span class="game-card-description">Namaz Dinin Direğidir.</span>
+    <span class="status-badge available">Hemen Başla</span>
+  </div>
+</a>
+        </div>
+
+    </section>
+
+
+    <section id="youtube-kanallari" class="content-section">
+      <h2>📺 Sosyal Hesaplar </h2>
+      <div class="game-grid mobile-scroll-grid-single youtube-grid-desktop">
+        
+        <a href="https://www.youtube.com/@kidefarapca" class="game-card kss-card">
+          <div class="default-game-content">
+            <div class="default-game-emoji">📺</div>
+            <h3>Kidef Arapça (YouTube)</h3>
+            <span class="game-card-description">Eğitici oyunlar ve içerikler.</span>
+            <span class="status-badge available" style="background-color:#c4302b;">Ziyaret Et</span>
+          </div>
+        </a>
+        
+        <a href="https://www.youtube.com/@geylanidemirbag" class="game-card kss-card">
+          <div class="default-game-content">
+            <div class="default-game-emoji">📺</div>
+            <h3>Geylani Demirbağ (YouTube)</h3>
+            <span class="game-card-description">Geliştirici kanalımız.</span>
+            <span class="status-badge available" style="background-color:#c4302b;">Ziyaret Et</span>
+          </div>
+        </a>
+<a href="https://www.instagram.com/kidefarapca/" class="game-card kss-card">
+          <div class="default-game-content">
+            <div class="default-game-emoji">📺</div>
+            <h3>Kidef Arapça (İnstagram)</h3>
+            <span class="game-card-description"> Eğlenceli Arapça'nın nabzını kaçırmayın! </span>
+            <span class="status-badge available" style="background-color:#c4302b;">Ziyaret Et</span>
+          </div>
         </a>
 
-        <a href="hafizakarti.html" class="game-card">
-            <div class="icon-circle">🧠</div>
-            <h2>لُعْبَة الذّاكِرَة</h2>
-        </a>
+      </div>
+    </section>
+    </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-links" style="padding:20px 0; margin-bottom:10px; display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;">
+    <a href="mailto:gdmrbg7541@gmail.com" style="color:#fff; text-decoration:underline; font-weight:700; font-size:1.1em;">İletişim</a>
+    <span style="color:#fff; opacity:0.5; font-size: 1.5em;">|</span>
+    
+    <a href="javascript:void(0)" onclick="openSupportModal()" style="background: linear-gradient(45deg, #FFC107, #FF9800); color: #000; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 1.3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: inline-flex; align-items: center; gap: 8px; border: 2px solid #fff;">
+      🎮 Destek Ol 🚀
+    </a>
+  </div>
+  <p style="opacity: 0.9;">&copy; 2025 kidefarapca.com - Tüm Hakları Saklıdır.</p>
+
+  <div id="supportModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); backdrop-filter:blur(5px);">
+    <div style="background-color:#fff; margin:15% auto; padding:30px; border-radius:20px; width:90%; max-width:400px; text-align:center; position:relative; box-shadow:0 10px 30px rgba(0,0,0,0.5); border:4px solid #FFC107; animation: modalPop 0.3s ease-out;">
+      <span onclick="closeSupportModal()" style="position:absolute; right:15px; top:10px; font-size:28px; font-weight:bold; cursor:pointer; color:#aaa;">&times;</span>
+      <div style="font-size:3em; margin-bottom:10px;">🎁</div>
+      <h2 style="font-family:'Marhey',sans-serif; color:#E67E22; margin-top:0;">Destek Ol!</h2>
+      <p style="font-family:'Nunito',sans-serif; font-size:1.1em; color:#333; line-height:1.5;">
+        Kidef Arapça sitesini desteklemek için: <br>
+        <strong style="color:#27AE60;">kidefarapca@gmail.com</strong> <br>
+        üzerinden bizimle iletişime geçebilirsiniz.
+      </p>
+      <button onclick="closeSupportModal()" style="background:#27AE60; color:#fff; border:none; padding:10px 30px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:1em; margin-top:10px;">Kapat</button>
     </div>
+  </div>
+</footer>
+
+<a href="listelerim.html" class="floating-tool-button" target="_blank" rel="noopener noreferrer">Listelerim 📋</a>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  
+  // --- Önceki kodunuz (Header yüksekliği ve link yönetimi) ---
+  const header = document.querySelector('.site-header');
+  const setHeaderHeight = () => {
+    if (header) {
+      const headerHeight = header.offsetHeight;
+      document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+    }
+  };
+  
+  window.addEventListener('load', () => {
+    setHeaderHeight();
+    window.addEventListener('resize', setHeaderHeight);
+  });
+  setHeaderHeight();
+
+  document.querySelectorAll("a[href]").forEach(a => {
+    const href = a.getAttribute("href");
+    if (!href) return;
+
+    if (href.startsWith("#")) {
+      a.addEventListener("click", function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute("href");
+        
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth"
+          });
+        }
+      });
+      return; 
+    }
+
+    const newFlipbookPath = "flipbooks/pratiksayfalar/flipbookpratiksayfalar.html";
+    
+    const exceptions = [
+        "araclar.html",
+        "flipbookkidef.html",
+        newFlipbookPath,
+        "https->://"
+    ];
+    
+    let isException = false;
+    if (href.startsWith("https://") || href.startsWith("mailto:")) {
+        isException = true;
+    } else if (href === "araclar.html" || href === "flipbookkidef.html" || href === newFlipbookPath) {
+        isException = true;
+    }
+
+
+    if (href.endsWith(".html") && !isException) { 
+      a.setAttribute("target", "_self");
+      a.removeAttribute("rel");
+    } 
+    else if (isException) { 
+      a.setAttribute("target", "_blank");
+      a.setAttribute("rel", "noopener noreferrer");
+    }
+  });
+
+  // --- GÜNCELLEME: Ses, Titreşim, Kaydırma ve Düğme Mantığı ---
+
+  let audioCtx = null;
+  // GÜNCELLEME: Ses düğmesi ve ilgili değişkenler kaldırıldı.
+  // Ses/titreşim artık varsayılan olarak açık.
+
+  // 1. Ses API'sini başlatmak için fonksiyon
+  function initAudio() {
+    if (audioCtx) return; // Zaten açıksa başlatma
+    
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      console.log("AudioContext başlatıldı.");
+    } catch(e) {
+      console.error("Web Audio API desteklenmiyor.", e);
+    }
+  }
+
+  // 2. Kısa bir sinüs sesi çalmak için fonksiyon
+  function playSine(durationMs, freq = 440) {
+    if (!audioCtx) return; // Context yoksa çalma
+
+    const durationSec = durationMs / 1000;
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime); 
+
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + durationSec * 0.1); 
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + durationSec);
+
+    oscillator.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + durationSec);
+  }
+
+  // 3. Titreşim için fonksiyon
+  function playVibrate(durationMs) {
+    if (navigator.vibrate) {
+      navigator.vibrate(durationMs);
+    }
+  }
+
+  // 4. Farklı haptik geri bildirim setleri
+  function playHaptics(type) {
+    switch (type) {
+      case 'detent': // Kaydırırken kart geçişi
+        playVibrate(5); // Çok hafif "tık"
+        break;
+      case 'card-select': // Öne çıkan kartı seçme
+        playVibrate(25); 
+        playSine(70, 600);
+        break;
+      case 'button-press': // Düğmeye basma
+        playVibrate(15);
+        break;
+    }
+  }
+
+  // 5. Cihazın Dokunmatik olup olmadığını kontrol et
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+  // 6. GÜNCELLEME: Tıklama Mantığı (Sadece Düğmeler)
+  document.querySelectorAll('.game-card:not(.game-card-soon)').forEach(card => {
+    card.addEventListener('click', function(e) {
+      
+      initAudio(); // Herhangi bir tıklama sesi başlatabilir
+      
+      // Tıklanan yer DÜĞME (Hemen Oyna / Ziyaret Et vb.) ise,
+      // varsayılan 'a' davranışına (navigasyon) izin ver.
+      if (e.target.classList.contains('status-badge')) {
+        playHaptics('button-press'); // Düğme basma haptiği
+        return true; 
+      }
+
+      // --- YOUTUBE LİNK GÜNCELLEMESİ ---
+      // Tıklanan yer DIŞ LİNK (youtube) kartının GÖVDESİ ise,
+      // navigasyonu engelle ve diğer kartlar gibi kaydırmasını sağla.
+      if (card.getAttribute('target') === '_blank') {
+        e.preventDefault(); // Navigasyonu engelle
+        
+        // Diğer kartlar gibi dokununca merkeze kaydır
+        if (isTouchDevice) {
+          card.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest',
+              inline: 'center'
+          });
+        }
+        return; // İşlemi bitir
+      }
+      // --- GÜNCELLEME SONU ---
+      
+      // Tıklanan yer ÖNE ÇIKAN KART (#one-cikan-card) ise
+      // ve dokunmatik cihazdaysa, seç/bırak
+      if (card.id === 'one-cikan-card' && isTouchDevice) {
+        e.preventDefault(); // Navigasyonu engelle
+        
+        if (card.classList.contains('is-selected')) {
+           card.classList.remove('is-selected');
+        } else {
+           // Diğerlerini temizle (gerekirse)
+           document.querySelectorAll('.game-card.is-selected').forEach(sc => sc.classList.remove('is-selected'));
+           card.classList.add('is-selected');
+           playHaptics('card-select');
+        }
+        return; // İşlemi bitir
+      }
+
+      // Diğer tüm normal kart gövdeleri için (dokunmatik cihazda)
+      e.preventDefault(); // Navigasyonu HER ZAMAN engelle
+      
+      if (isTouchDevice) {
+        card.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+        });
+      }
+      
+    });
+  });
+
+  // 7. Dışarıya tıklanırsa seçimi kaldır
+  // Sadece #one-cikan-card'ın seçimini kaldırır
+  document.body.addEventListener('click', function(e) {
+    if (!e.target.closest('.game-card')) {
+      document.querySelectorAll('#one-cikan-card.is-selected').forEach(selectedCard => {
+        selectedCard.classList.remove('is-selected');
+      });
+    }
+  }, true); // Capture phase
+
+
+  // 8. GÜNCELLEME: Merkezde Büyüme ve Detent Titreşim Mantığı
+  
+  // Grid'in merkezine en yakın kartı bulan yardımcı fonksiyon
+  function findClosestCardToCenter(grid) {
+      const gridCenter = grid.scrollLeft + grid.clientWidth / 2;
+      let minDistance = Infinity;
+      let closestCard = null;
+
+      for (const card of grid.children) {
+          if (!card.classList.contains('game-card')) continue; // Sadece kartları dikkate al
+          
+          const cardCenter = card.offsetLeft + card.clientWidth / 2;
+          const distance = Math.abs(cardCenter - (grid.scrollLeft + grid.clientWidth / 2));
+          
+          if (distance < minDistance) {
+              minDistance = distance;
+              closestCard = card;
+          }
+      }
+      return closestCard;
+  }
+
+  // Her bir yatay kaydırma grid'i için bu mantığı kur
+  document.querySelectorAll('.mobile-scroll-grid-single').forEach(grid => {
+      
+      let isThrottled = false;
+      let lastCenteredCard = null;
+
+      const updateScaling = () => {
+          if (isThrottled) return;
+          isThrottled = true;
+          
+          setTimeout(() => {
+              const closestCard = findClosestCardToCenter(grid);
+              
+              if (closestCard && closestCard !== lastCenteredCard) {
+                  initAudio(); // Titreşim için sesi başlat
+                  playHaptics('detent'); // Detent "tık" titreşimi
+                  
+                  if (lastCenteredCard) {
+                      lastCenteredCard.classList.remove('is-centered');
+                  }
+                  closestCard.classList.add('is-centered');
+                  lastCenteredCard = closestCard;
+              }
+              isThrottled = false;
+          }, 50); // 50ms throttle
+      };
+
+      // Kaydırma sırasında ve durduğunda çalıştır
+      grid.addEventListener('scroll', updateScaling);
+      
+      // Yüklenir yüklenmez ilk kartı merkezileştir
+      // (Kısa bir gecikmeyle, render sonrası)
+      setTimeout(() => {
+        const closestCard = findClosestCardToCenter(grid);
+        if (closestCard) {
+            closestCard.classList.add('is-centered');
+            lastCenteredCard = closestCard;
+        }
+      }, 300);
+  });
+
+  // 9. GÜNCELLEME: Ses/Titreşim Düğmesi Mantığı KALDIRILDI
+  
+  // --- GÜNCELLEME SONU ---
+
+});
+function showSupportMessage() {
+    alert("kidefarapca@gmail.com üzerinden iletişime geçerek desteklerinizi iletebilirsiniz. İlginiz için teşekkür ederiz!");
+}
+function openSupportModal() {
+    document.getElementById("supportModal").style.display = "block";
+    if (navigator.vibrate) navigator.vibrate(20); // Hafif titreşim
+}
+
+function closeSupportModal() {
+    document.getElementById("supportModal").style.display = "none";
+}
+
+// Pencere dışına tıklandığında kapatma
+window.onclick = function(event) {
+    let modal = document.getElementById("supportModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
 
 </body>
 </html>
