@@ -348,27 +348,61 @@ function loadSingle() {
         cont.appendChild(b);
     });
 }
-    function loadDuelRound() {
-        if(p1.current >= TOTAL) { showWinner(); return; }
-        p1.selection = p2.selection = null;
-        [1,2].forEach(n => {
-            const p = n===1?p1:p2; const q = data[Math.floor(Math.random()*data.length)];
-            p.ans = q.a; document.getElementById(`p${n}-time`).textContent = `${q.ar}:٠٠`;
-            let opts = [q.a]; while(opts.length<4){ let r=data[Math.floor(Math.random()*data.length)].a; if(!opts.includes(r)) opts.push(r); }
-            opts.sort(()=>Math.random()-0.5);
-            const cont = document.getElementById(`p${n}-opts`); cont.innerHTML='';
-            opts.forEach(o => {
-                const b = document.createElement('div'); b.className='d-opt-btn'; b.textContent=o;
-                b.onclick = () => { 
-                    if(p.selection)return; 
-                    playS('audioClick'); p.selection=b; p.time=Date.now(); p.correct=(o===q.a); p.btn=b; 
-                    b.classList.add('selected'); 
-                    if(p1.selection && p2.selection) revealDuel(); 
-                };
-                cont.appendChild(b);
-            });
+function loadDuelRound() {
+    if(p1.current >= TOTAL) { showWinner(); return; }
+    
+    // Her iki oyuncunun seçimlerini ve durumlarını sıfırla
+    p1.selection = p2.selection = null;
+    p1.btn = p2.btn = null;
+
+    // Oyuncu 1 (Sağ) ve Oyuncu 2 (Sol) için döngü
+    [1, 2].forEach(n => {
+        const p = (n === 1) ? p1 : p2;
+        
+        // Bu oyuncu için rastgele bir soru seç
+        const q = data[Math.floor(Math.random() * data.length)];
+        p.ans = q.a; // Doğru cevabı oyuncu objesine kaydet
+        
+        // İlgili taraftaki saat metnini güncelle
+        document.getElementById(`p${n}-time`).textContent = `${q.ar}:٠٠`;
+        
+        // Şıkları oluştur (1 doğru + 3 yanlış)
+        let opts = [q.a];
+        while(opts.length < 4) {
+            let r = data[Math.floor(Math.random() * data.length)].a;
+            if(!opts.includes(r)) opts.push(r);
+        }
+        
+        // Şıkları karıştır
+        opts.sort(() => Math.random() - 0.5);
+        
+        // Butonları konteynere ekle
+        const cont = document.getElementById(`p${n}-opts`);
+        cont.innerHTML = ''; // Eski butonları temizle
+        
+        opts.forEach(o => {
+            const b = document.createElement('div');
+            b.className = 'd-opt-btn';
+            b.textContent = o;
+            
+            b.onclick = () => { 
+                if(p.selection) return; // Zaten seçilmişse işlem yapma
+                
+                playS('audioClick');
+                p.selection = b; 
+                p.time = Date.now(); 
+                p.correct = (o === p.ans); // p.ans üzerinden kontrol et
+                p.btn = b; 
+                
+                b.classList.add('selected'); 
+                
+                // Her iki oyuncu da seçim yaptıysa sonuçları göster
+                if(p1.selection && p2.selection) revealDuel(); 
+            };
+            cont.appendChild(b);
         });
-    }
+    });
+}
 
     function revealDuel() {
         const first = (p1.correct && (!p2.correct || p1.time < p2.time)) ? p1 : (p2.correct ? p2 : null);
