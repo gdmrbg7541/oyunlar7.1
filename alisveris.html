@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تحدي التسوق - Kelime ve Sembol</title>
+    <style>
+        @font-face {
+            font-family: 'Arakom';
+            src: url('arakom.ttf') format('truetype');
+        }
+
+        :root {
+            --paper: #fefae0;
+            --ink: #283618;
+            --shelf-bg: #f8f9fa;
+            --highlight: #bc6c25;
+            --lira-color: #c0392b;
+        }
+
+        @keyframes pulse-btn {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(96, 108, 56, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(96, 108, 56, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(96, 108, 56, 0); }
+        }
+
+        body {
+            font-family: 'Arakom', 'Tahoma', sans-serif;
+            background: #ccd5ae;
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; padding: 0;
+            overflow: hidden;
+        }
+
+        /* Geri Tuşu */
+        .back-btn {
+            position: absolute; top: 20px; left: 20px;
+            background: #606c38; color: white; padding: 10px 20px;
+            border-radius: 15px; text-decoration: none; font-weight: bold;
+            font-size: 1.2rem; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        #game-wrapper {
+            display: flex; width: 95vw; height: 85vh; max-width: 1400px;
+            gap: 20px; background: white; padding: 20px; border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); box-sizing: border-box;
+        }
+
+        #shelf-section {
+            flex: 1.8; background: var(--shelf-bg); padding: 15px;
+            border-radius: 20px; border: 3px solid #e9ecef;
+            display: flex; flex-direction: column;
+        }
+
+        .grid { 
+            display: grid; grid-template-columns: repeat(4, 1fr); 
+            gap: 10px; flex-grow: 1;
+        }
+
+        .product-card {
+            background: white; border-radius: 15px; padding: 10px;
+            text-align: center; cursor: pointer; transition: 0.2s;
+            border-bottom: 4px solid #dee2e6;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+
+        .product-card.selected { opacity: 0.1; pointer-events: none; }
+        .emoji-big { font-size: 6vh; display: block; }
+        .price-ar { font-size: 3.5vh; color: var(--lira-color); font-weight: bold; }
+
+        #mom-paper {
+            flex: 1.2; background: var(--paper); padding: 25px;
+            border-radius: 15px; box-shadow: 4px 4px 15px rgba(0,0,0,0.05);
+            border-left: 20px solid #e9edc9; display: flex; flex-direction: column;
+        }
+
+        .shopping-list { 
+            list-style: none; padding: 0; margin: 0;
+            font-size: 6vh; /* Kelimeler dev boyut */
+            line-height: 1.6; color: var(--ink); 
+        }
+        
+        .shopping-list li {
+            padding: 10px; margin-bottom: 15px; border-radius: 12px;
+            text-align: center; transition: 0.3s;
+        }
+
+        .shopping-list li.active {
+            background: #fff; color: var(--highlight); font-weight: 900;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: scale(1.05);
+            border: 4px solid var(--highlight);
+        }
+
+        .shopping-list li.done { text-decoration: line-through; opacity: 0.2; }
+
+        .total-display {
+            font-size: 6vh; /* Rakamlar çok büyük */
+            font-weight: 900; color: var(--lira-color);
+            margin: 10px 0;
+        }
+
+        #pay-btn { 
+            width: 100%; padding: 20px; background: #bc6c25; color: white; 
+            border: none; border-radius: 12px; cursor: pointer; 
+            font-size: 4vh; font-family: 'Arakom'; animation: pulse-btn 2s infinite;
+        }
+
+        /* --- FATURA MODAL --- */
+        .modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 100;
+        }
+
+        .receipt-paper {
+            background: #fff; width: 450px; padding: 30px;
+            border-radius: 5px; text-align: center;
+            box-shadow: 0 0 50px rgba(255,255,255,0.1);
+        }
+
+        .receipt-total {
+            border-top: 5px solid #333; margin-top: 15px; padding-top: 10px;
+            font-weight: 900; font-size: 8vh; /* Faturadaki toplam devasa */
+            color: var(--lira-color);
+        }
+
+        .opt {
+            width: 100%; padding: 20px; margin: 15px 0;
+            border: 4px solid #606c38; border-radius: 15px;
+            background: #f8f9fa; font-size: 4vh; cursor: pointer;
+            font-family: 'Arakom'; font-weight: 900;
+            animation: pulse-btn 1.5s infinite; /* Şıklar sürekli parlar */
+        }
+/* --- MAKSİMUM OKUNABİLİRLİK VE DEV BOYUT YAMASI --- */
+
+.receipt-paper {
+    width: 95% !important; /* Yatayda daha geniş */
+    max-width: 600px !important;
+    height: 96vh !important; /* Dikeyde ekranın neredeyse tamamı */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Elementleri uca yayar */
+    align-items: center;
+    padding: 25px !important;
+    border: 2px solid #333 !important;
+}
+
+/* 1. Başlık: الفاتورة النهائية */
+#modal h2 {
+    font-size: 7vh !important; 
+    margin: 10px 0 !important;
+    font-weight: 900;
+    color: #000;
+}
+
+/* 2. Ürün Detayları (Neler alındı?) */
+#receipt-details {
+    font-size: 4.5vh !important; /* Ürün isimleri daha büyük */
+    font-weight: bold;
+    color: #444;
+    margin: 10px 0;
+}
+
+/* 3. Toplam Tutar: ₺ ٠ */
+.receipt-total {
+    font-size: 10vh !important; /* Faturanın en büyük rakamı */
+    border-top: 5px dashed #000 !important;
+    border-bottom: 5px dashed #000 !important; /* Altına da çizgi ekledik */
+    padding: 15px 0 !important;
+    margin: 15px 0 !important;
+    width: 100%;
+    color: #c0392b;
+}
+
+/* 4. Şıklar (Seçenek düğmeleri) */
+#options-grid {
+    width: 100%;
+    gap: 15px !important;
+}
+
+.opt {
+    font-size: 5vh !important; /* Şık metinleri devasa */
+    padding: 20px 0 !important;
+    border-bottom: 4px dashed #606c38 !important;
+    background: #f9f9f9 !important;
+    font-weight: 900 !important;
+}
+
+/* Animasyon etkisini koru ama boyut değişimini netleştir */
+@keyframes bill-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); color: #bc6c25; }
+    100% { transform: scale(1); }
+}
+/* Aktif olan kelimenin sürekli parlaması ve büyümesi */
+.shopping-list li.active {
+    background: #fff;
+    color: #bc6c25 !important;
+    font-weight: 900;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: scale(1.1); /* Diğerlerinden daha büyük görünür */
+    border: 5px solid #bc6c25 !important;
+    animation: active-task-pulse 1s infinite alternate; /* Sürekli vurgu */
+}
+
+@keyframes active-task-pulse {
+    from { transform: scale(1.1); box-shadow: 0 5px 15px rgba(188, 108, 37, 0.2); }
+    to { transform: scale(1.15); box-shadow: 0 8px 25px rgba(188, 108, 37, 0.4); }
+}
+
+/* Tamamlanan kelimelerin hafifçe sönükleşmesi */
+.shopping-list li.done {
+    text-decoration: line-through;
+    opacity: 0.3;
+    background: transparent;
+    border: none;
+    transform: scale(0.9);
+}
+
+/* --- ÖZEL UYARI MESAJI TASARIMI --- */
+.custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: var(--paper); /* Fatura kağıdı rengi */
+    border: 5px solid var(--ink);
+    padding: 30px;
+    border-radius: 20px;
+    z-index: 2000;
+    text-align: center;
+    box-shadow: 0 0 0 1000px rgba(0,0,0,0.7);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    min-width: 300px;
+}
+
+.custom-alert.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.custom-alert h2 {
+    font-size: 5vh;
+    margin: 0 0 20px 0;
+    color: var(--ink);
+}
+
+.custom-alert button {
+    background: var(--highlight);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 3vh;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Arakom';
+    box-shadow: 0 4px 0 #8d521d;
+}
+
+.custom-alert button:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+    </style>
+</head>
+<body onclick="playYonerge()">
+
+<a href="index.html" class="back-btn">⬅</a>
+
+<div id="game-wrapper">
+    <div id="shelf-section">
+        <h1 style="text-align: center; font-size: 4vh; margin: 0;">🏪 المتجر</h1>
+        <div class="grid" id="shelf"></div>
+        <div id="status-bar" style="text-align: center;">
+            <div class="total-display">₺ <span id="total-val">٠</span></div>
+            <button id="pay-btn" onclick="openCheckout()" style="display:none;">دفع الفاتورة 💰</button>
+        </div>
+    </div>
+
+    <div id="mom-paper">
+        <div style="font-size: 3vh; color: #bc6c25; border-bottom: 4px solid; text-align: center; margin-bottom: 25px; font-weight: bold;">قائمة التسوق</div>
+        <ul class="shopping-list" id="target-list"></ul>
+    </div>
+</div>
+
+<div id="modal" class="modal">
+    <div class="receipt-paper">
+        <h2 style="margin:0; font-size: 3vh;">الفاتورة النهائية</h2>
+        <div id="receipt-details" style="font-size: 2.5vh; margin: 20px 0;"></div>
+        <div class="receipt-total" id="num-display"></div>
+        <div id="options-grid"></div>
+    </div>
+</div>
+
+<audio id="yonergeAudio" src="yonergealisveris.wav"></audio>
+
+<div id="custom-alert" class="custom-alert">
+    <h2 id="alert-text"></h2>
+    <button onclick="closeCustomAlert()">حسناً 👍</button>
+</div>
+
+<script>
+    const toAr = (n) => n.toString().replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+    let audioPlayed = false;
+
+    function playYonerge() {
+        if (!audioPlayed) {
+            const audio = document.getElementById('yonergeAudio');
+            if(audio) audio.play();
+            audioPlayed = true;
+        }
+    }
+
+    const allProducts = [
+        { name: 'جُبْن', icon: '🧀', price: 5 }, { name: 'زَيْتُون', icon: '🫒', price: 3 },
+        { name: 'خُبْز', icon: '🍞', price: 1 }, { name: 'زُبْدَة', icon: '🧈', price: 4 },
+        { name: 'عَسَل', icon: '🍯', price: 6 }, { name: 'بَيْضَة', icon: '🥚', price: 2 },
+        { name: 'أُرُزّ', icon: '🍚', price: 3 }, { name: 'لَحْم', icon: '🥩', price: 9 },
+        { name: 'حَسَاء', icon: '🥣', price: 4 }, { name: 'دَجَاج', icon: '🍗', price: 7 },
+        { name: 'سَمَك', icon: '🐟', price: 8 }, { name: 'كُفْتَة', icon: '🧆', price: 6 },
+        { name: 'شَاي', icon: '☕', price: 2 }, { name: 'ماء', icon: '💧', price: 1 },
+        { name: 'حَلِيب', icon: '🥛', price: 3 }, { name: 'عَصِير', icon: '🧃', price: 2 },
+        { name: 'كَأْس', icon: '🥛', price: 2 }, { name: 'قَهْوَة', icon: '☕', price: 3 },
+        { name: 'شَوْكَة', icon: '🍴', price: 1 }, { name: 'مِلْعَقَة', icon: '🥄', price: 1 },
+        { name: 'سِكِّين', icon: '🔪', price: 1 }, { name: 'طَبَق', icon: '🍽️', price: 2 },
+        { name: 'تُفَّاح', icon: '🍎', price: 2 }, { name: 'مَوْز', icon: '🍌', price: 3 },
+        { name: 'جَزَر', icon: '🥕', price: 1 }
+    ];
+
+    const numWords = {
+        1: "واحد", 2: "اثنان", 3: "ثلاثة", 4: "أربعة", 5: "خمسة",
+        6: "ستة", 7: "سبعة", 8: "ثمانية", 9: "تسعة", 10: "عشرة",
+        11: "أحد عشر", 12: "اثنا عشر", 13: "ثلاثة عشر", 14: "أربعة عشر", 15: "خمسة عشر"
+    };
+
+    // Global Değişkenler
+    let targetList = [];
+    let currentTaskIndex = 0;
+    let total = 0;
+    let selectedProducts = [];
+    let availablePool = []; 
+    let alertCallback = null;
+
+    function initGame() {
+        // 1. Havuz Kontrolü: Ürünler bitmeden tekrar etmez
+        if (availablePool.length < 3) availablePool = [...allProducts];
+        availablePool.sort(() => 0.5 - Math.random());
+        targetList = availablePool.splice(0, 3); 
+
+        // 2. Dinamik Raf: Listeyi kapsayan + rastgele toplam 12 ürün (Taşmayı engeller)
+        let otherProducts = allProducts.filter(p => !targetList.find(t => t.name === p.name));
+        let shelfProducts = [...targetList, ...otherProducts.sort(() => 0.5 - Math.random()).slice(0, 9)];
+        shelfProducts.sort(() => 0.5 - Math.random()); 
+
+        // 3. Değişkenleri Sıfırla
+        currentTaskIndex = 0;
+        total = 0;
+        selectedProducts = [];
+        document.getElementById('total-val').innerText = toAr(0);
+        document.getElementById('pay-btn').style.display = 'none';
+
+        // 4. Listeyi Bas
+        document.getElementById('target-list').innerHTML = targetList.map((p, i) => 
+            `<li id="task-${i}">${p.name}</li>`
+        ).join('');
+
+        // 5. Rafı Doldur
+        const shelf = document.getElementById('shelf');
+        shelf.innerHTML = ''; 
+        shelfProducts.forEach((p) => {
+            const div = document.createElement('div');
+            div.className = 'product-card';
+            div.innerHTML = `<span class="emoji-big">${p.icon}</span><span class="price-ar">${toAr(p.price)} ₺</span>`;
+            div.onclick = () => handleSelection(p, div);
+            shelf.appendChild(div);
+        });
+
+        updateHighlight();
+    }
+
+    function handleSelection(product, element) {
+        if (product.name === targetList[currentTaskIndex].name) {
+            total += product.price;
+            selectedProducts.push(product);
+            element.classList.add('selected');
+            currentTaskIndex++;
+            document.getElementById('total-val').innerText = toAr(total);
+            updateHighlight();
+            if (currentTaskIndex === targetList.length) document.getElementById('pay-btn').style.display = 'block';
+        } else {
+            element.style.transform = "translateX(10px)";
+            setTimeout(() => element.style.transform = "translateX(0)", 100);
+        }
+    }
+
+    function updateHighlight() {
+        targetList.forEach((_, i) => {
+            const el = document.getElementById(`task-${i}`);
+            if (el) {
+                if (i === currentTaskIndex) el.className = 'active';
+                else if (i < currentTaskIndex) el.className = 'done';
+                else el.className = '';
+            }
+        });
+    }
+
+    function showMessage(text, callback = null) {
+        document.getElementById('alert-text').innerText = text;
+        document.getElementById('custom-alert').classList.add('show');
+        alertCallback = callback;
+    }
+
+    function closeCustomAlert() {
+        document.getElementById('custom-alert').classList.remove('show');
+        if (alertCallback) alertCallback();
+    }
+
+    function openCheckout() {
+        document.getElementById('modal').style.display = 'flex';
+        document.getElementById('num-display').innerText = toAr(total) + " ₺";
+        
+        let choices = [
+            { t: (numWords[total] || toAr(total)) + " ₺", c: true },
+            { t: (numWords[total+2] || toAr(total+2)) + " ₺", c: false },
+            { t: (numWords[Math.abs(total-1) || 7]) + " ₺", c: false }
+        ].sort(() => 0.5 - Math.random());
+
+        const optGrid = document.getElementById('options-grid');
+        optGrid.innerHTML = '';
+        choices.forEach(ch => {
+            const b = document.createElement('button');
+            b.className = 'opt';
+            b.innerText = ch.t;
+            b.onclick = () => {
+                if(ch.c) { 
+                    showMessage("احسنت! ✅", () => location.reload()); 
+                } else { 
+                    showMessage("حاول مرة اخرى ❌"); 
+                }
+            };
+            optGrid.appendChild(b);
+        });
+    }
+
+    initGame();
+</script>
+</body>
+</html>

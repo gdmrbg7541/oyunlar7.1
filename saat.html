@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الساعة الشاملة</title>
+    <style>
+        @font-face {
+            font-family: 'AraKom';
+            src: url('arakom.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --bg: #f0f9ff;
+            --p1-color: #6366f1;
+            --p2-color: #ec4899;
+            --correct: #10b981;
+            --wrong: #ef4444;
+            --star-gold: #fbbf24;
+            --accent: #4f46e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'AraKom', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* --- NAVİGASYON --- */
+  /* Navigasyon butonlarını SOLA sabitleyen yama */
+.nav-btn {
+    position: absolute;
+    top: 25px;
+    left: 25px; /* Butonlar artık sol tarafta */
+    right: auto;
+    background: white;
+    border: 3px solid #e2e8f0;
+    padding: 12px 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    z-index: 2500;
+    font-weight: bold;
+    color: #64748b;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.nav-btn:hover { 
+    background: #f1f5f9; 
+    border-color: var(--p1-color); 
+    transform: scale(1.05); 
+}
+
+/* İlk sayfadaki butona özel stil */
+.back-home { display: flex; }
+
+
+
+/* Oyun içindeki geri butonuna özel stil */
+.back-menu { display: none; }
+
+        /* --- GİRİŞ EKRANI (Büyütülmüş) --- */
+        #startScreen {
+            background: white;
+            padding: 80px;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+            z-index: 2000;
+            border: 4px solid #eef2ff;
+        }
+
+        #startScreen h1 { font-size: 4.5rem; color: var(--accent); margin-bottom: 50px; }
+
+        .mode-container { display: flex; gap: 50px; justify-content: center; }
+        .mode-btn {
+            background: #fff;
+            border: 4px solid #f1f5f9;
+            padding: 50px 40px;
+            border-radius: 35px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 320px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .mode-btn:hover { transform: translateY(-15px); border-color: var(--p1-color); box-shadow: 0 20px 30px rgba(99, 102, 241, 0.1); }
+        .mode-icon { font-size: 7rem; margin-bottom: 25px; }
+        .mode-title { font-size: 2.5rem; font-weight: bold; color: #1e293b; }
+
+        /* --- OYUN ALANLARI --- */
+        .game-container { display: none; width: 100%; height: 100vh; position: relative; padding: 20px; }
+        .hidden { display: none !important; }
+
+        /* --- TEK KİŞİLİK TASARIM --- */
+        #singleGame { flex-direction: row-reverse; gap: 40px; align-items: center; padding: 60px; }
+        .s-digital-section { flex: 1.4; display: flex; flex-direction: column; align-items: center; background: #fff; border-radius: 40px; padding: 40px; border: 2px solid #eef2ff; height: 80%; justify-content: center; }
+        .s-options-section { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+        
+        .clock-label-big { font-size: 5rem; color: var(--accent); font-weight: bold; margin-bottom: 20px; }
+        .s-time-display { font-size: 11rem; font-family: 'Courier New', monospace; font-weight: bold; color: var(--accent); letter-spacing: 5px; }
+        
+.s-opt-btn { 
+    background: white; 
+    border: 4px solid #f1f5f9; 
+    border-radius: 25px;
+    font-size: 3.5rem; /* Boyutu 2.2rem'den 3rem'e çıkardık */
+    font-weight: normal; /* Bold (kalın) özelliğini normal yaptık */
+    cursor: pointer; 
+    padding: 25px; 
+    text-align: center;
+    transition: all 0.2s;
+}
+        .s-opt-btn:hover { border-color: var(--p1-color); background: #f8faff; }
+
+        /* --- DÜELLO TASARIMI --- */
+        #duelGame { flex-direction: row; }
+        /* Her iki taraftaki tüm dış kenarlıkları temizleyelim */
+.player-side { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    padding: 25px; 
+    position: relative;
+    border: none !important; /* Tüm kenarlıkları kaldırır */
+}
+
+/* Sadece birinci oyuncunun SOLUNA (ekranın tam ortasına) çizgi ekleyelim */
+/* LTR mantığında sol, RTL'de ekranın ortası olur */
+#p1-side {
+    border-left: 2px dashed #cbd5e1 !important;
+}
+        .d-time-box { background: white; border-radius: 30px; padding: 15px; margin: 20px 0; border: 10px solid #f8faff; flex: 0.4; display: flex; justify-content: center; align-items: center; }
+        .d-time-text { font-size: 7.5rem; font-family: 'Courier New', monospace; font-weight: bold; }
+        .d-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex: 0.5; }
+.d-opt-btn { 
+    background: white; 
+    border: 3px solid #e2e8f0; 
+    border-radius: 20px; 
+    font-size: 3rem;
+    font-weight: normal;
+    cursor: pointer; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+}
+
+        /* --- İLERLEME ÇUBUĞU --- */
+        .progress-bar { height: 18px; background: #e2e8f0; margin-top: 20px; border-radius: 10px; display: flex; overflow: hidden; width: 100%; }
+        .segment { flex: 1; border-right: 2px solid white; transition: background 0.3s; }
+
+        /* --- DURUMLAR & ANİMASYONLAR --- */
+        .correct { background: var(--correct) !important; color: white !important; border-color: var(--correct) !important; }
+        .wrong { background: var(--wrong) !important; color: white !important; border-color: var(--wrong) !important; animation: shake 0.4s; }
+        .selected { border-color: var(--p1-color); background: #f0f9ff; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+
+        .score-pop { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 5rem; font-weight: bold; z-index: 100; animation: popUp 1s forwards; }
+        @keyframes popUp { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } 50% { opacity: 1; transform: translate(-50%, -80%) scale(1.3); } 100% { opacity: 0; transform: translate(-50%, -130%) scale(1); } }
+    </style>
+</head>
+<body>
+
+    <audio id="audioMain" src="yonergesaat.wav"></audio>
+    <audio id="audioClick" src="click.wav"></audio>
+    <audio id="audioCorrect" src="correct.wav"></audio>
+    <audio id="audioWrong" src="wrong.wav"></audio>
+
+    <a href="index.html" class="nav-btn back-home" id="homeBtn">🏠</a>
+    <button class="nav-btn back-menu" id="menuBtn" onclick="location.reload()">↩</button>
+
+    <div id="startScreen">
+        <h1> لُعْبَة السّاعَة الرَّقْمِيَّة</h1>
+        <div class="mode-container">
+            <div class="mode-btn" onclick="startSingle()">
+                <div class="mode-icon">👤</div>
+                <div class="mode-title"> لاعِب واحِد</div>
+            </div>
+            <div class="mode-btn" onclick="startDuel()">
+
+                <div class="mode-icon">👥</div>
+                <div class="mode-title">لاعِبان</div>
+            </div>
+        </div>
+    </div>
+
+   <div id="singleGame" class="game-container">
+        <div class="s-digital-section">
+            <div style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; margin-bottom: 10px;">
+                <div style="font-size: 3rem; color: var(--star-gold); text-align: right;" id="s-score-container">⭐ <span id="s-score">0</span></div>
+                <div class="clock-label-big" style="margin-bottom: 0;">كَم السّاعَة؟</div>
+                <div></div> </div>
+            
+            <div class="s-time-display" id="s-time">٠٠:٠٠</div>
+            <div class="progress-bar" id="s-prog" style="width: 80%; margin-top: 40px;"></div>
+        </div>
+        <div class="s-options-section" id="s-opts"></div>
+    </div>
+
+    <div id="duelGame" class="game-container">
+        <div class="player-side" id="p1-side">
+            <div style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%;">
+                <div style="font-size: 2.5rem; color: var(--star-gold); font-weight: bold; text-align: right;" id="p1-score">⭐ 0</div>
+                <div style="font-size: 3rem; font-weight: bold; color: var(--p1-color); text-align: center;">كَم السّاعَة؟</div>
+                <div></div>
+            </div>
+            <div class="d-time-box"><div class="d-time-text" id="p1-time">٠٠:٠٠</div></div>
+            <div class="d-options-grid" id="p1-opts"></div>
+            <div class="progress-bar" id="p1-prog"></div>
+        </div>
+
+        <div class="player-side" id="p2-side">
+            <div style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%;">
+                <div style="font-size: 2.5rem; color: var(--star-gold); font-weight: bold; text-align: right;" id="p2-score">⭐ 0</div>
+                <div style="font-size: 3rem; font-weight: bold; color: var(--p2-color); text-align: center;">كَم السّاعَة؟</div>
+                <div></div>
+            </div>
+            <div class="d-time-box"><div class="d-time-text" id="p2-time">٠٠:٠٠</div></div>
+            <div class="d-options-grid" id="p2-opts"></div>
+            <div class="progress-bar" id="p2-prog"></div>
+        </div>
+    </div>
+<script>
+    const data = [
+        { h: "01", ar: "٠١", a: "السّاعَة الواحِدَة" }, { h: "02", ar: "٠٢", a: "السّاعَة الثّانِيَة" },
+        { h: "03", ar: "٠٣", a: "السّاعَة الثّالِثَة" }, { h: "04", ar: "٠٤", a: "السّاعَة الرّابِعَة" },
+        { h: "05", ar: "٠٥", a: "السّاعَة الخامِسَة" }, { h: "06", ar: "٠٦", a: "السّاعَة السّادِسَة" },
+        { h: "07", ar: "٠٧", a: "السّاعَة السّابِعَة" }, { h: "08", ar: "٠٨", a: "السّاعَة الثّامِنَة" },
+        { h: "09", ar: "٠٩", a: "السّاعَة التّاسِعَة" }, { h: "10", ar: "١٠", a: "السّاعَة العاشِرَة" },
+        { h: "11", ar: "١١", a: "السّاعَة الحادِيَةَ عَشْرَة" }, { h: "12", ar: "١٢", a: "السّاعَة الثّانِيَة عَشْرَةَ" }
+    ];
+
+    let p1 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
+    let p2 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
+    const TOTAL = 5; // Toplam 10 soru
+
+    function playS(id) { const a = document.getElementById(id); if(a){ a.currentTime=0; a.play(); } }
+
+    function prepareGame() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('homeBtn').classList.add('hidden');
+        document.getElementById('menuBtn').style.display = 'flex';
+        playS('audioMain');
+    }
+
+let currentGameMode = ""; // Hangi modda olduğumuzu tutan değişken
+
+// Mod başlatma fonksiyonlarına mod bilgisini ekliyoruz
+function startSingle() {
+    currentGameMode = "single"; // Modu kaydet
+    prepareGame();
+    document.getElementById('singleGame').style.display = 'flex';
+    setupProgressBar('s-prog');
+    loadSingle();
+}
+
+function startDuel() {
+    currentGameMode = "duel"; // Modu kaydet
+    prepareGame();
+    document.getElementById('duelGame').style.display = 'flex';
+    setupProgressBar('p1-prog');
+    setupProgressBar('p2-prog');
+    loadDuelRound();
+}
+
+function restartGame() {
+    // Modal'ı kapat
+    document.getElementById('customAlert').style.display = 'none';
+    
+    // Skorları ve aşamaları sıfırla
+    p1 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
+    p2 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
+    
+    // Skor göstergelerini sıfırla
+    if(document.getElementById('s-score')) document.getElementById('s-score').textContent = "0";
+    if(document.getElementById('p1-score')) document.getElementById('p1-score').textContent = "⭐ 0";
+    if(document.getElementById('p2-score')) document.getElementById('p2-score').textContent = "⭐ 0";
+
+    // Kaldığı moddan devam et
+    if (currentGameMode === "single") {
+        setupProgressBar('s-prog');
+        loadSingle();
+    } else {
+        setupProgressBar('p1-prog');
+        setupProgressBar('p2-prog');
+        loadDuelRound();
+    }
+}
+
+    function setupProgressBar(id) {
+        const bar = document.getElementById(id);
+        bar.innerHTML = '';
+        for(let i=0; i<TOTAL; i++) {
+            let s = document.createElement('div');
+            s.className = 'segment';
+            bar.appendChild(s);
+        }
+    }
+
+   // Tek kişilik oyun bittiğinde çalışacak kısım
+function loadSingle() {
+    if(p1.current >= TOTAL) { 
+        showWinner("single"); // Tek kişilik mod parametresi
+        return; 
+    }
+    
+    const q = data[Math.floor(Math.random()*data.length)];
+    document.getElementById('s-time').textContent = `${q.ar}:٠٠`;
+    let opts = [q.a];
+    while(opts.length < 4) { let r = data[Math.floor(Math.random()*data.length)].a; if(!opts.includes(r)) opts.push(r); }
+    opts.sort(() => Math.random() - 0.5);
+    
+    const cont = document.getElementById('s-opts'); cont.innerHTML = '';
+    opts.forEach(o => {
+        const b = document.createElement('div'); b.className='s-opt-btn'; b.textContent=o;
+        b.onclick = () => {
+            if(p1.selection) return; p1.selection=true;
+            const segments = document.getElementById('s-prog').children;
+            if(o === q.a) { 
+                b.classList.add('correct'); playS('audioCorrect'); 
+                p1.score += 20;
+                document.getElementById('s-score').textContent = p1.score;
+                if(segments[p1.current]) segments[p1.current].style.background = 'var(--correct)';
+            } else { 
+                b.classList.add('wrong'); playS('audioWrong'); 
+                if(segments[p1.current]) segments[p1.current].style.background = 'var(--wrong)';
+            }
+            setTimeout(() => { p1.selection=null; p1.current++; loadSingle(); }, 1200);
+        };
+        cont.appendChild(b);
+    });
+}
+    function loadDuelRound() {
+        if(p1.current >= TOTAL) { showWinner(); return; }
+        p1.selection = p2.selection = null;
+        [1,2].forEach(n => {
+            const p = n===1?p1:p2; const q = data[Math.floor(Math.random()*data.length)];
+            p.ans = q.a; document.getElementById(`p${n}-time`).textContent = `${q.ar}:٠٠`;
+            let opts = [q.a]; while(opts.length<4){ let r=data[Math.floor(Math.random()*data.length)].a; if(!opts.includes(r)) opts.push(r); }
+            opts.sort(()=>Math.random()-0.5);
+            const cont = document.getElementById(`p${n}-opts`); cont.innerHTML='';
+            opts.forEach(o => {
+                const b = document.createElement('div'); b.className='d-opt-btn'; b.textContent=o;
+                b.onclick = () => { 
+                    if(p.selection)return; 
+                    playS('audioClick'); p.selection=b; p.time=Date.now(); p.correct=(o===q.a); p.btn=b; 
+                    b.classList.add('selected'); 
+                    if(p1.selection && p2.selection) revealDuel(); 
+                };
+                cont.appendChild(b);
+            });
+        });
+    }
+
+    function revealDuel() {
+        const first = (p1.correct && (!p2.correct || p1.time < p2.time)) ? p1 : (p2.correct ? p2 : null);
+        [1,2].forEach(n => {
+            const p = n===1?p1:p2; const segs = document.getElementById(`p${n}-prog`).children;
+            if(p.correct) { 
+                p.btn.classList.add('correct'); playS('audioCorrect'); 
+                if(segs[p.current]) segs[p.current].style.background='var(--correct)';
+                setTimeout(() => { 
+                    showPop(n,"+10","var(--correct)"); p.score+=10; updateDuelScore(n);
+                    if(p===first){ setTimeout(()=>{ showPop(n,"+10 ⚡️","var(--star-gold)"); p.score+=10; updateDuelScore(n); },600); }
+                },300);
+            } else { 
+                p.btn.classList.add('wrong'); playS('audioWrong'); 
+                if(segs[p.current]) segs[p.current].style.background='var(--wrong)'; 
+            }
+        });
+        setTimeout(() => { p1.current++; p2.current++; loadDuelRound(); }, 2500);
+    }
+
+// Ortak Uyarı Mesajı Fonksiyonu
+function showWinner(mode = "duel") {
+    const modal = document.getElementById('customAlert');
+    const title = document.getElementById('alertTitle');
+    const score = document.getElementById('alertScore');
+
+    if (mode === "single") {
+        title.innerHTML = "🏁 اِنْتَهَت اللُّعْبَة!";
+        score.innerHTML = `مجموع النقاط: <span style="color:var(--accent)">${p1.score}</span>`;
+    } else {
+        let winTxt = "";
+        if (p1.score > p2.score) {
+            winTxt = "🏆 الفائز: اللاعب الأول!";
+        } else if (p2.score > p1.score) {
+            winTxt = "🏆 الفائز: اللاعب الثاني!";
+        } else {
+            winTxt = "🤝 تعادل!";
+        }
+        title.textContent = winTxt;
+        score.innerHTML = `<span style="color:var(--p1-color)">${p1.score}</span> - <span style="color:var(--p2-color)">${p2.score}</span>`;
+    }
+    
+    modal.style.display = 'flex';
+}
+
+    function showPop(n,t,c) { 
+        const side = document.getElementById(`p${n}-side`); 
+        const pop = document.createElement('div'); pop.className='score-pop'; pop.textContent=t; pop.style.color=c; 
+        side.appendChild(pop); setTimeout(()=>pop.remove(),1000); 
+    }
+    function updateDuelScore(n) { document.getElementById(`p${n}-score`).textContent = `⭐ ${n===1?p1.score:p2.score}`; }
+</script>
+<style>
+    /* Özel Uyarı/Bitiş Ekranı Tasarımı */
+    #customAlert {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(15, 23, 42, 0.8); /* Koyu transparan arka plan */
+        backdrop-filter: blur(8px);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+    .alert-card {
+        background: white;
+        padding: 50px;
+        border-radius: 40px;
+        text-align: center;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        border: 6px solid var(--accent);
+        max-width: 500px;
+        width: 90%;
+        animation: modalShow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes modalShow {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+    .alert-title { font-size: 3.5rem; color: var(--accent); margin-bottom: 20px; }
+    .alert-score { font-size: 2.5rem; color: #475569; margin-bottom: 30px; }
+    .alert-btn {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 20px;
+        font-size: 1.8rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .alert-btn:hover { transform: scale(1.05); background: var(--p1-color); }
+</style>
+
+<div id="customAlert">
+    <div class="alert-card">
+        <div class="alert-title" id="alertTitle"></div>
+        <div class="alert-score" id="alertScore"></div>
+        <button class="alert-btn" onclick="restartGame()">🔄 اِلْعَبْ مَرَّة أُخْرى</button>
+    </div>
+</div>
+</body>
+</html>
