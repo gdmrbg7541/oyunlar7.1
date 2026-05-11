@@ -195,56 +195,29 @@
     <audio id="instruction-audio" src="yonergekelime.mp3"></audio>
 
 <script>
-const allWords = [
-    // --- Temel Gıdalar & Market ---
-    { w: "سُكَّر", e: "🍬" },      // Şeker
-    { w: "مِلْح", e: "🧂" },      // Tuz
-    { w: "شاي", e: "☕" },       // Çay
-    { w: "حَليب", e: "🥛" },     // Süt
-    { w: "عَسَل", e: "🍯" },      // Bal
-    { w: "خُبْز", e: "🍞" },      // Ekmek
-    { w: "بَيْض", e: "🥚" },      // Yumurta
-    { w: "مَكَرونَة", e: "🍝" },   // Makarna
-    { w: "زَيْتون", e: "🫒" },    // Zeytin
-    { w: "بَقّالَة", e: "🛒" },    // Bakkal/Market
-
-    // --- Sebzeler (خَضْراوات) ---
-    { w: "بَصَل", e: "🧅" },      // Soğan
-    { w: "بَطاطا", e: "🥔" },     // Patates
-    { w: "طَماطِم", e: "🍅" },     // Domates
-    { w: "خِيار", e: "🥒" },      // Salatalık
-    { w: "جَزَر", e: "🥕" },      // Havuç
-    { w: "باذِنْجان", e: "🍆" },   // Patlıcan
-    { w: "فُلْفُل", e: "🫑" },      // Biber
-    { w: "فاصولْيا", e: "🫘" },    // Fasulye
-
-    // --- Meyveler (فَواكِه) ---
-    { w: "تُفّاح", e: "🍎" },      // Elma
-    { w: "بُرْتُقال", e: "🍊" },    // Portakal
-    { w: "مَوْز", e: "🍌" },       // Muz
-    { w: "عِنَب", e: "🍇" },       // Üzüm
-    { w: "كَرَز", e: "🍒" },       // Kiraz
-    { w: "مِشْمِش", e: "🍑" },     // Kayısı
-
-    // --- Miktarlar & Nesneler ---
-    { w: "كيلو", e: "⚖️" },       // Kilo
-    { w: "عُلْبَة", e: "📦" },     // Kutu/Paket
-    { w: "كيس", e: "🛍️" },       // Poşet/Kese
-    { w: "صُنْدوق", e: "🗳️" },     // Sandık/Kutu
-    { w: "ليرة", e: "₺" },       // Lira
-
-    // --- Sıfatlar & Karşılaştırmalar ---
-    { w: "طازَج", e: "✨" },      // Taze
-    { w: "غالٍ", e: "💰" },       // Pahalı
-    { w: "رَخيص", e: "🏷️" },      // Ucuz
-    { w: "كَبير", e: "🐘" },      // Büyük
-    { w: "صَغير", e: "🐭" },      // Küçük
-    { w: "ثَقيل", e: "🏋️" },      // Ağır
-    { w: "خَفيف", e: "🪶" },      // Hafif
-    { w: "أَكْبَر", e: "➕" },      // Daha büyük
-    { w: "أَصْغَر", e: "➖" },      // Daha küçük
-    { w: "أَغْلى", e: "📈" },      // Daha pahalı
-    { w: "أَرْخَص", e: "📉" }       // Daha ucuz
+   const allWords = [
+    { w: "فَطور", e: "🍳" },      // Kahvaltı
+    { w: "غَداء", e: "🍲" },       // Öğle yemeği
+    { w: "عَشاء", e: "🍽️" },       // Akşam yemeği
+    { w: "ساعَة", e: "⏰" },       // Saat
+    { w: "مَدْرَسَة", e: "🏫" },    // Okul
+    { w: "حَليب", e: "🥛" },      // Süt
+    { w: "زَيْتون", e: "🫒" },     // Zeytin
+    { w: "جُبْن", e: "🧀" },       // Peynir
+    { w: "عَسَل", e: "🍯" },       // Bal
+    { w: "خُبْز", e: "🍞" },       // Ekmek
+    { w: "سَمَك", e: "🐟" },       // Balık
+    { w: "لَحْم", e: "🥩" },       // Et
+    { w: "أُرْز", e: "🍚" },       // Pirinç/Pilav
+    { w: "شاي", e: "☕" },        // Çay
+    { w: "قَهْوَة", e: "☕" },      // Kahve
+    { w: "عَصير", e: "🧃" },      // Meyve suyu
+    { w: "دَجاج", e: "🍗" },      // Tavuk
+    { w: "بَيْت", e: "🏠" },       // Ev
+    { w: "نَوْم", e: "😴" },       // Uyku
+    { w: "صَلاة", e: "🕌" },       // Namaz/İbadet
+    { w: "مَلابِس", e: "👕" },     // Elbiseler
+    { w: "أَسْنان", e: "🦷" }       // Dişler
 ];
 
     let currentQuestion = 0;
@@ -272,7 +245,7 @@ function startGame() {
     // 3. Yazıyı tam 4 saniye sonra gizle (Ses bitişinden bağımsız)
     setTimeout(function() {
         instruction.style.display = 'none';
-    }, 4000); 
+    }, 5000); 
     
     isGameRunning = true;
     initRound();
