@@ -169,7 +169,7 @@
     </svg>
 </div>
         <h1>لُعْبَة الكَلِمات المَرِحَة</h1>
-        <button class="btn" onclick="startGame()">اِبْدَأ اللُّعْبَة</button>
+        <button class="btn" onclick="startGame()">اِبْدَأْ</button>
     </div>
 
     <div id="game-ui" style="display: none;">
@@ -179,7 +179,7 @@
         <polyline points="12 19 5 12 12 5"></polyline>
     </svg>
 </div>
-        <div id="instruction-text">انقر على الرمز التعبيري الصحيح!</div>
+        <div id="instruction-text">اُنْقُرْ عَلى الصّورَة المُناسِبَة لِلْكَلِمَة!</div>
         <div id="progress-container">
             <div id="progress-bar"></div>
         </div>
@@ -189,18 +189,36 @@
     <div id="overlay" class="screen">
         <div style="font-size: 120px; animation: spin 4s linear infinite;">🔄</div>
         <h2 style="font-size: 3rem;">اِنْتَهَت الجَوْلَة!</h2>
-        <button class="btn" onclick="startGame()">طالِب جَدِيد</button>
+        <button class="btn" onclick="startGame()">طالِب جَديد</button>
     </div>
 
     <audio id="instruction-audio" src="yonergekelime.mp3"></audio>
 
 <script>
-    const allWords = [
-        { w: "شَمْس", e: "☀️" }, { w: "سَمَكَة", e: "🐟" }, { w: "سَيَّارَة", e: "🚗" },
-        { w: "تُفَّاحَة", e: "🍎" }, { w: "طَائِرَة", e: "✈️" }, { w: "بِيتْزَا", e: "🍕" },
-        { w: "كَلْب", e: "🐶" }, { w: "كِتَاب", e: "📚" }, { w: "زَهْرَة", e: "🌸" },
-        { w: "كُرَة", e: "⚽" }
-    ];
+   const allWords = [
+    { w: "فَطور", e: "🍳" },      // Kahvaltı
+    { w: "غَداء", e: "🍲" },       // Öğle yemeği
+    { w: "عَشاء", e: "🍽️" },       // Akşam yemeği
+    { w: "ساعَة", e: "⏰" },       // Saat
+    { w: "مَدْرَسَة", e: "🏫" },    // Okul
+    { w: "حَليب", e: "🥛" },      // Süt
+    { w: "زَيْتون", e: "🫒" },     // Zeytin
+    { w: "جُبْن", e: "🧀" },       // Peynir
+    { w: "عَسَل", e: "🍯" },       // Bal
+    { w: "خُبْز", e: "🍞" },       // Ekmek
+    { w: "سَمَك", e: "🐟" },       // Balık
+    { w: "لَحْم", e: "🥩" },       // Et
+    { w: "أُرْز", e: "🍚" },       // Pirinç/Pilav
+    { w: "شاي", e: "☕" },        // Çay
+    { w: "قَهْوَة", e: "☕" },      // Kahve
+    { w: "عَصير", e: "🧃" },      // Meyve suyu
+    { w: "دَجاج", e: "🍗" },      // Tavuk
+    { w: "بَيْت", e: "🏠" },       // Ev
+    { w: "نَوْم", e: "😴" },       // Uyku
+    { w: "صَلاة", e: "🕌" },       // Namaz/İbadet
+    { w: "مَلابِس", e: "👕" },     // Elbiseler
+    { w: "أَسْنان", e: "🦷" }       // Dişler
+];
 
     let currentQuestion = 0;
     const totalQuestions = 5;
@@ -224,10 +242,10 @@ function startGame() {
     audio.currentTime = 0;
     audio.play();
 
-    // 3. Ses bittiğinde yazıyı gizle
-    audio.onended = function() {
+    // 3. Yazıyı tam 4 saniye sonra gizle (Ses bitişinden bağımsız)
+    setTimeout(function() {
         instruction.style.display = 'none';
-    };
+    }, 5000); 
     
     isGameRunning = true;
     initRound();
@@ -239,12 +257,48 @@ function startGame() {
         document.getElementById('start-screen').style.display = 'flex';
     }
 
-    function initRound() {
-        currentQuestion = 0;
-        roundWords = [...allWords].sort(() => Math.random() - 0.5).slice(0, totalQuestions);
-        updateProgress();
-        nextQuestion();
+    // Oyunun en başında, kelime takibi için boş bir dizi ekleyelim
+let usedWordsPool = []; 
+
+function initRound() {
+    currentQuestion = 0;
+    
+    // 1. Tüm kelimeler kullanıldıysa havuzu sıfırla
+    if (usedWordsPool.length >= allWords.length) {
+        usedWordsPool = [];
     }
+
+    // 2. Kullanılmamış kelimeleri filtrele
+    let availableWords = allWords.filter(word => !usedWordsPool.includes(word.w));
+
+    // 3. Karıştır ve bu tur için 5 tane seç
+    let tempSelection = [...availableWords].sort(() => Math.random() - 0.5);
+    
+    roundWords = [];
+    for (let word of tempSelection) {
+        if (roundWords.length >= totalQuestions) break;
+
+        // Çay ve Kahve aynı turda olmasın kuralı
+        const isTeaOrCoffee = (word.w === "شاي" || word.w === "قَهْوَة");
+        const hasTeaOrCoffeeAlready = roundWords.some(w => w.w === "شاي" || w.w === "قَهْوَة");
+
+        if (isTeaOrCoffee && hasTeaOrCoffeeAlready) {
+            continue; // Eğer zaten biri varsa, diğerini bu tura ekleme, pas geç
+        }
+
+        roundWords.push(word);
+        usedWordsPool.push(word.w); // Bu kelimeyi "soruldu" havuzuna ekle
+    }
+
+    // Eğer çay/kahve elemesi yüzünden 5 kelimeye ulaşamazsak havuzdan rastgele tamamla
+    if (roundWords.length < totalQuestions) {
+        let backups = allWords.filter(w => !roundWords.includes(w));
+        roundWords.push(...backups.slice(0, totalQuestions - roundWords.length));
+    }
+
+    updateProgress();
+    nextQuestion();
+}
 
     function updateProgress() {
         const percent = (currentQuestion / totalQuestions) * 100;

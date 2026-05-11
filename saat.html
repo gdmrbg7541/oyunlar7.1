@@ -192,7 +192,7 @@
         <div class="mode-container">
             <div class="mode-btn" onclick="startSingle()">
                 <div class="mode-icon">👤</div>
-                <div class="mode-title"> لاعِب واحِد</div>
+                <div class="mode-title"> لاعِب </div>
             </div>
             <div class="mode-btn" onclick="startDuel()">
 
@@ -240,32 +240,40 @@
     </div>
 <script>
     const data = [
-        { h: "01", ar: "٠١", a: "السّاعَة الواحِدَة" }, { h: "02", ar: "٠٢", a: "السّاعَة الثّانِيَة" },
-        { h: "03", ar: "٠٣", a: "السّاعَة الثّالِثَة" }, { h: "04", ar: "٠٤", a: "السّاعَة الرّابِعَة" },
-        { h: "05", ar: "٠٥", a: "السّاعَة الخامِسَة" }, { h: "06", ar: "٠٦", a: "السّاعَة السّادِسَة" },
-        { h: "07", ar: "٠٧", a: "السّاعَة السّابِعَة" }, { h: "08", ar: "٠٨", a: "السّاعَة الثّامِنَة" },
-        { h: "09", ar: "٠٩", a: "السّاعَة التّاسِعَة" }, { h: "10", ar: "١٠", a: "السّاعَة العاشِرَة" },
-        { h: "11", ar: "١١", a: "السّاعَة الحادِيَةَ عَشْرَة" }, { h: "12", ar: "١٢", a: "السّاعَة الثّانِيَة عَشْرَةَ" }
+        { h: "01", ar: "١", a: "السّاعَة الواحِدَة" }, { h: "02", ar: "٢", a: "السّاعَة الثّانِيَة" },
+        { h: "03", ar: "٣", a: "السّاعَة الثّالِثَة" }, { h: "04", ar: "٤", a: "السّاعَة الرّابِعَة" },
+        { h: "05", ar: "٥", a: "السّاعَة الخامِسَة" }, { h: "06", ar: "٦", a: "السّاعَة السّادِسَة" },
+        { h: "07", ar: "٧", a: "السّاعَة السّابِعَة" }, { h: "08", ar: "٨", a: "السّاعَة الثّامِنَة" },
+        { h: "09", ar: "٩", a: "السّاعَة التّاسِعَة" }, { h: "10", ar: "١٠", a: "السّاعَة العاشِرَة" },
+        { h: "11", ar: "١١", a: "السّاعَة الحادِيَة عَشْرَة" }, { h: "12", ar: "١٢", a: "السّاعَة الثّانِيَة عَشْرَة" }
     ];
 
-    let p1 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
-    let p2 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
-    const TOTAL = 5; // Toplam 10 soru
+   // --- DEĞİŞKENLER VE SES TANIMLAMALARI ---
+const yonergeSesi = new Audio('yonergesaat.mp3'); // Ses dosyasını tanımladık
+let p1 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
+let p2 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
+const TOTAL = 5; 
+let currentGameMode = ""; 
 
-    function playS(id) { const a = document.getElementById(id); if(a){ a.currentTime=0; a.play(); } }
+// --- SES ÇALMA FONKSİYONU ---
+function playS(id) { 
+    const a = document.getElementById(id); 
+    if(a){ a.currentTime=0; a.play(); } 
+}
 
-    function prepareGame() {
-        document.getElementById('startScreen').classList.add('hidden');
-        document.getElementById('homeBtn').classList.add('hidden');
-        document.getElementById('menuBtn').style.display = 'flex';
-        playS('audioMain');
-    }
+// --- OYUN HAZIRLIK VE BAŞLATMA ---
+function prepareGame() {
+    document.getElementById('startScreen').classList.add('hidden');
+    document.getElementById('homeBtn').classList.add('hidden');
+    document.getElementById('menuBtn').style.display = 'flex';
+    playS('audioMain');
+    
+    // Yönerge sesini burada çalıyoruz (Her iki mod için ortak hazırlık aşaması)
+    yonergeSesi.play(); 
+}
 
-let currentGameMode = ""; // Hangi modda olduğumuzu tutan değişken
-
-// Mod başlatma fonksiyonlarına mod bilgisini ekliyoruz
 function startSingle() {
-    currentGameMode = "single"; // Modu kaydet
+    currentGameMode = "single"; 
     prepareGame();
     document.getElementById('singleGame').style.display = 'flex';
     setupProgressBar('s-prog');
@@ -273,7 +281,7 @@ function startSingle() {
 }
 
 function startDuel() {
-    currentGameMode = "duel"; // Modu kaydet
+    currentGameMode = "duel"; 
     prepareGame();
     document.getElementById('duelGame').style.display = 'flex';
     setupProgressBar('p1-prog');
@@ -281,20 +289,31 @@ function startDuel() {
     loadDuelRound();
 }
 
+// --- SAYFA YÜKLENDİĞİNDE BUTONLARI BAĞLA ---
+document.addEventListener('DOMContentLoaded', () => {
+    // HTML'deki buton ID'lerinizin 'singlePlayerBtn' ve 'multiPlayerBtn' olduğunu varsayıyoruz
+    const singleBtn = document.getElementById('singlePlayerBtn');
+    if (singleBtn) {
+        singleBtn.addEventListener('click', startSingle);
+    }
+
+    const multiBtn = document.getElementById('multiPlayerBtn');
+    if (multiBtn) {
+        multiBtn.addEventListener('click', startDuel);
+    }
+});
+
+// --- DİĞER FONKSİYONLAR (Restart, Progress, Load vs.) ---
+
 function restartGame() {
-    // Modal'ı kapat
     document.getElementById('customAlert').style.display = 'none';
-    
-    // Skorları ve aşamaları sıfırla
     p1 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
     p2 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
     
-    // Skor göstergelerini sıfırla
     if(document.getElementById('s-score')) document.getElementById('s-score').textContent = "0";
     if(document.getElementById('p1-score')) document.getElementById('p1-score').textContent = "⭐ 0";
     if(document.getElementById('p2-score')) document.getElementById('p2-score').textContent = "⭐ 0";
 
-    // Kaldığı moddan devam et
     if (currentGameMode === "single") {
         setupProgressBar('s-prog');
         loadSingle();
@@ -305,22 +324,18 @@ function restartGame() {
     }
 }
 
-    function setupProgressBar(id) {
-        const bar = document.getElementById(id);
-        bar.innerHTML = '';
-        for(let i=0; i<TOTAL; i++) {
-            let s = document.createElement('div');
-            s.className = 'segment';
-            bar.appendChild(s);
-        }
+function setupProgressBar(id) {
+    const bar = document.getElementById(id);
+    bar.innerHTML = '';
+    for(let i=0; i<TOTAL; i++) {
+        let s = document.createElement('div');
+        s.className = 'segment';
+        bar.appendChild(s);
     }
+}
 
-   // Tek kişilik oyun bittiğinde çalışacak kısım
 function loadSingle() {
-    if(p1.current >= TOTAL) { 
-        showWinner("single"); // Tek kişilik mod parametresi
-        return; 
-    }
+    if(p1.current >= TOTAL) { showWinner("single"); return; }
     
     const q = data[Math.floor(Math.random()*data.length)];
     document.getElementById('s-time').textContent = `${q.ar}:٠٠`;
@@ -348,55 +363,40 @@ function loadSingle() {
         cont.appendChild(b);
     });
 }
+
 function loadDuelRound() {
     if(p1.current >= TOTAL) { showWinner(); return; }
-    
-    // Her iki oyuncunun seçimlerini ve durumlarını sıfırla
     p1.selection = p2.selection = null;
     p1.btn = p2.btn = null;
 
-    // Oyuncu 1 (Sağ) ve Oyuncu 2 (Sol) için döngü
     [1, 2].forEach(n => {
         const p = (n === 1) ? p1 : p2;
-        
-        // Bu oyuncu için rastgele bir soru seç
         const q = data[Math.floor(Math.random() * data.length)];
-        p.ans = q.a; // Doğru cevabı oyuncu objesine kaydet
-        
-        // İlgili taraftaki saat metnini güncelle
+        p.ans = q.a; 
         document.getElementById(`p${n}-time`).textContent = `${q.ar}:٠٠`;
         
-        // Şıkları oluştur (1 doğru + 3 yanlış)
         let opts = [q.a];
         while(opts.length < 4) {
             let r = data[Math.floor(Math.random() * data.length)].a;
             if(!opts.includes(r)) opts.push(r);
         }
-        
-        // Şıkları karıştır
         opts.sort(() => Math.random() - 0.5);
         
-        // Butonları konteynere ekle
         const cont = document.getElementById(`p${n}-opts`);
-        cont.innerHTML = ''; // Eski butonları temizle
+        cont.innerHTML = ''; 
         
         opts.forEach(o => {
             const b = document.createElement('div');
             b.className = 'd-opt-btn';
             b.textContent = o;
-            
             b.onclick = () => { 
-                if(p.selection) return; // Zaten seçilmişse işlem yapma
-                
+                if(p.selection) return; 
                 playS('audioClick');
                 p.selection = b; 
                 p.time = Date.now(); 
-                p.correct = (o === p.ans); // p.ans üzerinden kontrol et
+                p.correct = (o === p.ans); 
                 p.btn = b; 
-                
                 b.classList.add('selected'); 
-                
-                // Her iki oyuncu da seçim yaptıysa sonuçları göster
                 if(p1.selection && p2.selection) revealDuel(); 
             };
             cont.appendChild(b);
@@ -404,56 +404,53 @@ function loadDuelRound() {
     });
 }
 
-    function revealDuel() {
-        const first = (p1.correct && (!p2.correct || p1.time < p2.time)) ? p1 : (p2.correct ? p2 : null);
-        [1,2].forEach(n => {
-            const p = n===1?p1:p2; const segs = document.getElementById(`p${n}-prog`).children;
-            if(p.correct) { 
-                p.btn.classList.add('correct'); playS('audioCorrect'); 
-                if(segs[p.current]) segs[p.current].style.background='var(--correct)';
-                setTimeout(() => { 
-                    showPop(n,"+10","var(--correct)"); p.score+=10; updateDuelScore(n);
-                    if(p===first){ setTimeout(()=>{ showPop(n,"+10 ⚡️","var(--star-gold)"); p.score+=10; updateDuelScore(n); },600); }
-                },300);
-            } else { 
-                p.btn.classList.add('wrong'); playS('audioWrong'); 
-                if(segs[p.current]) segs[p.current].style.background='var(--wrong)'; 
-            }
-        });
-        setTimeout(() => { p1.current++; p2.current++; loadDuelRound(); }, 2500);
-    }
+function revealDuel() {
+    const first = (p1.correct && (!p2.correct || p1.time < p2.time)) ? p1 : (p2.correct ? p2 : null);
+    [1,2].forEach(n => {
+        const p = n===1?p1:p2; const segs = document.getElementById(`p${n}-prog`).children;
+        if(p.correct) { 
+            p.btn.classList.add('correct'); playS('audioCorrect'); 
+            if(segs[p.current]) segs[p.current].style.background='var(--correct)';
+            setTimeout(() => { 
+                showPop(n,"+10","var(--correct)"); p.score+=10; updateDuelScore(n);
+                if(p===first){ setTimeout(()=>{ showPop(n,"+10 ⚡️","var(--star-gold)"); p.score+=10; updateDuelScore(n); },600); }
+            },300);
+        } else { 
+            p.btn.classList.add('wrong'); playS('audioWrong'); 
+            if(segs[p.current]) segs[p.current].style.background='var(--wrong)'; 
+        }
+    });
+    setTimeout(() => { p1.current++; p2.current++; loadDuelRound(); }, 2500);
+}
 
-// Ortak Uyarı Mesajı Fonksiyonu
 function showWinner(mode = "duel") {
     const modal = document.getElementById('customAlert');
     const title = document.getElementById('alertTitle');
     const score = document.getElementById('alertScore');
 
     if (mode === "single") {
-        title.innerHTML = "🏁 اِنْتَهَت اللُّعْبَة!";
+        title.innerHTML = "🏁 اِنْتَهَت اللُّعْبَة!";
         score.innerHTML = `مجموع النقاط: <span style="color:var(--accent)">${p1.score}</span>`;
     } else {
         let winTxt = "";
-        if (p1.score > p2.score) {
-            winTxt = "🏆 الفائز: اللاعب الأول!";
-        } else if (p2.score > p1.score) {
-            winTxt = "🏆 الفائز: اللاعب الثاني!";
-        } else {
-            winTxt = "🤝 تعادل!";
-        }
+        if (p1.score > p2.score) { winTxt = "🏆 الفائز: اللاعب الأول!"; } 
+        else if (p2.score > p1.score) { winTxt = "🏆 الفائز: اللاعب الثاني!"; } 
+        else { winTxt = "🤝 تعادل!"; }
         title.textContent = winTxt;
         score.innerHTML = `<span style="color:var(--p1-color)">${p1.score}</span> - <span style="color:var(--p2-color)">${p2.score}</span>`;
     }
-    
     modal.style.display = 'flex';
 }
 
-    function showPop(n,t,c) { 
-        const side = document.getElementById(`p${n}-side`); 
-        const pop = document.createElement('div'); pop.className='score-pop'; pop.textContent=t; pop.style.color=c; 
-        side.appendChild(pop); setTimeout(()=>pop.remove(),1000); 
-    }
-    function updateDuelScore(n) { document.getElementById(`p${n}-score`).textContent = `⭐ ${n===1?p1.score:p2.score}`; }
+function showPop(n,t,c) { 
+    const side = document.getElementById(`p${n}-side`); 
+    const pop = document.createElement('div'); pop.className='score-pop'; pop.textContent=t; pop.style.color=c; 
+    side.appendChild(pop); setTimeout(()=>pop.remove(),1000); 
+}
+
+function updateDuelScore(n) { 
+    document.getElementById(`p${n}-score`).textContent = `⭐ ${n===1?p1.score:p2.score}`; 
+}
 </script>
 <style>
     /* Özel Uyarı/Bitiş Ekranı Tasarımı */

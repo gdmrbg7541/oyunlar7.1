@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
-<title>لُعْبَةُ الذَّاكِرَةِ</title>
+<title> لُعْبَة الذَّاكِرَة</title>
 
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -53,11 +53,11 @@ body, button, div, span {
   .back-btn:hover svg{ opacity:1; transform:scale(1.1); }
 
   /* Start */
-  #start-screen{ gap:25px; }
-  .start-title{ font-size:clamp(2.2rem,5vw,3rem); margin:10px 0; }
-  .start-options{ display:flex; flex-direction:column; gap:15px; width:100%; max-width:420px; }
+  #start-screen{ gap:10px; }
+  .start-title{ font-size:clamp(2.2rem,4vw,3rem); margin:10px 0; }
+  .start-options{ display:flex; flex-direction:column; gap:15px; width:80%; max-width:700px; }
   .option-group{ display:flex; flex-direction:column; gap:10px; }
-  .option-group label{ font-size:1.1rem; font-weight:700; color:var(--primary-color); text-align:left; }
+  .option-group label{ font-size:1.1rem; font-weight:600; color:var(--primary-color); text-align:left; }
   .player-buttons{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 
   .player-button, #lesson-select, #start-game-btn{
@@ -201,32 +201,8 @@ body, button, div, span {
 
 /* Eğer butonun sağda olmasını isterseniz left:20px yerine right:20px yapabilirsiniz */
 
-/* Oyuncu Seçim Alanı Tasarımı */
-.player-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 30px; /* Butonlar arası boşluk */
-    margin-top: 20px;
-   grid-template-columns: repeat(3, 1fr); /* 3 buton yan yana */
-}
 
-/* saat.html'deki profesyonel buton stili */
-.player-button {
-    flex: 0 1 180px; /* Genişlik */
-    height: 120px;   /* Yükseklik */
-    background: white;
-    border: 6px solid #e2e8f0; /* saat.html'deki gibi kalın açık gri çerçeve */
-    border-radius: 35px;       /* Yumuşak köşeler */
-    font-size: 3.5rem;         /* Büyük rakamlar */
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1); /* Hafif derinlik gölgesi */
-    color: #475569;
-}
+
 .player-button[data-players="3"].selected {
     border-color: var(--accent-color);
     background: var(--accent-color);
@@ -365,29 +341,113 @@ body, button, div, span {
     align-items: center !important;
     padding: 2px !important; /* Kenarlardan çok az pay bırakmak kesilmeyi önler */
 }
+
+/* Ana Kapsayıcı */
+
+
+.player-buttons {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important; /* 3 eşit geniş sütun */
+    gap: 20px; /* Kutular arası yatay boşluk */
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Mod Konteyner */
+.mode-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+/* 3. Oyuncu Seçim Butonları: Boyutları Büyüttük */
+.player-button {
+    width: 100% !important; 
+    height: 160px !important; /* Yüksekliği 100'den 160'a çıkararak devasa kutular yaptık */
+    background: white;
+    border: 4px solid #e2e8f0 !important; /* Çerçeveyi kalınlaştırdık */
+    border-radius: 30px !important; /* Köşeleri daha yumuşak ve büyük yaptık */
+    
+    font-size: 4rem !important; /* Emojileri de kutuya uyumlu şekilde büyüttük */
+    
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Daha akıcı bir zıplama efekti */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.10); /* Gölgeyi derinleştirdik */
+    
+    overflow: hidden;
+    padding: 0 !important;
+}
+
+/* Arapça Yazılar */
+.mode-label {
+    font-size: 2.5rem !important;
+    color: var(--primary-color);
+    font-family: 'Arakom', sans-serif !important;
+    font-weight: 500;
+    white-space: nowrap;
+    line-height: 1.1;
+    text-align: center;
+}
+
+/* Seçili Butonlar */
+.player-button.selected {
+    transform: translateY(-5px);
+}
+
+/* Mobil için */
+@media (max-width: 800px) {
+    .player-buttons {
+        gap: 15px;
+        grid-template-columns: 1fr 1fr 1fr !important;
+    }
+    .mode-label {
+        font-size: 1.4rem !important;
+    }
+    .player-button {
+        height: 75px !important;
+        font-size: 2.2rem !important;
+    }
+}
 </style>
 </head>
 <body>
 <div id="game-wrapper">
     <div class="screen active" id="start-screen">
-<button class="nav-back-btn" onclick="location.href='index.html'">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-    </button>
-       <h1 class="start-title">لُعْبَة الذّاكِرَة</h1>
+        <button class="nav-back-btn" onclick="location.href='index.html'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </button>
 
-<p style="font-size: 2.5rem; color: fffff; margin-top: -10px; margin-bottom: 20px; font-weight: font-family: 'Arakom', sans-serif !important;">
-   .اِخْتَرْ اللُّعْبَة، ثُمّ جِد الكَلِمات وَالصُّوَر المُتَطابِقَة
-</p>
+        <h1 class="start-title">لُعْبَة الذّاكِرَة</h1>
+
+        <p style="font-size: 2.5rem; color: var(--primary-color); margin-top: -10px; margin-bottom: 20px; font-family: 'Arakom', sans-serif !important;">
+            .اِخْتَر اللُّعْبَة، ثُمّ جِد الكَلِمات وَالصُّوَر المُتَطابِقَة
+        </p>
+
         <div class="start-options">
             <div class="option-group">
-               
                 <div class="player-buttons" id="player-select">
-                   <button class="player-button" data-players="3" title="Kelime Kartları">📖</button>
-                    <button class="player-button" data-players="1">👤</button>
-                    <button class="player-button" data-players="2">👥</button>
+                    <div class="mode-container">
+                        <button class="player-button" data-players="3">📖</button>
+                        <span class="mode-label">بِطاقات</span>
+                    </div>
+                    <div class="mode-container">
+                        <button class="player-button" data-players="1">👤</button>
+                        <span class="mode-label">لاعِب واحِد</span>
+                    </div>
+                    <div class="mode-container">
+                        <button class="player-button" data-players="2">👥</button>
+                        <span class="mode-label">لاعِبان</span>
+                    </div>
                 </div>
-            </div>
-            <button id="start-game-btn" disabled>اِبْدَأْ</button>
+            </div> <button id="start-game-btn" disabled>اِبْدَأْ</button>
         </div>
     </div>
 
@@ -427,7 +487,7 @@ const Data = {
 const Utils = { shuffleArray: (arr)=>[...arr].sort(()=>Math.random()-.5) };
 
 /* =========================
-   APP (DÜZELTİLMİŞ YAPI)
+   APP (SES VE MOD YÖNETİMİ)
 ========================= */
 const App = {
   state: {
@@ -447,6 +507,7 @@ const App = {
 
     this.initStartScreenListeners();
 
+    // Ses motorunu kullanıcı ilk dokunduğunda aktif et
     const initAudio = () => {
       if (this.state.isAudioInitialized) return;
       this.initAudio();
@@ -479,18 +540,24 @@ const App = {
       this.checkStartButtonState(); 
     });
 
-   this.dom.startGameBtn.onclick = () => {
-    this.playSound('menuClick');
-    const mode = this.state.selectedPlayers;
-    const words = Data.pdfUnit.words.unit1.lessons.lesson1.words;
+    this.dom.startGameBtn.onclick = () => {
+      this.playSound('menuClick');
+      const mode = this.state.selectedPlayers;
+      const words = Data.pdfUnit.words.unit1.lessons.lesson1.words;
 
-    if(mode === 3) {
-        WordCardGame.start(words); // Yeni "Hafızasız" mod
-    } else {
-        MemoryGame.start(words, mode); // Normal hafıza modu
-    }
-    this.showScreen('game-screen');
-};
+      if(mode === 3) {
+          WordCardGame.start(words);
+          // Kart Modu yönerge sesi (Klasördeki ses dosyanızın adını buraya yazın)
+          this.playInstruction('yonergekart.mp3'); 
+      } else {
+          MemoryGame.start(words, mode);
+          // Hafıza Oyunları yönerge sesi
+          setTimeout(() => {
+            this.playInstruction('yonergehafiza.mp3');
+          }, 300);
+      }
+      this.showScreen('game-screen');
+    };
   },
 
   checkStartButtonState() {
@@ -524,11 +591,29 @@ const App = {
     } catch(e) { this.state.isAudioInitialized = false; }
   },
 
+  // Klasördeki gerçek .mp3 dosyalarını çalmak için fonksiyon
+  playInstruction(fileName) {
+    if (this.state.audioCtx && this.state.audioCtx.state === 'suspended') {
+      this.state.audioCtx.resume();
+    }
+    const audio = new Audio(fileName); // Dosya aynı klasördeyse direkt adı yeterlidir
+    audio.play().catch(e => console.error("Yönerge sesi başlatılamadı:", e));
+  },
+
   playSound(key) {
-    if(!this.state.isAudioInitialized || !this.state.audioCtx || this.state.audioCtx.state !== 'running') return;
+    // AudioContext uykudaysa uyandır (Tarayıcı kısıtlaması için)
+    if (this.state.audioCtx && this.state.audioCtx.state === 'suspended') {
+      this.state.audioCtx.resume();
+    }
+
+    if(!this.state.audioCtx) return;
+    
     const sounds = {
-      flip:{f:200,t:'triangle',d:.1}, match:{f:440,t:'sine',d:.2}, menuClick:{f:600,t:'square',d:.08}
+      flip:{f:200,t:'triangle',d:.1}, 
+      match:{f:440,t:'sine',d:.2}, 
+      menuClick:{f:600,t:'square',d:.08}
     };
+    
     const s = sounds[key]; if(!s) return;
     const g = this.state.audioCtx.createGain(); g.connect(this.state.audioCtx.destination);
     g.gain.setValueAtTime(0, this.state.audioCtx.currentTime);
@@ -759,7 +844,7 @@ const WordCardGame = {
                 </button>
             </div>
             <div id="game-container-inner" style="display: flex; flex-direction: column; width: 100%; height: 100%; align-items: center; justify-content: center; padding: 10px; box-sizing: border-box;">
-                <h2 class="game-instruction-title" style="margin: 0 0 10px 0; flex-shrink: 0; font-size: 2.5rem;">اُنْظُرْ إِلَى الصُّورَةِ، خَمِّنِ المَعْنَى ثُمَّ اضْغَطْ</h2>
+                <h2 class="game-instruction-title" style="margin: 0 0 10px 0; flex-shrink: 0; font-size: 2.5rem;">اُنْظُرْ إِلى الصّورَة، خَمِّن المَعْنى ثُمَّ اِضْغَطْ</h2>
                 <div id="game-board" style="display: grid; width: 100%; height: 100%; max-height: 75vh; gap: 12px; justify-content: center; align-content: center;"></div>
                
         `;

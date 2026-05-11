@@ -93,11 +93,28 @@
 
         .shopping-list li.done { text-decoration: line-through; opacity: 0.2; }
 
-        .total-display {
-            font-size: 6vh; /* Rakamlar çok büyük */
-            font-weight: 900; color: var(--lira-color);
-            margin: 10px 0;
-        }
+       /* Fiyat ve Ödeme Alanı Konteynırı */
+.total-display {
+    font-size: 6vh;
+    font-weight: 900;
+    color: var(--lira-color);
+    margin: 10px 0;
+    padding: 10px 30px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    cursor: default;
+}
+
+/* Ödeme aktif olduğunda (vurgulu hali) */
+.total-display.ready-to-pay {
+    background: var(--highlight);
+    color: white;
+    cursor: pointer;
+    animation: pulse-btn 1.5s infinite;
+    box-shadow: 0 0 20px rgba(188, 108, 37, 0.4);
+    border: 3px solid white;
+}
 
         #pay-btn { 
             width: 100%; padding: 20px; background: #bc6c25; color: white; 
@@ -267,16 +284,18 @@
 
 <div id="game-wrapper">
     <div id="shelf-section">
-        <h1 style="text-align: center; font-size: 4vh; margin: 0;">🏪 المتجر</h1>
+        <h1 style="text-align: center; font-size: 6vh; margin: 0;">🏪 المَتْجَر</h1>
         <div class="grid" id="shelf"></div>
         <div id="status-bar" style="text-align: center;">
-            <div class="total-display">₺ <span id="total-val">٠</span></div>
-            <button id="pay-btn" onclick="openCheckout()" style="display:none;">دفع الفاتورة 💰</button>
+            
+            <div id="total-container" class="total-display" onclick="checkAndOpenCheckout()">
+    ₺ <span id="total-val">٠</span>
+</div>
         </div>
     </div>
 
     <div id="mom-paper">
-        <div style="font-size: 3vh; color: #bc6c25; border-bottom: 4px solid; text-align: center; margin-bottom: 25px; font-weight: bold;">قائمة التسوق</div>
+        <div style="font-size: 6vh; color: #bc6c25; border-bottom: 4px solid; text-align: center; margin-bottom: 25px; font-weight: bold;"> قائِمَة التَّسَوُّق </div>
         <ul class="shopping-list" id="target-list"></ul>
     </div>
 </div>
@@ -291,10 +310,14 @@
 </div>
 
 <audio id="yonergeAudio" src="yonergealisveris.wav"></audio>
+<audio id="snd-correct" src="correct_beep.mp3"></audio>
+<audio id="snd-wrong" src="error.mp3"></audio>
+<audio id="snd-cash" src="cash_register.mp3"></audio>
+<audio id="snd-success" src="success_fanfare.mp3"></audio>
 
 <div id="custom-alert" class="custom-alert">
     <h2 id="alert-text"></h2>
-    <button onclick="closeCustomAlert()">حسناً 👍</button>
+    <button onclick="closeCustomAlert()">حَسَنًا 👍</button>
 </div>
 
 <script>
@@ -310,28 +333,27 @@
     }
 
     const allProducts = [
-        { name: 'جُبْن', icon: '🧀', price: 5 }, { name: 'زَيْتُون', icon: '🫒', price: 3 },
+        { name: 'جُبْن', icon: '🧀', price: 5 }, { name: 'زَيْتون', icon: '🫒', price: 3 },
         { name: 'خُبْز', icon: '🍞', price: 1 }, { name: 'زُبْدَة', icon: '🧈', price: 4 },
-        { name: 'عَسَل', icon: '🍯', price: 6 }, { name: 'بَيْضَة', icon: '🥚', price: 2 },
-        { name: 'أُرُزّ', icon: '🍚', price: 3 }, { name: 'لَحْم', icon: '🥩', price: 9 },
-        { name: 'حَسَاء', icon: '🥣', price: 4 }, { name: 'دَجَاج', icon: '🍗', price: 7 },
-        { name: 'سَمَك', icon: '🐟', price: 8 }, { name: 'كُفْتَة', icon: '🧆', price: 6 },
-        { name: 'شَاي', icon: '☕', price: 2 }, { name: 'ماء', icon: '💧', price: 1 },
-        { name: 'حَلِيب', icon: '🥛', price: 3 }, { name: 'عَصِير', icon: '🧃', price: 2 },
-        { name: 'كَأْس', icon: '🥛', price: 2 }, { name: 'قَهْوَة', icon: '☕', price: 3 },
-        { name: 'شَوْكَة', icon: '🍴', price: 1 }, { name: 'مِلْعَقَة', icon: '🥄', price: 1 },
-        { name: 'سِكِّين', icon: '🔪', price: 1 }, { name: 'طَبَق', icon: '🍽️', price: 2 },
-        { name: 'تُفَّاح', icon: '🍎', price: 2 }, { name: 'مَوْز', icon: '🍌', price: 3 },
+        { name: 'عَسَل', icon: '🍯', price: 3 }, { name: 'بَيْضَة', icon: '🥚', price: 2 },
+        { name: 'أُرْزّ', icon: '🍚', price: 3 }, { name: 'لَحْم', icon: '🥩', price: 5 },
+        { name: 'حَساء', icon: '🥣', price: 4 }, { name: 'دَجاج', icon: '🍗', price: 4 },
+        { name: 'سَمَك', icon: '🐟', price: 4 }, { name: 'كُفْتَة', icon: '🧆', price: 5 },
+        { name: 'شاي', icon: '🍵', price: 2 }, { name: 'ماء', icon: '💧', price: 1 },
+        { name: 'حَليب', icon: '🥛', price: 3 }, { name: 'عَصير', icon: '🧃', price: 2 }, 
+        { name: 'قَهْوَة', icon: '☕', price: 3 }, { name: 'مِلْعَقَة', icon: '🥄', price: 1 },
+        { name: 'سِكّين', icon: '🔪', price: 1 }, { name: 'طَبَق', icon: '🍽️', price: 2 },
+        { name: 'تُفّاح', icon: '🍎', price: 2 }, { name: 'مَوْز', icon: '🍌', price: 3 },
         { name: 'جَزَر', icon: '🥕', price: 1 }
     ];
 
     const numWords = {
-        1: "واحد", 2: "اثنان", 3: "ثلاثة", 4: "أربعة", 5: "خمسة",
-        6: "ستة", 7: "سبعة", 8: "ثمانية", 9: "تسعة", 10: "عشرة",
-        11: "أحد عشر", 12: "اثنا عشر", 13: "ثلاثة عشر", 14: "أربعة عشر", 15: "خمسة عشر"
+        1: "واحِد", 2: "اِثْنان", 3: "ثَلاثَة", 4: "أَرْبَعَة", 5: "خَمْسَة",
+        6: "سِتَّة", 7: "سَبْعَة", 8: "ثَمانِيَة", 9: "تِسْعَة", 10: "عَشَرَة",
+        11: "أَحَد عَشَر", 12: "اِثْنا عَشَر", 13: "ثَلاثَة عَشَر", 14: "أَرْبَعَة عَشَر", 15: "خَمْسَة عَشَر"
     };
 
-    // Global Değişkenler
+// Global Değişkenler
     let targetList = [];
     let currentTaskIndex = 0;
     let total = 0;
@@ -339,32 +361,67 @@
     let availablePool = []; 
     let alertCallback = null;
 
+    // --- SES ÜRETİCİ (Web Audio API - Sinüs Dalgaları) ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playTone(type, freq, duration) {
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.type = type; // 'sine', 'square', 'sawtooth', 'triangle'
+        oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); 
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + duration);
+    }
+
     function initGame() {
-        // 1. Havuz Kontrolü: Ürünler bitmeden tekrar etmez
-        if (availablePool.length < 3) availablePool = [...allProducts];
+        // 1. Havuz Kontrolü
+        if (availablePool.length < 5) availablePool = [...allProducts];
         availablePool.sort(() => 0.5 - Math.random());
-        targetList = availablePool.splice(0, 3); 
 
-        // 2. Dinamik Raf: Listeyi kapsayan + rastgele toplam 12 ürün (Taşmayı engeller)
-        let otherProducts = allProducts.filter(p => !targetList.find(t => t.name === p.name));
-        let shelfProducts = [...targetList, ...otherProducts.sort(() => 0.5 - Math.random()).slice(0, 9)];
-        shelfProducts.sort(() => 0.5 - Math.random()); 
+        // 2. Çay/Kahve Çakışma Kontrolü ve Liste Oluşturma
+        targetList = [];
+        let poolCopy = [...availablePool];
+        for (let i = 0; i < poolCopy.length; i++) {
+            if (targetList.length >= 3) break;
+            let product = poolCopy[i];
+            const isTeaOrCoffee = (product.name === 'شاي' || product.name === 'قَهْوَة');
+            const alreadyHasOne = targetList.some(p => p.name === 'شاي' || p.name === 'قَهْوَة');
+            
+            if (isTeaOrCoffee && alreadyHasOne) continue;
+            
+            targetList.push(product);
+            let indexInPool = availablePool.indexOf(product);
+            if (indexInPool > -1) availablePool.splice(indexInPool, 1);
+        }
 
-        // 3. Değişkenleri Sıfırla
+        // 3. Raf ve UI Sıfırlama
         currentTaskIndex = 0;
         total = 0;
         selectedProducts = [];
-        document.getElementById('total-val').innerText = toAr(0);
-        document.getElementById('pay-btn').style.display = 'none';
+        
+        // Geri tuşunu tekrar göster
+        const backBtn = document.querySelector('.back-btn');
+        if(backBtn) backBtn.style.display = 'block';
 
-        // 4. Listeyi Bas
-        document.getElementById('target-list').innerHTML = targetList.map((p, i) => 
-            `<li id="task-${i}">${p.name}</li>`
-        ).join('');
+        const totalContainer = document.getElementById('total-container');
+        totalContainer.classList.remove('ready-to-pay');
+        totalContainer.innerHTML = `₺ <span id="total-val">${toAr(0)}</span>`;
 
-        // 5. Rafı Doldur
+        // 4. Listeyi ve Rafı Bas
+        document.getElementById('target-list').innerHTML = targetList.map((p, i) => `<li id="task-${i}">${p.name}</li>`).join('');
         const shelf = document.getElementById('shelf');
         shelf.innerHTML = ''; 
+        let otherProducts = allProducts.filter(p => !targetList.find(t => t.name === p.name));
+        let shelfProducts = [...targetList, ...otherProducts.sort(() => 0.5 - Math.random()).slice(0, 9)].sort(() => 0.5 - Math.random());
+        
         shelfProducts.forEach((p) => {
             const div = document.createElement('div');
             div.className = 'product-card';
@@ -372,23 +429,76 @@
             div.onclick = () => handleSelection(p, div);
             shelf.appendChild(div);
         });
-
         updateHighlight();
     }
 
     function handleSelection(product, element) {
         if (product.name === targetList[currentTaskIndex].name) {
+            // Doğru seçim: Saf sinüs sesi
+            playTone('sine', 880, 0.2); 
+            
             total += product.price;
             selectedProducts.push(product);
             element.classList.add('selected');
             currentTaskIndex++;
             document.getElementById('total-val').innerText = toAr(total);
             updateHighlight();
-            if (currentTaskIndex === targetList.length) document.getElementById('pay-btn').style.display = 'block';
+
+            if (currentTaskIndex === targetList.length) {
+                const container = document.getElementById('total-container');
+                container.classList.add('ready-to-pay');
+                container.innerHTML = "دَفْع الفاتورَة 💰";
+            }
         } else {
+            // Yanlış seçim: Kalın testere dişi sesi
+            playTone('sawtooth', 150, 0.3); 
             element.style.transform = "translateX(10px)";
             setTimeout(() => element.style.transform = "translateX(0)", 100);
         }
+    }
+
+    function checkAndOpenCheckout() {
+        if (currentTaskIndex === targetList.length) {
+            // Kasa açılışı: Çift bip sesi
+            playTone('sine', 660, 0.1);
+            setTimeout(() => playTone('sine', 990, 0.2), 100);
+            openCheckout();
+        }
+    }
+
+    function openCheckout() {
+        const backBtn = document.querySelector('.back-btn');
+        if(backBtn) backBtn.style.display = 'none';
+
+        document.getElementById('modal').style.display = 'flex';
+        document.getElementById('num-display').innerText = toAr(total) + " ₺";
+        
+        let choices = [
+            { t: (numWords[total] || toAr(total)) + " ₺", c: true },
+            { t: (numWords[total+2] || toAr(total+2)) + " ₺", c: false },
+            { t: (numWords[Math.abs(total-1) || 7]) + " ₺", c: false }
+        ].sort(() => 0.5 - Math.random());
+
+        const optGrid = document.getElementById('options-grid');
+        optGrid.innerHTML = '';
+        choices.forEach(ch => {
+            const b = document.createElement('button');
+            b.className = 'opt';
+            b.innerText = ch.t;
+            b.onclick = () => {
+                if(ch.c) {
+                    // Başarı melodisi
+                    playTone('triangle', 523, 0.1); 
+                    setTimeout(() => playTone('triangle', 659, 0.1), 100);
+                    setTimeout(() => playTone('triangle', 783, 0.3), 200);
+                    showMessage("أَحْسَنْت! ✅", () => location.reload());
+                } else {
+                    playTone('square', 100, 0.4); 
+                    showMessage("حاوِلْ مَرَّة أُخْرى ❌"); 
+                }
+            };
+            optGrid.appendChild(b);
+        });
     }
 
     function updateHighlight() {
@@ -411,33 +521,6 @@
     function closeCustomAlert() {
         document.getElementById('custom-alert').classList.remove('show');
         if (alertCallback) alertCallback();
-    }
-
-    function openCheckout() {
-        document.getElementById('modal').style.display = 'flex';
-        document.getElementById('num-display').innerText = toAr(total) + " ₺";
-        
-        let choices = [
-            { t: (numWords[total] || toAr(total)) + " ₺", c: true },
-            { t: (numWords[total+2] || toAr(total+2)) + " ₺", c: false },
-            { t: (numWords[Math.abs(total-1) || 7]) + " ₺", c: false }
-        ].sort(() => 0.5 - Math.random());
-
-        const optGrid = document.getElementById('options-grid');
-        optGrid.innerHTML = '';
-        choices.forEach(ch => {
-            const b = document.createElement('button');
-            b.className = 'opt';
-            b.innerText = ch.t;
-            b.onclick = () => {
-                if(ch.c) { 
-                    showMessage("احسنت! ✅", () => location.reload()); 
-                } else { 
-                    showMessage("حاول مرة اخرى ❌"); 
-                }
-            };
-            optGrid.appendChild(b);
-        });
     }
 
     initGame();
