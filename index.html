@@ -54,15 +54,18 @@
             margin-top: 5px; 
         }
 
-       .grid-container {
+   /* Ana konteyner: Masaüstünde varsayılan 2 sütun */
+.grid-container {
     display: grid;
     width: 100%;
-    max-width: 900px;
-    gap: 15px;
-    grid-template-columns: repeat(6, 1fr); /* 6 birimli bir sistem kuruyoruz */
+    max-width: 800px;
+    gap: 20px;
+    grid-template-columns: repeat(2, 1fr); 
+    padding: 10px;
 }
 
-       .game-card {
+/* Kart yapılandırması: Karmaşık span değerleri silindi */
+.game-card {
     background: var(--card-bg); 
     border: 1px solid var(--border);
     border-radius: 20px; 
@@ -74,15 +77,25 @@
     flex-direction: column; 
     align-items: center;
     box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-    grid-column: span 2; /* Her kart normalde 2 birim kaplar (6/2 = 3 sütun) */
+    /* grid-column: span 2;  <-- Bu satırı sildik, otomatik yerleşecek */
 }
 
-.game-card:nth-child(4) {
-    grid-column: 2 / span 2; /* 2. birimden başla, 2 birim kapla */
+/* Özel yerleşim komutları temizlendi (Hizalamayı bozan kısımlar) */
+/* .game-card:nth-child(4) ve :nth-child(5) bloklarını tamamen silebilirsiniz */
+
+/* MOBİL AYARLARI */
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* Mobilde de 2 sütun korundu */
+        gap: 12px;
+    }
 }
 
-.game-card:nth-child(5) {
-    grid-column: 4 / span 2; /* 4. birimden başla, 2 birim kapla */
+/* ÇOK KÜÇÜK EKRANLAR */
+@media (max-width: 480px) {
+    .grid-container {
+        grid-template-columns: 1fr; /* Dar telefonlarda üst üste biner */
+    }
 }
 
         .game-card:hover { 
@@ -133,7 +146,7 @@
 <body>
 
     <div class="header">
-        <h1>الوَحْدَة الأولى</h1>
+        <h1>الوَحْدَة الثّانِيَة</h1>
         <p> أَلْعاب اللُّغَة العَرَبِيَّة </p>
     </div>
 
@@ -143,17 +156,14 @@
             <h2>صَيْد الرُّموز</h2>
         </a>
 
-        <a href="saat.html" class="game-card">
-            <div class="icon-circle">⏰</div>
-            <h2>قِراءَة السّاعَة</h2>
-        </a>
+       <a href="yapboz.html" class="game-card">
+    <div class="icon-circle">🧩</div>
+    <h2>تَرْكيب الكَلِمات</h2>
+</a>
 
         
 
-        <a href="alisveris.html" class="game-card">
-            <div class="icon-circle">🛒</div>
-            <h2>سوق المُفْرَدات</h2>
-        </a>
+      
 
         <a href="sestesti.html" class="game-card">
             <div class="icon-circle">🎧</div>

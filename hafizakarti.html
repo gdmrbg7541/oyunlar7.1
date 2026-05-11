@@ -140,6 +140,8 @@ body, button, div, span {
     z-index: 10;
 }
 
+
+
 .score-display {
     flex: 0 0 clamp(70px, 10%, 110px);
     height: 85vh; /* Boyu biraz kısalttık (85vh idi) */
@@ -334,6 +336,8 @@ body, button, div, span {
     border-radius: var(--border-radius-md);
 }
 
+
+
 /* Kartın arka yüzündeki hizalamayı temizleyelim */
 .card-back {
     display: flex !important;
@@ -468,14 +472,22 @@ const Data = {
           lesson1: {
             description: { tr: "Günlük Eylemler" },
             words: [
-              { id: 1, arabic: 'يَنامُ', turkish: '1.jpeg' },
-  { id: 2, arabic: 'أَدْرُسُ دُروسی', turkish: '2.jpeg' },
-  { id: 3, arabic: 'يَذْهَبُ إِلى المَدْرَسَة', turkish: '3.jpeg' },
-  { id: 4, arabic: 'أَسْتَيْقِظُ ', turkish: '4.jpeg' },
-  { id: 5, arabic: 'أَغْسِلُ يَدَيَّ ', turkish: '5.jpeg' },
-  { id: 6, arabic: 'يَتَناوَلُ الفطور ', turkish: '6.jpeg' },
-  { id: 7, arabic: 'أُساعِدُ أُمي', turkish: '7.jpeg' },
-  { id: 8, arabic: 'أَلْبَسُ مَلابِسي', turkish: '8.jpeg' }
+  { id: 1, arabic: 'طَماطِم', turkish: '1.jpeg' },
+  { id: 2, arabic: 'بَطاطِس', turkish: '2.jpeg' },
+  { id: 3, arabic: 'بُرْتُقال', turkish: '3.jpeg' },
+  { id: 4, arabic: 'عَسَل', turkish: '4.jpeg' },
+  { id: 5, arabic: 'ماء', turkish: '5.jpeg' },
+  { id: 6, arabic: 'خُبْز', turkish: '6.jpeg' },
+  { id: 7, arabic: 'سُكَّر', turkish: '7.jpeg' },
+  { id: 8, arabic: 'مِلْح', turkish: '8.jpeg' },
+  { id: 9, arabic: 'شاي', turkish: '9.jpeg' },
+  { id: 10, arabic: 'مِشْمِش', turkish: '10.jpeg' },
+  { id: 11, arabic: 'بَصَل', turkish: '11.jpeg' },
+  { id: 12, arabic: 'عِنَب', turkish: '12.jpeg' },
+  { id: 13, arabic: 'تُفّاح', turkish: '13.jpeg' },
+  { id: 14, arabic: 'جَزَر', turkish: '14.jpeg' },
+  { id: 15, arabic: 'كَرَز', turkish: '15.jpeg' },
+  { id: 16, arabic: 'باذِنْجان', turkish: '16.jpeg' }
             ]
           }
         }
@@ -530,7 +542,7 @@ const App = {
     MemoryGame.init();
   },
 
-  initStartScreenListeners() {
+initStartScreenListeners() {
     this.dom.playerSelect.addEventListener('click', e => {
       const btn = e.target.closest('.player-button');
       if (!btn) return;
@@ -543,22 +555,21 @@ const App = {
     this.dom.startGameBtn.onclick = () => {
       this.playSound('menuClick');
       const mode = this.state.selectedPlayers;
-      const words = Data.pdfUnit.words.unit1.lessons.lesson1.words;
+      const allWords = Data.pdfUnit.words.unit1.lessons.lesson1.words; // Tüm 16 kelime
 
       if(mode === 3) {
-          WordCardGame.start(words);
-          // Kart Modu yönerge sesi (Klasördeki ses dosyanızın adını buraya yazın)
+          WordCardGame.start(allWords);
           this.playInstruction('yonergekart.mp3'); 
       } else {
-          MemoryGame.start(words, mode);
-          // Hafıza Oyunları yönerge sesi
+          // Hafıza oyununu başlatırken havuz mantığı devreye girer
+          MemoryGame.start(allWords, mode); 
           setTimeout(() => {
             this.playInstruction('yonergehafiza.mp3');
           }, 300);
       }
       this.showScreen('game-screen');
     };
-  },
+},
 
   checkStartButtonState() {
     this.dom.startGameBtn.disabled = !this.state.selectedPlayers;
@@ -625,19 +636,44 @@ const App = {
 };
 
 /* =========================
-   MEMORY GAME
+   MEMORY GAME (GÜNCEL TAM KOD)
 ========================= */
 const MemoryGame = {
-  state:{ playerMode:1, f:[], l:false, c:1, s1:0, s2:0, w:[], p:0, flipTimeout:null },
-  dom:{},
-  init(){},
-start(words, playerMode=1){
-    this.state = { playerMode, f:[], l:false, c:1, s1:0, s2:0, w:[], p:0, flipTimeout:null };
+  state: { 
+    playerMode: 1, f: [], l: false, c: 1, s1: 0, s2: 0, w: [], p: 0, 
+    flipTimeout: null, 
+    wordsPool: [] 
+  },
+  dom: {},
+
+  init() {
+    // Genel ilklendirme gerekirse buraya
+  },
+
+  start(words, playerMode = 1) {
+    // 1. Havuz Kontrolü: 16 kelimeyi 8+8 bölmek için havuz oluştur
+    if (!this.state.wordsPool || this.state.wordsPool.length < 2) {
+      this.state.wordsPool = Utils.shuffleArray(words);
+    }
+
+    // 2. Havuzdan 8 kelime seç ve havuzdan çıkar (splice)
+    const wordPairsNeeded = 8;
+    this.state.w = this.state.wordsPool.splice(0, wordPairsNeeded);
+
+    // 3. Oyun durumunu sıfırla
+    this.state.playerMode = playerMode;
+    this.state.f = [];
+    this.state.l = false;
+    this.state.c = 1;
+    this.state.s1 = 0;
+    this.state.s2 = 0;
+    this.state.p = 0;
+    this.state.flipTimeout = null;
 
     const gameScreen = document.getElementById('game-screen');
     gameScreen.innerHTML = `
       <div class="header-navigation">
-        <button class="back-btn" title="Geri" aria-label="Geri">
+        <button class="back-btn" title="Geri">
           <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
         </button>
       </div>
@@ -647,10 +683,9 @@ start(words, playerMode=1){
         <span id="score1">0</span>
       </div>
 
-<div id="game-container-inner" style="display: flex; flex-direction: column; flex-grow: 1; align-items: center;">
+      <div id="game-container-inner" style="display: flex; flex-direction: column; flex-grow: 1; align-items: center; justify-content: center;">
          <h2 class="game-instruction-title">طابِق البِطاقات</h2>
-         <div id="game-board" style="width: 100%; flex-grow: 1;"></div>
-      </div>
+         <div id="game-board" style="width: 100%;"></div>
       </div>
 
       <div class="score-display" id="player2-display">
@@ -658,163 +693,123 @@ start(words, playerMode=1){
         <span id="score2">0</span>
       </div>
 
-      <div class="game-over-overlay hidden" id="memory-game-over">
-        <div id="winner-icon-container"></div>
-        <h2 id="memory-win-text"></h2>
+     <div class="game-over-overlay hidden" id="memory-game-over">
+        <div style="font-size: 8rem; margin-bottom: 5px;">🎉</div>
+        <h2 id="memory-win-text" style="font-size: 3rem; color: var(--primary-color); margin: 0;"></h2>
+        
         <div class="win-buttons">
-          <button class="icon-btn" id="play-again-memory-btn" title="Tekrar Oyna">
-            <svg viewBox="0 0 24 24"><path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"></path></svg>
-          </button>
-          <button class="icon-btn" id="back-to-start-memory-btn" title="Ana Menü">
-            <svg viewBox="0 0 24 24"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"></path></svg>
-          </button>
+            <button class="icon-btn" id="play-again-memory-btn" title="Yenile / Diğer Kelimeler">
+                <svg viewBox="0 0 24 24"><path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"></path></svg>
+            </button>
+
+            <button class="icon-btn" id="back-to-start-memory-btn" title="Ana Menü">
+                <svg viewBox="0 0 24 24"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"></path></svg>
+            </button>
         </div>
-      </div>
-    `;
-    // DOM refs
+    </div>
+`;
+
+    // DOM referanslarını bağla
     this.dom.board = document.getElementById('game-board');
-    this.dom.p1Display = document.getElementById('player1-display');
-    this.dom.p2Display = document.getElementById('player2-display');
-    this.dom.score1 = document.getElementById('score1');
-    this.dom.score2 = document.getElementById('score2');
     this.dom.gameOver = document.getElementById('memory-game-over');
     this.dom.winText = document.getElementById('memory-win-text');
-    this.dom.winnerIcon = document.getElementById('winner-icon-container');
+    this.dom.score1 = document.getElementById('score1');
+    this.dom.score2 = document.getElementById('score2');
 
-    // Geri butonlarını history.back ile yöneteceğiz (aşağıda global delegation var)
+    gameScreen.classList.toggle('single-player-mode', this.state.playerMode === 1);
 
-    // Player mode class
-    gameScreen.classList.toggle('single-player-mode', this.state.playerMode===1);
-
-    const wordPairsNeeded = Math.min(10, Math.floor(words.length));
-    if(wordPairsNeeded < 2){ alert('Bu ders için yeterli kelime çifti yok.'); App.showScreen('start-screen'); return; }
-
-    this.state.w = Utils.shuffleArray(words).slice(0, wordPairsNeeded);
-    const pairs = this.state.w.flatMap(w=>[
-      {content:w.arabic, id:w.id, lang:'ar'},
-      {content:w.turkish, id:w.id, lang:'tr'}
+    // Kart çiftlerini oluştur
+    const pairs = this.state.w.flatMap(w => [
+      { content: w.arabic, id: w.id, lang: 'ar' },
+      { content: w.turkish, id: w.id, lang: 'tr' }
     ]);
+    
     this.populateBoard(Utils.shuffleArray(pairs));
-
-
     this.updateActivePlayerUI();
-    this.dom.score1.textContent='0';
-    this.dom.score2.textContent='0';
-    this.dom.gameOver.classList.add('hidden');
 
- // Tekrar oyna butonunu düzeltiyoruz
-    document.getElementById('play-again-memory-btn').onclick = ()=>{
+    // Buton Olayları
+    document.getElementById('play-again-memory-btn').onclick = () => {
       App.playSound('menuClick');
-      // Veriyi doğrudan mevcut Data objesinden çekiyoruz
-      const currentWords = Data.pdfUnit.words.unit1.lessons.lesson1.words;
-      this.start(currentWords, this.state.playerMode);
-    }; 
+      this.start(words, this.state.playerMode);
+    };
 
-    // “Ana Menü” yerine bir önceki adıma dön (istenirse)
-    document.getElementById('back-to-start-memory-btn').onclick = ()=>{
+    document.getElementById('back-to-start-memory-btn').onclick = () => {
       App.playSound('menuClick');
+      this.state.wordsPool = []; 
       history.back();
     };
   },
 
-populateBoard(cards){
+  populateBoard(cards) {
     const n = cards.length;
-    // 8 çift (16 kart) için 4x4 yerleşim en ideali
-    let cols=4, rows=Math.ceil(n/cols);
-
-    this.dom.board.style.gridTemplateColumns = `repeat(${cols},1fr)`;
-    this.dom.board.style.gridTemplateRows = `repeat(${rows},1fr)`;
+    let cols = 4, rows = Math.ceil(n / cols);
+    this.dom.board.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    this.dom.board.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
     this.dom.board.innerHTML = '';
 
-    cards.forEach(cd=>{
+    cards.forEach(cd => {
       const el = document.createElement('div');
-      el.className = 'card'; 
-      el.dataset.id = cd.id;
-      
-      // Görsel ve metin ayrımı
-      let contentHtml;
-      if(cd.content.endsWith('.jpeg')) {
-        // img etiketi kartı tam kaplayacak şekilde ayarlandı
-       contentHtml = `<img src="${cd.content}">`;
-      } else {
-        const fontStyle = cd.lang==='ar' ? "font-family:'Arakom',sans-serif;" : "";
-        contentHtml = `<span style="${fontStyle}">${cd.content}</span>`;
-      }
+      el.className = 'card'; el.dataset.id = cd.id;
+      let contentHtml = cd.content.endsWith('.jpeg') 
+        ? `<img src="${cd.content}" style="width:100%;height:100%;object-fit:contain;">` 
+        : `<span style="${cd.lang==='ar'?"font-family:'Arakom',sans-serif;":""}">${cd.content}</span>`;
 
       el.innerHTML = `
         <div class="card-inner">
           <div class="card-face card-front"></div>
-          <div class="card-face card-back" dir="${cd.lang==='tr'?'ltr':'rtl'}" style="padding:0; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-            ${contentHtml}
-          </div>
-        </div>
-      `;
-      el.onclick = ()=>this.flipCard(el);
+          <div class="card-face card-back" dir="${cd.lang==='tr'?'ltr':'rtl'}">${contentHtml}</div>
+        </div>`;
+      el.onclick = () => this.flipCard(el);
       this.dom.board.appendChild(el);
     });
   },
 
-  flipCard(card){
-    if(this.state.l || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+  flipCard(card) {
+    if (this.state.l || card.classList.contains('flipped') || card.classList.contains('matched')) return;
     App.playSound('flip'); card.classList.add('flipped');
 
-    // sıra göstergesi
-    if(this.state.playerMode===2){ card.classList.add(this.state.c===1?'p1-turn':'p2-turn'); }
-    else{ card.classList.add('p1-turn'); }
+    if (this.state.playerMode === 2) card.classList.add(this.state.c === 1 ? 'p1-turn' : 'p2-turn');
+    else card.classList.add('p1-turn');
 
     this.state.f.push(card);
-    if(this.state.f.length===2){
+    if (this.state.f.length === 2) {
       this.state.l = true;
-      const [c1,c2] = this.state.f;
-      if(c1.dataset.id === c2.dataset.id){
+      const [c1, c2] = this.state.f;
+      if (c1.dataset.id === c2.dataset.id) {
         App.playSound('match');
-        let matchClass = (this.state.playerMode===2 ? (this.state.c===1?'p1-match':'p2-match') : 'p1-match');
-        if(this.state.playerMode===1){ this.dom.score1.textContent = ++this.state.s1; }
-        else { if(this.state.c===1) this.dom.score1.textContent = ++this.state.s1; else this.dom.score2.textContent = ++this.state.s2; }
-        this.state.f.forEach(c=>{ c.classList.remove('p1-turn','p2-turn'); c.classList.add('matched', matchClass); });
-        this.state.p++; this.state.f=[]; this.state.l=false;
-
-        if(this.state.p === this.state.w.length){
-          setTimeout(()=>{ this.showEndUI(); App.unlockNextLesson(App.state.selectedLessonId); }, 600);
-        }
-      }else{
-        if(this.state.flipTimeout) clearTimeout(this.state.flipTimeout);
-        this.state.flipTimeout = setTimeout(()=>{
-          this.state.f.forEach(c=>c.classList.remove('flipped','p1-turn','p2-turn'));
-          this.state.f=[]; this.state.l=false;
-          if(this.state.playerMode===2){ this.state.c = (this.state.c===1?2:1); }
+        let mCls = (this.state.playerMode === 2 ? (this.state.c === 1 ? 'p1-match' : 'p2-match') : 'p1-match');
+        if (this.state.playerMode === 1) this.dom.score1.textContent = ++this.state.s1;
+        else { if (this.state.c === 1) this.dom.score1.textContent = ++this.state.s1; else this.dom.score2.textContent = ++this.state.s2; }
+        this.state.f.forEach(c => { c.classList.remove('p1-turn', 'p2-turn'); c.classList.add('matched', mCls); });
+        this.state.p++; this.state.f = []; this.state.l = false;
+        if (this.state.p === this.state.w.length) setTimeout(() => this.showEndUI(), 600);
+      } else {
+        if (this.state.flipTimeout) clearTimeout(this.state.flipTimeout);
+        this.state.flipTimeout = setTimeout(() => {
+          this.state.f.forEach(c => c.classList.remove('flipped', 'p1-turn', 'p2-turn'));
+          this.state.f = []; this.state.l = false;
+          if (this.state.playerMode === 2) this.state.c = (this.state.c === 1 ? 2 : 1);
           this.updateActivePlayerUI();
         }, 650);
       }
     }
   },
 
-   updateActivePlayerUI() {
-    if (this.state.playerMode !== 2) return; // Tek kişilikse çalışma
-    
-    const p1 = document.getElementById('player1-display');
-    const p2 = document.getElementById('player2-display');
-    if(!p1 || !p2) return;
-
-    if (this.state.c === 1) {
-      p1.classList.add('active');
-      p2.classList.remove('active');
-    } else {
-      p1.classList.remove('active');
-      p2.classList.add('active');
-    }
+  updateActivePlayerUI() {
+    if (this.state.playerMode !== 2) return;
+    const p1 = document.getElementById('player1-display'), p2 = document.getElementById('player2-display');
+    if (!p1 || !p2) return;
+    if (this.state.c === 1) { p1.classList.add('active'); p2.classList.remove('active'); }
+    else { p1.classList.remove('active'); p2.classList.add('active'); }
   },
 
-
-  showEndUI(){
+  showEndUI() {
     const p1 = this.state.s1, p2 = this.state.s2;
-    const isDraw = p1===p2;
-    const txt = isDraw ? 'التَّعادُل' : (p1>p2 ? 'فازَ المُتَسابِق الأَوَّل' : 'فازَ المُتَسابِق الثّاني');
+    const txt = p1 === p2 ? 'التَّعادُل' : (p1 > p2 ? 'فازَ المُتَسابِق الأَوَّل' : 'فازَ المُتَسابِق الثّاني');
     this.dom.winText.textContent = txt;
     this.dom.gameOver.classList.remove('hidden');
   }
 };
-
 /* =========================
    GLOBAL BACK HANDLER (delegation)
 ========================= */

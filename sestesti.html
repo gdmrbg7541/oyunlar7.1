@@ -235,49 +235,65 @@ header {
 </div>
 
 <script>
- const words = [
-    { tr: 'uyanıyorum', ar: 'أَسْتَيْقِظُ' },
-    { tr: 'sabah', ar: 'صَباح' },
-    { tr: 'erken', ar: 'مُبَكِّرًا' },
-    { tr: 'abdest alıyorum', ar: 'أَتَوَضَّأُ' },
-    { tr: 'namaz kılıyorum', ar: 'أُصَلّي' },
-    { tr: 'kahvaltı', ar: 'الفَطور' },
-    { tr: 'aile', ar: 'عائِلَة' },
-    { tr: 'elbise', ar: 'مَلابِس' },
-    { tr: 'okul', ar: 'المَدْرَسَة' },
-    { tr: 'dönüyorum', ar: 'أَرْجِعُ' },
-    { tr: 'ev', ar: 'البَيْت' },
-    { tr: 'yardım ediyorum', ar: 'أُساعِدُ' },
-    { tr: 'ders çalışıyorum', ar: 'أَدْرُسُ' },
-    { tr: 'akşam', ar: 'مَساءً' },
-    { tr: 'uyuyorum', ar: 'أَنامُ' },
-    { tr: 'gece', ar: 'لَيْلًا' },
-    { tr: 'temizliyorum', ar: 'أُنَظِّفُ' },
-    { tr: 'dişler', ar: 'أَسْنان' },
-    { tr: 'zeytin', ar: 'الزَّيْتون' },
-    { tr: 'peynir', ar: 'الجُبْن' },
-    { tr: 'süt', ar: 'الحَليب' },
-    { tr: 'et', ar: 'اللَّحْم' },
-    { tr: 'pirinç/pilav', ar: 'الأُرْز' },
-    { tr: 'kahve', ar: 'القَهْوَة' },
-    { tr: 'balık', ar: 'السَّمَك' },
-    { tr: 'salata', ar: 'السَّلَطَة' },
-    { tr: 'meyve suyu', ar: 'العَصير' },
-    { tr: 'saat', ar: 'السّاعَة' },
-    { tr: 'bal', ar: 'العَسَل' },
-    { tr: 'tereyağı', ar: 'الزُّبْدَة' },
-    { tr: 'tavuk', ar: 'الدَّجاج' },
-    { tr: 'önce', ar: 'قَبْل' },
-    { tr: 'sonra', ar: 'بَعْد' },
-    { tr: 'yemek', ar: 'الطَّعام' },
-    { tr: 'yiyecekler', ar: 'مَأْكولات' },
-    { tr: 'içecekler', ar: 'مَشْروبات' },
-    { tr: 'çay', ar: 'الشّاي' },
+const words = [
+    // Fiiller ve İfadeler
     { tr: 'istiyorum', ar: 'أُريدُ' },
-    { tr: 'seviyorum', ar: 'أُحِبُّ' },
-    { tr: 'arkadaşım', ar: 'صَديقي' },
-    { tr: 'Pazartesi', ar: 'يَوْمُ الاِثْنَيْن' },
-    { tr: 'Cuma', ar: 'يَوْم الجُمُعَة' }
+    { tr: 'ihtiyacım var', ar: 'أَنا بِحاجَة إِلى' },
+    { tr: 'istiyorum (talep ediyorum)', ar: 'أَطْلُبُ' },
+    { tr: 'satın alıyorum', ar: 'أَشْتَري' },
+    { tr: 'gideceğim', ar: 'سَأَذْهَبُ' },
+    { tr: 'kaça? / ne kadar?', ar: 'بِكَم؟' },
+    { tr: 'var / bulunuyor', ar: 'يوجَدُ' },
+    { tr: 'yeterli', ar: 'كافٍ' },
+
+    // Sebzeler (خَضْراوات)
+    { tr: 'soğan', ar: 'بَصَل' },
+    { tr: 'patates', ar: 'بَطاطا' },
+    { tr: 'domates', ar: 'طَماطِم' },
+    { tr: 'salatalık', ar: 'خِيار' },
+    { tr: 'havuç', ar: 'جَزَر' },
+    { tr: 'patlıcan', ar: 'باذِنْجان' },
+    { tr: 'biber', ar: 'فُلْفُل' },
+    { tr: 'taze fasulye', ar: 'فاصولْيا' },
+
+    // Meyveler (فَواكِه)
+    { tr: 'elma', ar: 'تُفّاح' },
+    { tr: 'portakal', ar: 'بُرْتُقال' },
+    { tr: 'muz', ar: 'مَوْز' },
+    { tr: 'üzüm', ar: 'عِنَب' },
+    { tr: 'kiraz', ar: 'كَرَز' },
+    { tr: 'kayısı', ar: 'مِشْمِش' },
+
+    // Market Ürünleri
+    { tr: 'şeker', ar: 'سُكَّر' },
+    { tr: 'tuz', ar: 'مِلْح' },
+    { tr: 'çay', ar: 'شّاي' },
+    { tr: 'ekmek', ar: 'خُبْز' },
+    { tr: 'yumurta', ar: 'بَيْض' },
+    { tr: 'makarna', ar: 'مَكَرونَة' },
+    { tr: 'süt', ar: 'حَليب' },
+    { tr: 'bal', ar: 'عَسَل' },
+
+    // Miktar ve Ölçü
+    { tr: 'kilo', ar: 'كيلو' },
+    { tr: 'kilogram', ar: 'كيلوغْرام' },
+    { tr: 'paket/kutu', ar: 'عُلْبَة' },
+    { tr: 'poşet/kese', ar: 'كيس' },
+    { tr: 'sandık', ar: 'صُنْدوق' },
+    { tr: 'tane/bir adet', ar: 'واحِدَة' },
+
+    // Sıfatlar ve Karşılaştırma
+    { tr: 'taze', ar: 'طازَج' },
+    { tr: 'pahalı', ar: 'غالٍ' },
+    { tr: 'ucuz', ar: 'رَخيص' },
+    { tr: 'büyük', ar: 'كَبير' },
+    { tr: 'küçük', ar: 'صَغير' },
+    { tr: 'ağır', ar: 'ثَقيل' },
+    { tr: 'hafif', ar: 'خَفيف' },
+    { tr: 'daha pahalı', ar: 'أَغْلى' },
+    { tr: 'daha ucuz', ar: 'أَرْخَص' },
+    { tr: 'daha büyük', ar: 'أَكْبَر' },
+    { tr: 'daha küçük', ar: 'أَصْغَر' }
 ];
 
 let scores = { p1: 0, p2: 0 };
