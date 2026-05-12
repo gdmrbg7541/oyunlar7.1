@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تحدي التسوق - Kelime ve Sembol</title>
+    <title>تحدي التسوق </title>
     <style>
         @font-face {
             font-family: 'Arakom';
@@ -69,14 +69,14 @@
         .price-ar { font-size: 3.5vh; color: var(--lira-color); font-weight: bold; }
 
         #mom-paper {
-            flex: 1.2; background: var(--paper); padding: 25px;
+            flex: 1.2; background: var(--paper); padding: 10px;
             border-radius: 15px; box-shadow: 4px 4px 15px rgba(0,0,0,0.05);
             border-left: 20px solid #e9edc9; display: flex; flex-direction: column;
         }
 
         .shopping-list { 
             list-style: none; padding: 0; margin: 0;
-            font-size: 6vh; /* Kelimeler dev boyut */
+            font-size: 5vh; /* Kelimeler dev boyut */
             line-height: 1.6; color: var(--ink); 
         }
         
@@ -96,7 +96,7 @@
        /* Fiyat ve Ödeme Alanı Konteynırı */
 .total-display {
     font-size: 6vh;
-    font-weight: 900;
+    font-weight: 800;
     color: var(--lira-color);
     margin: 10px 0;
     padding: 10px 30px;
@@ -117,7 +117,7 @@
 }
 
         #pay-btn { 
-            width: 100%; padding: 20px; background: #bc6c25; color: white; 
+            width:95%; padding: 10px; background: #bc6c25; color: white; 
             border: none; border-radius: 12px; cursor: pointer; 
             font-size: 4vh; font-family: 'Arakom'; animation: pulse-btn 2s infinite;
         }
@@ -276,49 +276,161 @@
     transform: translateY(4px);
     box-shadow: none;
 }
+
+/* --- ANA SAYFA VE GİRİŞ EKRANI TASARIMI --- */
+#landing-page {
+    position: fixed;
+    inset: 0;
+    background: #ccd5ae; /* Mevcut tema rengi */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000; /* Her şeyin üstünde görünmesi için */
+    text-align: center;
+}
+
+.welcome-card {
+    background: white;
+    padding: 50px;
+    border-radius: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    max-width: 500px;
+    width: 90%;
+}
+
+.welcome-card h1 {
+    color: #283618;
+    font-size: 8vh;
+    margin: 20px 0;
+}
+
+.welcome-card .main-icon {
+    font-size: 12vh;
+}
+
+.start-btn {
+    display: inline-block;
+    padding: 20px 60px;
+    background: #606c38;
+    color: white;
+    border: none;
+    font-size: 4vh;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 8px 0 #283618;
+    font-family: 'Arakom', 'Tahoma', sans-serif;
+}
+
+.start-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 #283618;
+}
+
+/* Oyun ekranını başlangıçta gizle */
+#game-wrapper, .home-btn, .back-btn {
+    display: none;
+}
+
+/* --- YAMA: DİĞER GÖRSEL ÖGELER --- */
+.home-btn {
+    position: absolute; top: 20px; right: 20px;
+    background: #bc6c25; color: white; width: 55px; height: 55px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; text-decoration: none; font-size: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1001;
+    border: 3px solid white;
+}
+
+#instruction-header {
+    background: #606c38;
+    color: white;
+    padding: 15px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 15px; width: 100%; box-sizing: border-box;
+}
+
+.inst-text { font-size: 3.5vh; font-weight: bold; }
     </style>
 </head>
 <body onclick="playYonerge()">
 
-<a href="index.html" class="back-btn">⬅</a>
+    <div id="landing-page" style="position: fixed; inset: 0; background: #ccd5ae; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5000; text-align: center;">
+        
+        <a href="index.html" id="home-link-top" style="position: absolute; top: 20px; left: 20px; background: #bc6c25; color: white; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 30px; text-decoration: none; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">🏠</a>
 
-<div id="game-wrapper">
-    <div id="shelf-section">
-        <h1 style="text-align: center; font-size: 6vh; margin: 0;">🏪 المَتْجَر</h1>
-        <div class="grid" id="shelf"></div>
-        <div id="status-bar" style="text-align: center;">
+        <div class="welcome-card" style="background: white; padding: 60px; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); max-width: 600px; width: 90%;">
+            <div class="main-icon" style="font-size: 12vh;">🛒</div>
+            <h1 style="color: #283618; font-size: 8vh; margin: 15px 0;">تحدي التسوق</h1>
             
-            <div id="total-container" class="total-display" onclick="checkAndOpenCheckout()">
-    ₺ <span id="total-val">٠</span>
-</div>
+            
+            <button class="start-btn" onclick="startGame()" style="display: inline-block; padding: 25px 80px; background: #606c38; color: white; border: none; font-size: 4.5vh; border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 0 #283618; font-family: 'Arakom', sans-serif;">إِبْدَأ اللَّعِب 🚀</button>
         </div>
     </div>
 
-    <div id="mom-paper">
-        <div style="font-size: 6vh; color: #bc6c25; border-bottom: 4px solid; text-align: center; margin-bottom: 25px; font-weight: bold;"> قائِمَة التَّسَوُّق </div>
-        <ul class="shopping-list" id="target-list"></ul>
+    <a href="#" id="game-back-btn" onclick="location.reload()" style="display: none; position: absolute; top: 20px; left: 20px; background: #606c38; color: white; padding: 12px 30px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 1.8rem; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid white;">⬅</a>
+
+    <div id="game-wrapper" style="display: none; flex-direction: column; width: 100vw; height: 100vh; padding: 10px; box-sizing: border-box;">
+        
+        <div id="instruction-header" style="background: #606c38; color: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; box-sizing: border-box; flex-shrink: 0;">
+            <span style="font-size: 4vh;">💡</span>
+            <span class="inst-text" style="font-size: 3.5vh; font-weight: bold;">اقْرَأ القائِمَةَ ثُمَّ اخْتَرِ المُنْتَجَ الصَّحيحَ!</span>
+        </div>
+
+        <div class="main-game-area" style="display: flex; gap: 15px; flex: 1; width: 100%; overflow: hidden; padding-bottom: 5px;">
+            
+            <div id="shelf-section" style="flex: 2; display: flex; flex-direction: column; background: #f8f9fa; padding: 15px; border-radius: 20px; border: 3px solid #e9ecef; overflow: hidden;">
+                <h1 style="text-align: center; font-size: 4.5vh; margin-top: 0; margin-bottom: 10px;">🏪 المَتْجَر</h1>
+                <div class="grid" id="shelf" style="flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; overflow-y: auto;">
+                    </div>
+                <div id="status-bar" style="text-align: center; padding-top: 10px;">
+                    <div id="total-container" class="total-display" onclick="checkAndOpenCheckout()" style="font-size: 5vh;">
+                        ₺ <span id="total-val">٠</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mom-paper" style="flex: 1; display: flex; flex-direction: column; background: var(--paper); border-radius: 20px; padding: 20px; overflow: hidden; border-left: 15px solid #e9edc9;">
+                <div style="font-size: 4.5vh; color: #bc6c25; border-bottom: 4px solid; text-align: center; margin-bottom: 15px; font-weight: bold; flex-shrink: 0;"> قائِمَة التَّسَوُّق </div>
+                <ul class="shopping-list" id="target-list" style="flex: 1; overflow-y: auto; margin: 0; padding: 0;">
+                    </ul>
+            </div>
+        </div>
     </div>
-</div>
 
-<div id="modal" class="modal">
-    <div class="receipt-paper">
-        <h2 style="margin:0; font-size: 3vh;">الفاتورة النهائية</h2>
-        <div id="receipt-details" style="font-size: 2.5vh; margin: 20px 0;"></div>
-        <div class="receipt-total" id="num-display"></div>
-        <div id="options-grid"></div>
+    <div id="modal" class="modal">
+        <div class="receipt-paper">
+            <h2 style="margin:0; font-size: 3vh;">الفاتورة النهائية</h2>
+            <div id="receipt-details" style="font-size: 2.5vh; margin: 20px 0;"></div>
+            <div class="receipt-total" id="num-display"></div>
+            <div id="options-grid"></div>
+        </div>
     </div>
-</div>
 
-<audio id="yonergeAudio" src="yonergealisveris.wav"></audio>
-<audio id="snd-correct" src="correct_beep.mp3"></audio>
-<audio id="snd-wrong" src="error.mp3"></audio>
-<audio id="snd-cash" src="cash_register.mp3"></audio>
-<audio id="snd-success" src="success_fanfare.mp3"></audio>
+    <audio id="yonergeAudio" src="yonergealisveris.wav"></audio>
+    <audio id="snd-correct" src="correct_beep.mp3"></audio>
+    <audio id="snd-wrong" src="error.mp3"></audio>
+    <audio id="snd-cash" src="cash_register.mp3"></audio>
+    <audio id="snd-success" src="success_fanfare.mp3"></audio>
 
-<div id="custom-alert" class="custom-alert">
-    <h2 id="alert-text"></h2>
-    <button onclick="closeCustomAlert()">حَسَنًا 👍</button>
-</div>
+    <div id="custom-alert" class="custom-alert">
+        <h2 id="alert-text"></h2>
+        <button onclick="closeCustomAlert()">حَسَنًا 👍</button>
+    </div>
+
+    <script>
+        function startGame() {
+            document.getElementById('landing-page').style.display = 'none';
+            document.getElementById('game-wrapper').style.display = 'flex';
+            document.getElementById('game-back-btn').style.display = 'block';
+            playYonerge();
+        }
+    </script>
+</body>
 
 <script>
     const toAr = (n) => n.toString().replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
