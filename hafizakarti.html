@@ -470,7 +470,7 @@ const Data = {
             words: [
               { id: 1, arabic: 'يَنامُ', turkish: '1.jpeg' },
   { id: 2, arabic: 'أَدْرُسُ دُروسی', turkish: '2.jpeg' },
-  { id: 3, arabic: 'يَذْهَبُ إِلى المَدْرَسَة', turkish: '3.jpeg' },
+  { id: 3, arabic: 'تَذْهَبُ إِلى المَدْرَسَة', turkish: '3.jpeg' },
   { id: 4, arabic: 'أَسْتَيْقِظُ ', turkish: '4.jpeg' },
   { id: 5, arabic: 'أَغْسِلُ يَدَيَّ ', turkish: '5.jpeg' },
   { id: 6, arabic: 'يَتَناوَلُ الفطور ', turkish: '6.jpeg' },
@@ -530,7 +530,7 @@ const App = {
     MemoryGame.init();
   },
 
-  initStartScreenListeners() {
+initStartScreenListeners() {
     this.dom.playerSelect.addEventListener('click', e => {
       const btn = e.target.closest('.player-button');
       if (!btn) return;
@@ -545,24 +545,26 @@ const App = {
       const mode = this.state.selectedPlayers;
       const words = Data.pdfUnit.words.unit1.lessons.lesson1.words;
 
-      if(mode === 3) {
-          WordCardGame.start(words);
-          // Kart Modu yönerge sesi (Klasördeki ses dosyanızın adını buraya yazın)
-          this.playInstruction('yonergekart.mp3'); 
+      if (mode === 3) {
+        // --- KARTLAR (BİTAGAT) MODU ---
+        WordCardGame.start(words);
+        this.playInstruction('yonergekart.mp3'); 
       } else {
-          MemoryGame.start(words, mode);
-          // Hafıza Oyunları yönerge sesi
-          setTimeout(() => {
-            this.playInstruction('yonergehafiza.mp3');
-          }, 300);
+        // --- HAFIZA KARTLARI MODU (1 veya 2 Kişilik) ---
+        MemoryGame.start(words, mode);
+        // Hafıza kartları seçildiğinde bu ses çalacak:
+        setTimeout(() => {
+          this.playInstruction('yonergehafiza.mp3');
+        }, 300);
       }
       this.showScreen('game-screen');
-    };
-  },
+    }; // onclick bitişi
+  }, // initStartScreenListeners bitişi
 
   checkStartButtonState() {
     this.dom.startGameBtn.disabled = !this.state.selectedPlayers;
   },
+
 
   showScreen(screenId, opts={push:true}) {
     this.dom.screens.forEach(s => s.classList.remove('active'));
