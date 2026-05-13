@@ -54,7 +54,8 @@
 
         .grid { 
             display: grid; grid-template-columns: repeat(4, 1fr); 
-            gap: 10px; flex-grow: 1;
+            gap: 0px; flex-grow: 1;
+            row-gap: 0px;
         }
 
         .product-card {
@@ -68,31 +69,81 @@
         .emoji-big { font-size: 6vh; display: block; }
         .price-ar { font-size: 3.5vh; color: var(--lira-color); font-weight: bold; }
 
-        #mom-paper {
-            flex: 1.2; background: var(--paper); padding: 10px;
-            border-radius: 15px; box-shadow: 4px 4px 15px rgba(0,0,0,0.05);
-            border-left: 20px solid #e9edc9; display: flex; flex-direction: column;
-        }
 
-        .shopping-list { 
-            list-style: none; padding: 0; margin: 0;
-            font-size: 5vh; /* Kelimeler dev boyut */
-            line-height: 1.6; color: var(--ink); 
-        }
-        
-        .shopping-list li {
-            padding: 10px; margin-bottom: 15px; border-radius: 12px;
-            text-align: center; transition: 0.3s;
-        }
 
-        .shopping-list li.active {
-            background: #fff; color: var(--highlight); font-weight: 900;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: scale(1.05);
-            border: 4px solid var(--highlight);
-        }
+/* --- ALIŞVERİŞ LİSTESİ: TAMAMEN SADE (ÇİZGİSİZ VE KUTUSUZ) --- */
 
-        .shopping-list li.done { text-decoration: line-through; opacity: 0.2; }
+/* --- LİSTE ALANI: TAŞMALARI ENGELLEYEN GÜNCELLEME --- */
+#mom-paper {
+    flex: 0 0 35% !important;
+    max-width: 35%; 
+    display: flex;
+    flex-direction: column;
+    background: transparent !important; 
+    border: none !important;
+    box-shadow: none !important;
+    padding: 20px;
+    box-sizing: border-box;
+    /* KRİTİK: Dışa taşan her şeyi gizle */
+    overflow: hidden !important; 
+    position: relative;
+}
 
+.shopping-list { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0;
+    width: 100%;
+    /* KRİTİK: Yatayda asla kaydırma çubuğu çıkarma */
+    overflow-x: hidden !important; 
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Kelimeleri merkezle */
+}
+/* --- 1. ANİMASYON TANIMI (Breathing Effect) --- */
+@keyframes breathing-text {
+    0% { transform: scale(1); text-shadow: 0 0 0px rgba(188, 108, 37, 0); }
+    50% { transform: scale(1.2); text-shadow: 0 0 15px rgba(188, 108, 37, 0.3); }
+    100% { transform: scale(1); text-shadow: 0 0 0px rgba(188, 108, 37, 0); }
+}
+/* --- 2. LİSTE MADDELERİ --- */
+.shopping-list li {
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-size: 7vh;
+    color: var(--ink);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    opacity: 0.6;
+    white-space: nowrap; /* Kelimenin büyüme anında alt satıra kaçmasını engeller */
+}
+
+/* --- 3. AKTİF KELİME (Animasyonun eklendiği yer) --- */
+.shopping-list li.active {
+    color: #bc6c25 !important;
+    font-weight: 900 !important;
+    opacity: 1 !important;
+    background: transparent !important;
+    border: none !important;
+    
+    /* ANİMASYON BURADA AKTİF EDİLDİ */
+    display: inline-block; /* Animasyonun sağlıklı çalışması için gerekli */
+    width: 100%;
+    animation: breathing-text 2s ease-in-out infinite;
+}
+
+/* --- 4. TAMAMLANAN KELİME --- */
+.shopping-list li.done {
+    text-decoration: line-through;
+    opacity: 0.15;
+    transform: scale(0.9);
+    animation: none; /* Kelime bitince animasyon dursun */
+}
        /* Fiyat ve Ödeme Alanı Konteynırı */
 .total-display {
     font-size: 6vh;
@@ -161,7 +212,7 @@
     border: 2px solid #333 !important;
 }
 
-/* 1. Başlık: الفاتورة النهائية */
+/* 1. Başlık: الفاتورَة النِّهائِيَّة */
 #modal h2 {
     font-size: 7vh !important; 
     margin: 10px 0 !important;
@@ -208,15 +259,15 @@
     50% { transform: scale(1.04); color: #bc6c25; }
     100% { transform: scale(1); }
 }
-/* Aktif olan kelimenin sürekli parlaması ve büyümesi */
+/* Aktif olan kelimenin kutusunu tamamen kaldıran kod */
 .shopping-list li.active {
-    background: #fff;
-    color: #bc6c25 !important;
-    font-weight: 900;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transform: scale(1.1); /* Diğerlerinden daha büyük görünür */
-    border: 5px solid #bc6c25 !important;
-    animation: active-task-pulse 1s infinite alternate; /* Sürekli vurgu */
+    background: transparent !important;   /* Arka plan kutusunu siler */
+    color: #bc6c25 !important;            /* Sadece yazı rengini turuncu yapar */
+    font-weight: bold;                    /* Yazıyı kalınlaştırır */
+    border: none !important;              /* Çerçeveyi kesin olarak kaldırır */
+    box-shadow: none !important;          /* Varsa gölgeyi siler */
+    transform: none !important;           /* Ölçeklendirmeyi sıfırlar */
+    outline: none !important;             /* Varsa dış çizgiyi siler */
 }
 
 @keyframes active-task-pulse {
@@ -224,14 +275,7 @@
     to { transform: scale(1.15); box-shadow: 0 8px 25px rgba(188, 108, 37, 0.4); }
 }
 
-/* Tamamlanan kelimelerin hafifçe sönükleşmesi */
-.shopping-list li.done {
-    text-decoration: line-through;
-    opacity: 0.3;
-    background: transparent;
-    border: none;
-    transform: scale(0.9);
-}
+
 
 /* --- ÖZEL UYARI MESAJI TASARIMI --- */
 .custom-alert {
@@ -355,35 +399,81 @@
 }
 
 .inst-text { font-size: 3.5vh; font-weight: bold; }
+
+.product-card {
+    /* Mevcut özelliklerin altına ekle */
+    transition: all 0.3s ease; 
+}
+
+.product-card:hover {
+    transform: translateY(-5px); /* Hafif yukarı kalkar */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1); /* Gölge derinleşir */
+    border-bottom-color: #bc6c25; /* Alt çizgi turunculaşır */
+}
+
+/* Geri butonu için (Inline stildeki butona class verip kullanabilirsin veya doğrudan seçebilirsin) */
+#instruction-header button:hover {
+    color: white !important;
+    transform: scale(1.1); /* Çok hafif büyür */
+    opacity: 1 !important;
+}
+
+/* Başla Butonu */
+.start-btn:hover {
+    background: #4a572d !important; /* Biraz daha koyu yeşil */
+    transform: translateY(-2px);
+    box-shadow: 0 10px 0 #283618;
+}
+
+/* Ev İkonu */
+#home-link-top:hover {
+    transform: rotate(-10deg) scale(1.1); /* Hafif yan yatar ve büyür */
+    background: #d4a373 !important;
+}
+
+.opt:hover {
+    background: #f1f3ed !important;
+    border-color: #bc6c25 !important;
+    color: #bc6c25 !important;
+}
     </style>
 </head>
 <body onclick="playYonerge()">
 
     <div id="landing-page" style="position: fixed; inset: 0; background: #ccd5ae; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5000; text-align: center;">
-        
-        <a href="index.html" id="home-link-top" style="position: absolute; top: 20px; left: 20px; background: #bc6c25; color: white; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 30px; text-decoration: none; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">🏠</a>
-
+        <a href="index.html" id="home-link-top" style="position: absolute; top: 20px; left: 20px; background: #bc6c25; color: white; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: 0.3s;">
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+</a>
         <div class="welcome-card" style="background: white; padding: 60px; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); max-width: 600px; width: 90%;">
             <div class="main-icon" style="font-size: 12vh;">🛒</div>
             <h1 style="color: #283618; font-size: 8vh; margin: 15px 0;">التَّسَوُّق</h1>
-            
-            
-            <button class="start-btn" onclick="startGame()" style="display: inline-block; padding: 25px 80px; background: #606c38; color: white; border: none; font-size: 4.5vh; border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 0 #283618; font-family: 'Arakom', sans-serif;">إِبْدَأ اللَّعِب 🚀</button>
+            <button class="start-btn" onclick="startGame()" style="display: inline-block; padding: 25px 80px; background: #606c38; color: white; border: none; font-size: 6vh; border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 0 #283618; font-family: 'Arakom', sans-serif;">اِبْدَأْ </button>
         </div>
     </div>
 
-    <a href="#" id="game-back-btn" onclick="location.reload()" style="display: none; position: absolute; top: 20px; left: 20px; background: #606c38; color: white; padding: 12px 30px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 1.8rem; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid white;">⬅</a>
+  <div id="game-wrapper" style="display: none; flex-direction: column; width: 100vw; height: 100vh; padding: 10px; box-sizing: border-box;">
+    
+   <div id="instruction-header" style="background: #606c38; color: white; padding: 10px 20px; border-radius: 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; position: relative; width: 100%; box-sizing: border-box; flex-shrink: 0;">
+    
+    <button onclick="location.reload()" style="position: absolute; left: 15px; background: transparent; color: rgba(255, 255, 255, 0.8); border: none; font-size: 3.5vh; cursor: pointer; padding: 10px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; outline: none;">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </button>
 
-    <div id="game-wrapper" style="display: none; flex-direction: column; width: 100vw; height: 100vh; padding: 10px; box-sizing: border-box;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span class="inst-text" style="font-size: 3vh; font-weight: bold; opacity: 0.9;">اِقْرَأ القائِمَة ثُم اخْتَر المُنْتَج الصَّحيح!</span>
         
-        <div id="instruction-header" style="background: #606c38; color: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; box-sizing: border-box; flex-shrink: 0;">
-            <span style="font-size: 4vh;">💡</span>
-            <span class="inst-text" style="font-size: 3.5vh; font-weight: bold;">اِقْرَأ القائِمَة ثُم اخْتَر المُنْتَج الصَّحيح!</span>
-        </div>
+    </div>
+</div>
+    
 
         <div class="main-game-area" style="display: flex; gap: 15px; flex: 1; width: 100%; overflow: hidden; padding-bottom: 5px;">
             
-            <div id="shelf-section" style="flex: 2; display: flex; flex-direction: column; background: #f8f9fa; padding: 15px; border-radius: 20px; border: 3px solid #e9ecef; overflow: hidden;">
+            <div id="shelf-section" style="flex: 1; display: flex; flex-direction: column; background: #f8f9fa; padding: 15px; border-radius: 20px; border: 3px solid #e9ecef; overflow: hidden;">
                 <h1 style="text-align: center; font-size: 4.5vh; margin-top: 0; margin-bottom: 10px;">🏪 المَتْجَر</h1>
                 <div class="grid" id="shelf" style="flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; overflow-y: auto;">
                     </div>
@@ -394,9 +484,9 @@
                 </div>
             </div>
 
-            <div id="mom-paper" style="flex: 1; display: flex; flex-direction: column; background: var(--paper); border-radius: 20px; padding: 20px; overflow: hidden; border-left: 15px solid #e9edc9;">
-                <div style="font-size: 4.5vh; color: #bc6c25; border-bottom: 4px solid; text-align: center; margin-bottom: 15px; font-weight: bold; flex-shrink: 0;"> قائِمَة التَّسَوُّق </div>
-                <ul class="shopping-list" id="target-list" style="flex: 1; overflow-y: auto; margin: 0; padding: 0;">
+            <div id="mom-paper" style="flex: 0 0 30%; display: flex; flex-direction: column; background: #fefae0; border-radius: 20px; padding: 20px; overflow: hidden; border-left: 15px solid #e9edc9; box-shadow: 2px 5px 15px rgba(0,0,0,0.1);">
+                <div style="font-size: 8vh; color: #bc6c25; border-bottom: 4px dashed #bc6c25; text-align: center; margin-bottom: 15px; font-weight: bold; flex-shrink: 0; padding-bottom: 10px;"> قائِمَة التَّسَوُّق </div>
+                <ul class="shopping-list" id="target-list" style="flex: 1; overflow-y: auto; margin: 0; padding: 0; list-style: none;">
                     </ul>
             </div>
         </div>
@@ -404,7 +494,7 @@
 
     <div id="modal" class="modal">
         <div class="receipt-paper">
-            <h2 style="margin:0; font-size: 3vh;">الفاتورة النهائية</h2>
+            <h2 style="margin:0; font-size: 3vh;">الفاتورَة النِّهائِيَّة</h2>
             <div id="receipt-details" style="font-size: 2.5vh; margin: 20px 0;"></div>
             <div class="receipt-total" id="num-display"></div>
             <div id="options-grid"></div>
@@ -424,6 +514,10 @@
 
     <script>
         function startGame() {
+            // Ses sistemini canlandır
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
             document.getElementById('landing-page').style.display = 'none';
             document.getElementById('game-wrapper').style.display = 'flex';
             document.getElementById('game-back-btn').style.display = 'block';
@@ -475,6 +569,10 @@
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     function playTone(type, freq, duration) {
+        // Tarayıcı ses sistemini kullanıcı tıkladığında aktif hale getirir
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
         const oscillator = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
 
@@ -601,7 +699,12 @@
                     playTone('triangle', 523, 0.1); 
                     setTimeout(() => playTone('triangle', 659, 0.1), 100);
                     setTimeout(() => playTone('triangle', 783, 0.3), 200);
-                    showMessage("أَحْسَنْت! ✅", () => location.reload());
+
+                    // BURAYI DEĞİŞTİRİYORUZ:
+                    showMessage("أَحْسَنْت! ✅", () => {
+                        document.getElementById('modal').style.display = 'none'; // Faturayı kapat
+                        initGame(); // Yeni 3 kelime seç ve marketi kur
+                    });
                 } else {
                     playTone('square', 100, 0.4); 
                     showMessage("حاوِلْ مَرَّة أُخْرى ❌"); 
