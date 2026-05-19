@@ -105,10 +105,15 @@ header {
         }
 
         .option-btn {
-            padding: 4vh 2vh; font-size: 5vh; border: 1px solid #e2e8f0;
-            border-radius: 25px; cursor: pointer; background: #ffffff;
-            box-shadow: 0 6px 0 #cbd5e1; font-family: var(--font-main); font-weight: normal;
-        }
+    padding: 2vh 2vh;
+    font-size: 7vh; /* Emojileri daha büyük yapar */
+    border: 1px solid #e2e8f0;
+    border-radius: 25px; 
+    cursor: pointer; 
+    background: #ffffff;
+    box-shadow: 0 6px 0 #cbd5e1; 
+    transition: transform 0.1s;
+}
 
         .option-btn:disabled { opacity: 0.8; }
 
@@ -181,7 +186,7 @@ header {
 </head>
 <body>
 <div id="start-screen" dir="rtl" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5000; color: white; font-family: var(--font-main);">
-    <h1 style="font-size: 3.5rem; margin-bottom: 20px;">مُسابَقَة السُّرْعَة لِلُّغَة الْعَرَبِيَّة</h1>
+    <h1 style="font-size: 3.5rem; margin-bottom: 20px;">مُسابَقَة السُّرْعَة </h1>
     
     <button id="real-start-btn" onclick="startGameWithAudio()" dir="ltr" style="padding: 20px 60px; font-size: 2.5rem; border-radius: 50px; cursor: pointer; background: #27ae60; color: white; border: none; box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 20px;">
         <i class="fas fa-play"></i> 
@@ -235,49 +240,37 @@ header {
 </div>
 
 <script>
- const words = [
-    { tr: 'uyanıyorum', ar: 'أَسْتَيْقِظُ' },
-    { tr: 'sabah', ar: 'صَباح' },
-    { tr: 'erken', ar: 'مُبَكِّرًا' },
-    { tr: 'abdest alıyorum', ar: 'أَتَوَضَّأُ' },
-    { tr: 'namaz kılıyorum', ar: 'أُصَلّي' },
-    { tr: 'kahvaltı', ar: 'الفَطور' },
-    { tr: 'aile', ar: 'عائِلَة' },
-    { tr: 'elbise', ar: 'مَلابِس' },
-    { tr: 'okul', ar: 'المَدْرَسَة' },
-    { tr: 'dönüyorum', ar: 'أَرْجِعُ' },
-    { tr: 'ev', ar: 'البَيْت' },
-    { tr: 'yardım ediyorum', ar: 'أُساعِدُ' },
-    { tr: 'ders çalışıyorum', ar: 'أَدْرُسُ' },
-    { tr: 'akşam', ar: 'مَساءً' },
-    { tr: 'uyuyorum', ar: 'أَنامُ' },
-    { tr: 'gece', ar: 'لَيْلًا' },
-    { tr: 'temizliyorum', ar: 'أُنَظِّفُ' },
-    { tr: 'dişler', ar: 'أَسْنان' },
-    { tr: 'zeytin', ar: 'الزَّيْتون' },
-    { tr: 'peynir', ar: 'الجُبْن' },
-    { tr: 'süt', ar: 'الحَليب' },
-    { tr: 'et', ar: 'اللَّحْم' },
-    { tr: 'pirinç/pilav', ar: 'الأُرْز' },
-    { tr: 'kahve', ar: 'القَهْوَة' },
-    { tr: 'balık', ar: 'السَّمَك' },
-    { tr: 'salata', ar: 'السَّلَطَة' },
-    { tr: 'meyve suyu', ar: 'العَصير' },
-    { tr: 'saat', ar: 'السّاعَة' },
-    { tr: 'bal', ar: 'العَسَل' },
-    { tr: 'tereyağı', ar: 'الزُّبْدَة' },
-    { tr: 'tavuk', ar: 'الدَّجاج' },
-    { tr: 'önce', ar: 'قَبْل' },
-    { tr: 'sonra', ar: 'بَعْد' },
-    { tr: 'yemek', ar: 'الطَّعام' },
-    { tr: 'yiyecekler', ar: 'مَأْكولات' },
-    { tr: 'içecekler', ar: 'مَشْروبات' },
-    { tr: 'çay', ar: 'الشّاي' },
-    { tr: 'istiyorum', ar: 'أُريدُ' },
-    { tr: 'seviyorum', ar: 'أُحِبُّ' },
-    { tr: 'arkadaşım', ar: 'صَديقي' },
-    { tr: 'Pazartesi', ar: 'يَوْمُ الاِثْنَيْن' },
-    { tr: 'Cuma', ar: 'يَوْم الجُمُعَة' }
+// 1. Güncellenmiş Kelime, Arapça ve Emoji Listesi
+const words = [
+    { tr: 'uyaniyorum', ar: 'أَسْتَيْقِظُ', emoji: '⏰' },
+    { tr: 'sabah', ar: 'صَباح', emoji: '🌅' },
+    { tr: 'abdestaliyorum', ar: 'أَتَوَضَّأُ', emoji: '💪🏽💦' },
+    { tr: 'namazkiliyorum', ar: 'أُصَلّي', emoji: '🧎' },
+    { tr: 'kahvalti', ar: 'فَطور', emoji: '🍳' },
+    { tr: 'aile', ar: 'عائِلَة', emoji: '👨‍👩‍👧‍👦' },
+    { tr: 'giyiyorum', ar: 'مَلابِس', emoji: '👕' },
+    { tr: 'okul', ar: 'مَدْرَسَة', emoji: '🏫' },
+    { tr: 'donuyorum', ar: 'أَرْجِعُ', emoji: '🚶' },
+    { tr: 'ev', ar: 'بَيْت', emoji: '🏠' },
+    { tr: 'yardimediyorum', ar: 'أُساعِدُ', emoji: '🤝' },
+    { tr: 'derscalisiyorum', ar: 'أَدْرُسُ', emoji: '📚' },
+    { tr: 'aksam', ar: 'مَساءً', emoji: '🌇' },
+    { tr: 'uyuyorum', ar: 'أَنامُ', emoji: '🛌' },
+    { tr: 'temizliyorum', ar: 'أُنَظِّفُ', emoji: '🧹' },
+    { tr: 'zeytin', ar: 'زَيْتون', emoji: '🫒' },
+    { tr: 'sut', ar: 'حَليب', emoji: '🥛' },
+    { tr: 'et', ar: 'اللَّحْم', emoji: '🥩' },
+    { tr: 'pirinc', ar: 'أُرْز', emoji: '🍚' },
+    { tr: 'kahve', ar: 'قَهْوَة', emoji: '☕' },
+    { tr: 'balik', ar: 'سَمَك', emoji: '🐟' },
+    { tr: 'salata', ar: 'سَلَطَة', emoji: '🥗' },
+    { tr: 'meyvesuyu', ar: 'عَصير', emoji: '🧃' },
+    { tr: 'saat', ar: 'ساعَة', emoji: '⏱️' },
+    { tr: 'bal', ar: 'عَسَل', emoji: '🍯' },
+    { tr: 'tereyagi', ar: 'زُبْدَة', emoji: '🧈' },
+    { tr: 'tavuk', ar: 'دَجاج', emoji: '🍗' },
+    { tr: 'cay', ar: 'شاي', emoji: '🫖' },
+    { tr: 'seviyorum', ar: 'أُحِبُّ', emoji: '❤️' }
 ];
 
 let scores = { p1: 0, p2: 0 };
@@ -285,7 +278,52 @@ let roundStep = 0, maxRounds = 5, roundActive = false;
 let currentWord = null, usedWordsInRound = [];
 let playerResponses = {};
 let roundStartTime = 0;
-let isFirstRoundOfGame = true; // İlk tur takibi için
+let isFirstRoundOfGame = true;
+
+// Tarayıcının Web Audio API motorunu başlatıyoruz
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// --- SİNÜS DALGASI SES SENTEZLEYİCİSİ ---
+function playTone(frequency, duration, type = 'sine') {
+    try {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        osc.type = type;
+        osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+        
+        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        // Ses biterken arkadan pıtırtı/çıtırtı gelmemesi için yumuşak azalım (fade-out)
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+        
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {
+        console.log("Sinüs dalgası üretilirken hata oluştu:", e);
+    }
+}
+
+// Şıklara ve genel tuşlara basıldığında çalan dokunma sesi (Kısa, temiz tık tonu)
+function playClickSound() {
+    playTone(580, 0.07);
+}
+
+// Doğru cevap verildiğinde çalan olumlu melodi (Arka arkaya iki hızlı sinüs tonu)
+function playCorrectSound() {
+    playTone(523.25, 0.12); // Do notası
+    setTimeout(() => playTone(659.25, 0.18), 80); // Mi notası
+}
+
+// Yanlış şık seçildiğinde çalan kalın hata sesi (Kalın, tok bas tonu)
+function playWrongSound() {
+    playTone(140, 0.28);
+}
 
 function initProgressBars() {
     ['p1', 'p2'].forEach(p => {
@@ -300,28 +338,24 @@ function initProgressBars() {
     });
 }
 
-// Oyunu başlatan ana fonksiyon
 function startGameWithAudio() {
+    playClickSound();
     const introAudio = new Audio('yonergesestesti.mp3');
     document.getElementById('start-screen').style.display = 'none';
 
-    // Yönerge sesi bittiğinde ilk tur akışını başlat
     introAudio.onended = () => {
         startFirstRoundFlow();
     };
 
     introAudio.play().catch(e => {
-        console.log("Ses dosyası hatası, direkt başlatılıyor.");
+        console.log("Yönerge sesi yüklenemedi, oyun direkt başlıyor.");
         startFirstRoundFlow();
     });
 }
 
 function startFirstRoundFlow() {
-    // Ses butonunu vurgula (Sarı buton parlamaya başlar)
     const audioBtn = document.getElementById('audio-trigger');
     audioBtn.classList.add('button-highlight'); 
-    
-    // İlk turu hazırla
     isFirstRoundOfGame = true;
     initRound();
 }
@@ -335,10 +369,17 @@ function initRound() {
     currentWord = availableWords[Math.floor(Math.random() * availableWords.length)];
     usedWordsInRound.push(currentWord.tr);
     
-    setupOptions('p1');
-    setupOptions('p2');
+    // İki oyuncu için de ortak olacak 3 şıkkı (1 Doğru + 2 Yanlış) havuzda seçiyoruz
+    let ortakSecenekler = [currentWord];
+    while(ortakSecenekler.length < 3) {
+        let rand = words[Math.floor(Math.random() * words.length)];
+        if(!ortakSecenekler.find(c => c.tr === rand.tr)) ortakSecenekler.push(rand);
+    }
     
-    // İlk tura özel gecikmeli ve vurgulu başlangıç
+    // Ortak şıkları iki oyuncuya da ayrı ayrı gönderiyoruz
+    setupOptions('p1', [...ortakSecenekler]);
+    setupOptions('p2', [...ortakSecenekler]);
+    
     if (isFirstRoundOfGame) {
         setTimeout(() => {
             playCurrentAudio();
@@ -347,7 +388,6 @@ function initRound() {
             isFirstRoundOfGame = false;
         }, 1500);
     } else {
-        // Diğer turlar normal hızda
         setTimeout(() => { 
             playCurrentAudio(); 
             roundStartTime = Date.now();
@@ -360,29 +400,38 @@ function playCurrentAudio() {
         const icon = document.querySelector('#audio-trigger i');
         icon.classList.replace('fa-volume-high', 'fa-volume-low');
         
-        const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(currentWord.ar)}&tl=ar&client=tw-ob`);
-        audio.play();
+        let sesDosyaAdi = currentWord.tr.trim().toLowerCase() + '.mp3';
+        
+        const audio = new Audio(sesDosyaAdi);
+        audio.play().catch(e => {
+            console.error(`Ses dosyası klasörde bulunamadı: ${sesDosyaAdi}`);
+        });
         
         audio.onended = () => {
+            icon.classList.replace('fa-volume-low', 'fa-volume-high');
+        };
+
+        audio.onerror = () => {
             icon.classList.replace('fa-volume-low', 'fa-volume-high');
         };
     }
 }
 
-function setupOptions(player) {
+function setupOptions(player, choices) {
     const container = document.getElementById(`${player}-options`);
     container.innerHTML = '';
-    let choices = [currentWord];
-    while(choices.length < 3) {
-        let rand = words[Math.floor(Math.random() * words.length)];
-        if(!choices.find(c => c.tr === rand.tr)) choices.push(rand);
+    
+    // Şıkları bu oyuncunun ekranı için Fisher-Yates Algoritması ile kusursuzca karıştırıyoruz
+    let siralama = [...choices];
+    for (let i = siralama.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [siralama[i], siralama[j]] = [siralama[j], siralama[i]];
     }
-    choices.sort(() => 0.5 - Math.random());
-
-    choices.forEach(choice => {
+    
+    siralama.forEach(choice => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
-        btn.innerText = choice.ar;
+        btn.innerText = choice.emoji; 
         btn.onclick = () => handleInput(player, choice, btn);
         container.appendChild(btn);
     });
@@ -390,6 +439,9 @@ function setupOptions(player) {
 
 function handleInput(player, choice, btn) {
     if (!roundActive || playerResponses[player]) return;
+    
+    // Tuşa basıldığı an sinüs klik sesi tetiklenir
+    playClickSound();
     
     const responseTime = Date.now() - roundStartTime;
     playerResponses[player] = {
@@ -421,13 +473,27 @@ function processResults() {
     const p1Points = calculatePoints(p1);
     const p2Points = calculatePoints(p2);
 
+    // Sinüs dalgalı sonuç seslerinin yönetim mantığı
+    if (p1.isCorrect || p2.isCorrect) {
+        playCorrectSound();
+    } else {
+        playWrongSound();
+    }
+
     ['p1', 'p2'].forEach(p => {
         const res = playerResponses[p];
         const pts = (p === 'p1') ? p1Points : p2Points;
         const seg = document.getElementById(`${p}-seg-${roundStep}`);
         
-        res.btn.style.background = res.isCorrect ? "#22c55e" : "#ef4444";
-        seg.style.background = res.isCorrect ? "#22c55e" : "#ef4444";
+        if (res.isCorrect) {
+            res.btn.style.background = "#22c55e";
+            seg.style.background = "#22c55e";
+        } else {
+            res.btn.style.background = "#ef4444";
+            seg.style.background = "#ef4444";
+            // Yanlış şık seçildiğinde butona animasyon verilir ve titretilir
+            res.btn.style.animation = "shake 0.4s ease-in-out";
+        }
         
         scores[p] = Math.max(0, scores[p] + pts);
         showFloatingScore(p, pts);
@@ -460,14 +526,12 @@ function showFloatingScore(player, pts) {
 }
 
 function triggerLightning(player) {
-    const fx = document.getElementById('lightning-fx');
-    fx.style.animation = 'none';
-    void fx.offsetWidth;
-    fx.style.animation = 'flash 0.5s ease-out';
+    // GÖZÜ ALAN BEYAZ EKRAN PARLAMASI İPTAL EDİLDİ
+    // fx.style.animation satırları kaldırılarak tüm ekranın beyazlama efekti kapatıldı.
     
     const zone = document.getElementById(`${player}-zone`);
     const bolt = document.createElement('div');
-    bolt.innerHTML = "⚡ !أَسْرَع";
+    bolt.innerHTML = "⚡ أَسْرَع";
     bolt.style.cssText = `
         position: absolute;
         font-size: 5rem;
@@ -503,11 +567,12 @@ function showEndScreen() {
     const winTxt = document.getElementById('winner-text');
     if(scores.p1 > scores.p2) winTxt.innerText = "🏆 👤1";
     else if(scores.p2 > scores.p1) winTxt.innerText = "🏆 👤2";
-    else winTxt.innerText = "🤝 DOSTLUK KAZANDI!";
+    else winTxt.innerText = "🤝 ";
     document.getElementById('final-scores').innerText = `P1: ${scores.p1} - P2: ${scores.p2}`;
 }
 
 function resetGame() {
+    playClickSound();
     scores = { p1: 0, p2: 0 };
     roundStep = 0; usedWordsInRound = [];
     isFirstRoundOfGame = true;
@@ -515,12 +580,23 @@ function resetGame() {
     updateScores(); initProgressBars(); initRound();
 }
 
-// Sayfa yüklendiğinde hazırlık yap
 window.onload = () => {
     initProgressBars();
+    
+    // Hatalı tıklamalarda butonun titremesi için gereken CSS kurallarını dinamik enjekte ediyoruz
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-9px); }
+            40% { transform: translateX(9px); }
+            60% { transform: translateX(-7px); }
+            80% { transform: translateX(7px); }
+            100% { transform: translateX(0); }
+        }
+    `;
+    document.head.appendChild(style);
 };
-
-
 </script>
 </body>
 </html>
