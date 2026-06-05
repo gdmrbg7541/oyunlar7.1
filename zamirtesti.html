@@ -46,7 +46,7 @@
         box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
     }
 
-    /* ===== ÜST SOL KONTROLLER (Daha Küçük) ===== */
+    /* ===== ÜST SOL KONTROLLER ===== */
     .top-left-controls {
         position: absolute;
         top: 15px;
@@ -57,7 +57,7 @@
         direction: ltr; 
     }
     .icon-btn {
-        width: 60px; /* Daha küçük */
+        width: 60px;
         height: 60px;
         border-radius: 15px;
         border: none;
@@ -71,15 +71,13 @@
         transform: translateY(-5px) scale(1.05);
         background: rgba(255, 255, 255, 0.95);
     }
-    .icon-btn svg { width: 30px; height: 30px; fill: #4a3f8a; } /* SVG daha küçük */
+    .icon-btn svg { width: 30px; height: 30px; fill: #4a3f8a; }
 
     /* ===== ORTAK BUTONLAR ===== */
     .btn {
         color: #4a3f8a;
         border: none;
-        padding: 15px 40px;
         border-radius: 50px;
-        font-size: 2.2rem;
         cursor: pointer;
         transition: transform 0.3s, box-shadow 0.3s;
         font-family: inherit;
@@ -107,14 +105,28 @@
         text-align: center;
     }
     #start-screen h1 {
-        font-size: 6rem; 
+        font-size: clamp(3.5rem, 6vw, 7rem); /* 1080p ve 4K dengeli */
         margin-bottom: 40px;
         color: #4a3f8a;
-        font-weight: normal;
     }
     .start-buttons {
         display: flex;
         gap: 30px;
+    }
+    .start-buttons .btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px; 
+        padding: 30px 40px; 
+        min-width: clamp(260px, 18vw, 360px); 
+        border-radius: 35px; 
+        font-size: clamp(2rem, 2.5vw, 3.5rem);
+    }
+    .start-buttons .btn .emoji {
+        font-size: clamp(4rem, 5vw, 7rem); 
+        line-height: 1;
     }
 
     /* ===== OYUN EKRANI ===== */
@@ -133,15 +145,14 @@
         align-items: center;
         margin-top: 10px;
     }
-    
     .instruction {
-        font-size: 2rem; /* Yönerge küçültüldü */
+        font-size: clamp(1.6rem, 2.2vw, 3rem); 
         color: #4a3f8a;
         font-weight: bold; 
         text-align: center;
     }
 
-    /* Zamir Çubuğu (Daha küçük, pasifler gri) */
+    /* Zamir Çubuğu */
     .pronouns-bar {
         display: flex;
         justify-content: center;
@@ -149,25 +160,22 @@
         margin-top: 10px;
     }
     .pro-badge {
-        font-size: 1.8rem; /* Zamirler küçültüldü */
-        padding: 8px 25px;
+        font-size: clamp(1.4rem, 1.8vw, 2.5rem); 
+        padding: 8px 2vw;
         border-radius: 20px;
-        color: #999; /* Pasifken gri */
-        background: rgba(200, 200, 200, 0.3); /* Pasif arka planı */
+        color: #999; 
+        background: rgba(200, 200, 200, 0.3); 
         border: 1px solid rgba(255,255,255,0.5);
         transition: all 0.5s;
     }
-    /* Aktif Zamir Vurgusu (Sabit Kutu) */
     .pro-badge.active {
         position: relative;
         background: #764ba2;
         color: #fff;
         border: 2px solid rgba(255, 255, 255, 0.8);
-        transform: scale(1.1); /* Seçildiğinde sadece bir tık büyük durur ve sabit kalır */
+        transform: scale(1.1); 
         z-index: 10;
     }
-
-    /* Dalga (Ripple) Efekti */
     .pro-badge.active::after {
         content: '';
         position: absolute;
@@ -177,57 +185,49 @@
         animation: rippleWave 1.5s infinite ease-out;
         z-index: -1;
     }
-
     @keyframes rippleWave {
-        0% {
-            transform: scale(1);
-            opacity: 0.8;
-        }
-        100% {
-            transform: scale(1.4); /* Etrafa doğru yayılır */
-            opacity: 0; /* Yayıldıkça silinerek kaybolur */
-        }
+        0% { transform: scale(1); opacity: 0.8; }
+        100% { transform: scale(1.4); opacity: 0; }
     }
 
-    /* Cümle Alanı (Ekrana Göre Esnek ve Boşlukları Optimize Edildi) */
+    /* Cümle Alanı */
     .sentence-wrapper {
         display: flex;
         justify-content: center;
-        margin: 1.5vh 0 2.5vh 0; /* Sabit piksel yerine ekran yüksekliği yüzdesi (vh) */
+        margin: 1.5vh 0 2vh 0; 
     }
-    /* Cümle Alanı (Daha da büyütüldü) */
     .sentence-area {
         text-align: center;
-        font-size: 5rem; /* 4rem'den 5rem'e çıkarıldı */
+        font-size: clamp(3rem, 4.5vw, 6.5rem); /* 1080p'de çok şişmez */
         line-height: 1.4;
         color: #4a3f8a;
-        padding: 20px 50px;
+        padding: 1.5vh 3vw;
     }
     .blank {
         display: inline-block;
-        min-width: 160px;
+        min-width: 8vw;
         border-bottom: 5px dashed #764ba2;
         color: #764ba2;
         padding: 0 15px;
     }
 
-    /* Şıklar Alanı (Oyuncu kutuları arası az boşluk) */
+    /* Şıklar Alanı */
     .options-area {
         display: flex;
         flex-grow: 1;
-        gap: 15px; /* İki oyuncu alanı arasındaki boşluk çok az */
-        margin-bottom: 15px;
+        gap: 15px; 
+        margin-bottom: 10px;
     }
     .player-side {
         flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 15px; 
-        padding: 15px; /* Kişi alanını belirginleştiren iç boşluk */
+        gap: 10px; 
+        padding: 1.5vh 1.5vw; 
     }
     .side-title {
         text-align: center;
-        font-size: 2.2rem; 
+        font-size: clamp(1.8rem, 2.5vw, 3.5rem); 
         color: #4a3f8a;
         margin-bottom: 5px;
     }
@@ -238,7 +238,7 @@
         flex-grow: 1;
         position: relative;
     }
-    /* Şıkların Temel Tasarımı */
+    
     .opt-btn {
         color: #333;
         border: 2px solid transparent;
@@ -250,26 +250,28 @@
         align-items: center;
         justify-content: center;
         background: rgba(255, 255, 255, 0.75);
+        padding: 1vw; 
+        word-break: break-word;
     }
-   .opt-btn:hover { transform: scale(1.02); background: rgba(255, 255, 255, 0.95); }
+    .opt-btn:hover { transform: scale(1.02); background: rgba(255, 255, 255, 0.95); }
     .opt-btn.correct { background: #d4edda; border-color: #28a745; color: #155724; }
     .opt-btn.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; }
     .opt-btn.selected { transform: scale(0.95); opacity: 0.7; pointer-events: none; }
     .opt-btn:disabled { pointer-events: none; }
 
-   /* TEK KİŞİLİK MOD (Devasa Şıklar) */
+    /* TEK KİŞİLİK MOD (1080p ve 4K dengeli boyutlar) */
     .mode-1p .opt-btn {
-        font-size: 4.5rem; 
-        min-height: 120px;
+        font-size: clamp(2.8rem, 4vw, 6rem); 
+        min-height: clamp(90px, 12vh, 180px); 
     }
 
-    /* İKİ KİŞİLİK MOD (Büyük ama Ekrana Sığan Şıklar) */
+    /* İKİ KİŞİLİK MOD */
     .mode-2p .opt-btn {
-        font-size: 3.5rem;
-        min-height: 110px;
+        font-size: clamp(2rem, 3vw, 4.5rem); 
+        min-height: clamp(80px, 10vh, 150px);
     }
 
-    /* Navigasyon Alanı (Daha Kompakt) */
+    /* Navigasyon Alanı */
     .nav-area {
         display: flex;
         justify-content: center;
@@ -279,43 +281,44 @@
         direction: ltr; 
     }
 
-    /* İleri / Geri Tuşlarının Kendisi */
     .nav-btn {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px; 
         color: #4a3f8a;
-        padding: 10px 30px; 
-        font-size: clamp(1.8rem, 3vh, 2.2rem); 
+        padding: 10px 2vw; 
+        font-size: clamp(1.4rem, 2vw, 2.5rem); 
         min-height: auto; 
-        line-height: 1; /* Simetri için */
+        line-height: 1; 
     }
-
-    /* Arapça fontun optik dengesizliğini çözmek için */
-    .nav-btn span {
-        display: block;
-        margin-bottom: 4px; 
-    }
-
-    /* Ok İkonları */
+    .nav-btn span { display: block; margin-bottom: 4px; }
     .nav-btn svg { 
         fill: #4a3f8a; 
-        width: 32px; 
-        height: 32px; 
+        width: clamp(26px, 2.5vw, 40px); 
+        height: clamp(26px, 2.5vw, 40px); 
         flex-shrink: 0; 
         display: block;
     }
+    .nav-btn:disabled svg { fill: #aaa !important; }
 
-    /* Buton Pasifken (Disabled) Okların Gri Olması İçin */
-    .nav-btn:disabled svg {
-        fill: #aaa !important;
+    .nav-btn.highlight-next {
+        background: #28a745 !important; 
+        color: #fff !important;
+        border: 2px solid #fff;
+        animation: pulseNext 1s infinite alternate ease-in-out;
+        z-index: 10;
+    }
+    .nav-btn.highlight-next svg { fill: #fff !important; }
+    @keyframes pulseNext {
+        0% { transform: scale(1); box-shadow: 0 0 10px rgba(40, 167, 69, 0.5); }
+        100% { transform: scale(1.1); box-shadow: 0 0 20px rgba(40, 167, 69, 0.9); }
     }
 
     /* Yüzen Puan */
     .floating-point {
         position: absolute;
-        font-size: 4rem;
+        font-size: clamp(3rem, 4vw, 5rem);
         pointer-events: none;
         animation: floatUp 1.5s ease-out forwards;
         z-index: 1000;
@@ -328,7 +331,7 @@
     /* Şimşek Patlama Efekti */
     .lightning-flash {
         position: absolute;
-        font-size: 9rem;
+        font-size: clamp(6rem, 8vw, 12rem);
         transform: translate(-50%, -50%);
         pointer-events: none;
         z-index: 2000;
@@ -350,208 +353,48 @@
         height: 100vh;
         text-align: center;
     }
-    .winner-text { font-size: 5rem; margin-bottom: 20px; color: #4a3f8a; }
-    .final-score { font-size: 4rem; margin-bottom: 40px; color: #333; }
-
+    .winner-text { font-size: clamp(4rem, 5vw, 7rem); margin-bottom: 20px; color: #4a3f8a; }
+    .final-score { font-size: clamp(3rem, 4vw, 5.5rem); margin-bottom: 40px; color: #333; }
     .hidden { display: none !important; }
 
-    /* === ZAMİR RENKLENDİRMELERİ (CİNSİYETE GÖRE) === */
-    
-    /* Erkek Zamirler (Müzekker - Mavi) */
-    #pro-هو, #pro-أنت {
-        background: rgba(79, 172, 254, 0.2); /* Pasifken uçuk mavi */
-        color: #2b7bc0;
-        border-color: rgba(79, 172, 254, 0.4);
-    }
-    #pro-هو.active, #pro-أنت.active {
-        background: #4facfe; /* Aktifken tam mavi */
-        color: #fff;
-        border-color: #fff;
-    }
-    #pro-هو.active::after, #pro-أنت.active::after {
-        border-color: #4facfe; /* Dalga efekti rengi */
-    }
+    /* === ZAMİR RENKLENDİRMELERİ === */
+    #pro-هو, #pro-أنت { background: rgba(79, 172, 254, 0.2); color: #2b7bc0; border-color: rgba(79, 172, 254, 0.4); }
+    #pro-هو.active, #pro-أنت.active { background: #4facfe; color: #fff; border-color: #fff; }
+    #pro-هو.active::after, #pro-أنت.active::after { border-color: #4facfe; }
 
-    /* Kız Zamirler (Müennes - Pembe) */
-    #pro-هي, #pro-أنت_f {
-        background: rgba(255, 117, 140, 0.2); /* Pasifken uçuk pembe */
-        color: #d6336c;
-        border-color: rgba(255, 117, 140, 0.4);
-    }
-    #pro-هي.active, #pro-أنت_f.active {
-        background: #ff758c; /* Aktifken tam pembe */
-        color: #fff;
-        border-color: #fff;
-    }
-    #pro-هي.active::after, #pro-أنت_f.active::after {
-        border-color: #ff758c; /* Dalga efekti rengi */
-    }
+    #pro-هي, #pro-أنت_f { background: rgba(255, 117, 140, 0.2); color: #d6336c; border-color: rgba(255, 117, 140, 0.4); }
+    #pro-هي.active, #pro-أنت_f.active { background: #ff758c; color: #fff; border-color: #fff; }
+    #pro-هي.active::after, #pro-أنت_f.active::after { border-color: #ff758c; }
 
-    /* "Ene" Zamiri (Ortak - Mevcut Mor) */
-    #pro-أنا {
-        background: rgba(118, 75, 162, 0.15); /* Pasifken uçuk mor */
-        color: #764ba2;
-        border-color: rgba(118, 75, 162, 0.3);
-    }
-    #pro-أنا.active {
-        background: #764ba2; /* Aktifken tam mor */
-        color: #fff;
-        border-color: #fff;
-    }
-    #pro-أنا.active::after {
-        border-color: #764ba2; /* Dalga efekti rengi */
-    }
+    #pro-أنا { background: rgba(118, 75, 162, 0.15); color: #764ba2; border-color: rgba(118, 75, 162, 0.3); }
+    #pro-أنا.active { background: #764ba2; color: #fff; border-color: #fff; }
+    #pro-أنا.active::after { border-color: #764ba2; }
 
-    /* Başlangıç Butonları (Emoji üstte, yazı altta) */
-    .start-buttons .btn {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 25px; 
-        padding: 40px 40px; 
-        min-width: 300px; /* Kutuların genişliğini birbirine eşitler */
-        border-radius: 40px; 
-    }
-    
-    .start-buttons .btn .emoji {
-        font-size: 4rem; /* Emojileri kocaman ve belirgin yaptık */
-        line-height: 1;
-    }
-
-    /* === İLERİ TUŞU VURGUSU (ŞIK SEÇİLDİKTEN SONRA) === */
-    .nav-btn.highlight-next {
-        background: #28a745 !important; /* Doğru cevap yeşili */
-        color: #fff !important;
-        border: 2px solid #fff;
-        animation: pulseNext 1s infinite alternate ease-in-out;
-        z-index: 10;
-    }
-    
-    .nav-btn.highlight-next svg {
-        fill: #fff !important;
-    }
-
-    @keyframes pulseNext {
-        0% { 
-            transform: scale(1); 
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5); 
-        }
-        100% { 
-            transform: scale(1.1); 
-            box-shadow: 0 0 25px rgba(40, 167, 69, 0.9); 
-        }
-    }
-
-    /* =========================================
-       📱 MOBİL İÇİN KAPSAMLI OPTİMİZASYON 
-       ========================================= */
+    /* MOBİL OPTİMİZASYONU */
     @media (max-width: 768px) {
-        
-        /* 1. İki Kişilik Modu Gizle */
-        #btn-2p {
-            display: none !important;
-        }
-
-        /* 2. Başlangıç Ekranı Ayarları */
-        #start-screen h1 {
-            font-size: 3.5rem; /* Başlık mobilde küçültüldü */
-            margin-bottom: 30px;
-        }
-        .start-buttons .btn {
-            min-width: 240px;
-            padding: 20px 30px;
-            gap: 15px;
-            border-radius: 30px;
-        }
-        .start-buttons .btn .emoji {
-            font-size: 3.5rem;
-        }
-
-        /* 3. Üst Bar ve İkonlar */
-        .icon-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-        }
-        .icon-btn svg {
-            width: 24px;
-            height: 24px;
-        }
-        .instruction {
-            font-size: 1.6rem; /* Yönerge yazısı küçültüldü */
-            padding-top: 10px;
-        }
-
-        /* 4. Zamir Çubuğu */
-        .pronouns-bar {
-            gap: 8px;
-            flex-wrap: wrap; /* Ekrana sığmazsa alt satıra geçer */
-        }
-        .pro-badge {
-            font-size: 1.4rem;
-            padding: 8px 15px;
-            border-radius: 15px;
-        }
-
-        /* 5. Cümle Alanı */
-        .sentence-area {
-            font-size: 3rem; /* Cümle mobilde taşmasın diye küçültüldü */
-            padding: 15px 20px;
-        }
-        .blank {
-            min-width: 100px;
-            padding: 0 5px;
-        }
-
-        /* 6. Şıklar Alanı */
-        .options-area {
-            margin-bottom: 10px;
-        }
-        .player-side {
-            padding: 10px;
-            gap: 10px;
-        }
-        .side-title {
-            font-size: 1.6rem;
-        }
-        .opt-grid {
-            gap: 10px;
-        }
-        .mode-1p .opt-btn {
-            font-size: 2.4rem; /* Mobilde şık yazıları */
-            min-height: 80px;  /* Buton yükseklikleri kısıldı */
-            border-radius: 15px;
-        }
-
-        /* 7. İleri ve Geri Tuşları */
-        .nav-area {
-            gap: 15px;
-        }
-        .nav-btn {
-            font-size: 1.4rem;
-            padding: 10px 20px;
-        }
-        .nav-btn svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* 8. Şimşek ve Puan Animasyonları */
-        .floating-point {
-            font-size: 2.5rem;
-        }
-        .lightning-flash {
-            font-size: 6rem;
-        }
-
-        /* 9. Sonuç Ekranı */
-        .winner-text {
-            font-size: 3.5rem;
-        }
-        .final-score {
-            font-size: 3rem;
-        }
+        #btn-2p { display: none !important; }
+        #start-screen h1 { font-size: 3.5rem; margin-bottom: 30px; }
+        .start-buttons .btn { min-width: 240px; padding: 20px 30px; gap: 15px; border-radius: 30px; font-size: 2.2rem; }
+        .start-buttons .btn .emoji { font-size: 3.5rem; }
+        .icon-btn { width: 45px; height: 45px; border-radius: 12px; }
+        .icon-btn svg { width: 24px; height: 24px; }
+        .instruction { font-size: 1.6rem; padding-top: 10px; }
+        .pronouns-bar { gap: 8px; flex-wrap: wrap; }
+        .pro-badge { font-size: 1.4rem; padding: 8px 15px; border-radius: 15px; }
+        .sentence-area { font-size: 3rem; padding: 15px 20px; margin-top: 10px; }
+        .blank { min-width: 100px; padding: 0 5px; }
+        .options-area { margin-bottom: 10px; }
+        .player-side { padding: 10px; gap: 10px; }
+        .side-title { font-size: 1.8rem; }
+        .opt-grid { gap: 10px; }
+        .mode-1p .opt-btn { font-size: 2.4rem; min-height: 85px; border-radius: 15px; }
+        .nav-area { gap: 15px; }
+        .nav-btn { font-size: 1.4rem; padding: 10px 20px; }
+        .nav-btn svg { width: 24px; height: 24px; }
+        .floating-point { font-size: 2.5rem; }
+        .lightning-flash { font-size: 6rem; }
+        .winner-text { font-size: 3.5rem; }
+        .final-score { font-size: 3rem; }
     }
 </style>
 </head>
@@ -610,7 +453,6 @@ function sesTikla() { _tone(900,0.04,'sine',0.12); }
         <div class="pro-badge" id="pro-هي">هِيَ</div>
         <div class="pro-badge" id="pro-أنت">أَنْتَ</div>
         <div class="pro-badge" id="pro-أنت_f">أَنْتِ</div>
-        
     </div>
 
     <div class="sentence-wrapper">
@@ -692,7 +534,7 @@ function goHome() {
     document.getElementById('result-screen').style.display = 'none';
     document.getElementById('start-screen').style.display = 'flex';
     document.getElementById('ingame-back-btn').classList.add('hidden');
-    document.getElementById('main-home-btn').classList.remove('hidden'); // Ana sayfa butonunu geri getir
+    document.getElementById('main-home-btn').classList.remove('hidden'); 
 }
 
 function startGame(m) {
@@ -712,8 +554,6 @@ function startGame(m) {
     
     let gameScreen = document.getElementById('game-screen');
     gameScreen.style.display = 'flex';
-    
-    // YENİ EKLENEN SATIR: CSS modunu ayarlıyoruz
     gameScreen.className = m === 1 ? 'mode-1p' : 'mode-2p';
 
     document.getElementById('ingame-back-btn').classList.remove('hidden');
@@ -758,13 +598,11 @@ function loadQuestion() {
     document.getElementById('btn-prev').disabled = (currentQ === 0);
     document.getElementById('btn-next').disabled = !state; 
     
-    // <-- ŞU BLOK YENİ EKLENDİ -->
     if(state) {
         document.getElementById('btn-next').classList.add('highlight-next');
     } else {
         document.getElementById('btn-next').classList.remove('highlight-next');
     }
-    // <-------------------------->
 
     qStartTime = Date.now();
 }
@@ -868,7 +706,7 @@ function evaluate(correctText) {
         p2Ans: p2Answer ? p2Answer.opt.t : null
     };
     document.getElementById('btn-next').disabled = false;
-    document.getElementById('btn-next').classList.add('highlight-next'); // <-- BU SATIRI EKLE
+    document.getElementById('btn-next').classList.add('highlight-next'); 
 }
 
 function showAnimPoint(points, containerId, color) {
