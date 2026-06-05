@@ -475,7 +475,7 @@ function sesTikla() { _tone(900,0.04,'sine',0.12); }
 
     <div class="options-area">
         <div class="player-side highlight-box" id="side-p1">
-            <div class="side-title" id="title-p1">النقاط: 0</div>
+            <div class="side-title" id="title-p1">النِّقاط: 0</div>
             <div class="opt-grid" id="opts-p1"></div>
         </div>
         <div class="player-side highlight-box hidden" id="side-p2">
@@ -589,7 +589,7 @@ function startGame(m) {
 
 function updateScores() {
     if(mode === 1) {
-        document.getElementById('title-p1').innerHTML = `النقاط: <span style="color:#28a745; font-weight:bold;">${scoreP1}</span>`;
+        document.getElementById('title-p1').innerHTML = `النِّقاط: <span style="color:#28a745; font-weight:bold;">${scoreP1}</span>`;
     } else {
         document.getElementById('title-p1').innerHTML = `اللاعب الأول: <span style="color:#28a745; font-weight:bold;">${scoreP1}</span>`;
         document.getElementById('title-p2').innerHTML = `اللاعب الثاني: <span style="color:#dc3545; font-weight:bold;">${scoreP2}</span>`;
@@ -772,14 +772,14 @@ function endGame() {
     let finalScoreBox = document.getElementById('result-score');
 
     if(mode === 1) {
-        winnerBox.textContent = "انتهت اللعبة!";
-        finalScoreBox.innerHTML = `مجموع النقاط: <span style="color:#28a745">${scoreP1}</span>`;
+        winnerBox.textContent = "اِنْتَهَت اللُّعْبَة!";
+        finalScoreBox.innerHTML = `مَجْموع النِّقاط: <span style="color:#28a745">${scoreP1}</span>`;
     } else {
         winnerBox.textContent = "النَّتيجَة النِّهائِيَّة";
         if(scoreP1 > scoreP2) {
-            finalScoreBox.innerHTML = `اللاعب الأول فاز!<br><span style="color:#28a745">${scoreP1}</span> - <span style="color:#dc3545">${scoreP2}</span>`;
+            finalScoreBox.innerHTML = `اللّاعِب الأَوَّل فاز!<br><span style="color:#28a745">${scoreP1}</span> - <span style="color:#dc3545">${scoreP2}</span>`;
         } else if (scoreP2 > scoreP1) {
-            finalScoreBox.innerHTML = `اللاعب الثاني فاز!<br><span style="color:#28a745">${scoreP1}</span> - <span style="color:#dc3545">${scoreP2}</span>`;
+            finalScoreBox.innerHTML = `اللّاعِب الثّاني فاز!<br><span style="color:#28a745">${scoreP1}</span> - <span style="color:#dc3545">${scoreP2}</span>`;
         } else {
             finalScoreBox.innerHTML = `تعادل!<br><span style="color:#28a745">${scoreP1}</span> - <span style="color:#dc3545">${scoreP2}</span>`;
         }
