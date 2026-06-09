@@ -39,56 +39,122 @@
             overflow: hidden;
         }
 
-        /* --- NAVİGASYON --- */
-  /* Navigasyon butonlarını SOLA sabitleyen yama */
-.nav-btn {
-    position: absolute;
-    top: 25px;
-    left: 25px; /* Butonlar artık sol tarafta */
-    right: auto;
-    background: white;
-    border: 3px solid #e2e8f0;
-    padding: 12px 25px;
-    border-radius: 20px;
-    cursor: pointer;
-    z-index: 2500;
-    font-weight: bold;
-    color: #64748b;
-    font-size: 1.2rem;
-    transition: all 0.3s;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-
-.nav-btn:hover { 
-    background: #f1f5f9; 
-    border-color: var(--p1-color); 
-    transform: scale(1.05); 
-}
-
-/* İlk sayfadaki butona özel stil */
-.back-home { display: flex; }
-
-
-
-/* Oyun içindeki geri butonuna özel stil */
-.back-menu { display: none; }
-
-        /* --- GİRİŞ EKRANI (Büyütülmüş) --- */
-        #startScreen {
+        .nav-btn {
+            position: absolute;
+            top: 25px;
+            left: 25px; 
+            right: auto;
             background: white;
-            padding: 80px;
-            border-radius: 50px;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
-            z-index: 2000;
-            border: 4px solid #eef2ff;
+            border: 3px solid #e2e8f0;
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 2500;
+            font-weight: bold;
+            color: #64748b;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        #startScreen h1 { font-size: 4.5rem; color: var(--accent); margin-bottom: 50px; }
+        .nav-btn:hover { 
+            background: #f1f5f9; 
+            border-color: var(--p1-color); 
+            transform: scale(1.05); 
+        }
+
+        .back-home { display: flex; }
+        .back-menu { display: none; }
+
+        #startScreen {
+            text-align: center;
+            z-index: 2000;
+        }
+
+        #startScreen h1 { 
+            font-size: 4.5rem; 
+            color: var(--accent); 
+            margin-bottom: 30px; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 50px;
+            direction: ltr; 
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #cbd5e1;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 40px;
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--p1-color);
+            transition: .4s;
+            border-radius: 40px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 32px;
+            width: 32px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background-color: var(--p2-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(40px);
+        }
+
+        .active-label {
+            color: var(--accent);
+            transform: scale(1.15);
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
+        input:checked ~ .toggle-container .active-label {
+            color: var(--p2-color);
+        }
 
         .mode-container { display: flex; gap: 50px; justify-content: center; }
         .mode-btn {
@@ -105,69 +171,77 @@
         .mode-icon { font-size: 7rem; margin-bottom: 25px; }
         .mode-title { font-size: 2.5rem; font-weight: bold; color: #1e293b; }
 
-        /* --- OYUN ALANLARI --- */
         .game-container { display: none; width: 100%; height: 100vh; position: relative; padding: 20px; }
         .hidden { display: none !important; }
 
-        /* --- TEK KİŞİLİK TASARIM --- */
         #singleGame { flex-direction: row-reverse; gap: 40px; align-items: center; padding: 60px; }
         .s-digital-section { flex: 1.4; display: flex; flex-direction: column; align-items: center; background: #fff; border-radius: 40px; padding: 40px; border: 2px solid #eef2ff; height: 80%; justify-content: center; }
         .s-options-section { flex: 1; display: flex; flex-direction: column; gap: 15px; }
         
         .clock-label-big { font-size: 5rem; color: var(--accent); font-weight: bold; margin-bottom: 20px; }
-        .s-time-display { font-size: 11rem; font-family: 'Courier New', monospace; font-weight: bold; color: var(--accent); letter-spacing: 5px; }
+        .s-time-display { font-size: 11rem; font-family: 'Courier New', monospace; font-weight: bold; color: var(--accent); letter-spacing: 5px; min-height: 250px; display: flex; justify-content: center; align-items: center; }
         
-.s-opt-btn { 
-    background: white; 
-    border: 4px solid #f1f5f9; 
-    border-radius: 25px;
-    font-size: 3.5rem; /* Boyutu 2.2rem'den 3rem'e çıkardık */
-    font-weight: normal; /* Bold (kalın) özelliğini normal yaptık */
-    cursor: pointer; 
-    padding: 25px; 
-    text-align: center;
-    transition: all 0.2s;
-}
+        .s-opt-btn { 
+            background: white; 
+            border: 4px solid #f1f5f9; 
+            border-radius: 25px;
+            font-size: 3.5rem; 
+            font-weight: normal; 
+            cursor: pointer; 
+            padding: 25px; 
+            text-align: center;
+            transition: all 0.2s;
+        }
         .s-opt-btn:hover { border-color: var(--p1-color); background: #f8faff; }
 
-        /* --- DÜELLO TASARIMI --- */
         #duelGame { flex-direction: row; }
-        /* Her iki taraftaki tüm dış kenarlıkları temizleyelim */
-.player-side { 
-    flex: 1; 
-    display: flex; 
-    flex-direction: column; 
-    padding: 25px; 
-    position: relative;
-    border: none !important; /* Tüm kenarlıkları kaldırır */
-}
+        .player-side { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 25px; 
+            position: relative;
+            border: none !important; 
+        }
 
-/* Sadece birinci oyuncunun SOLUNA (ekranın tam ortasına) çizgi ekleyelim */
-/* LTR mantığında sol, RTL'de ekranın ortası olur */
-#p1-side {
-    border-left: 2px dashed #cbd5e1 !important;
-}
-        .d-time-box { background: white; border-radius: 30px; padding: 15px; margin: 20px 0; border: 10px solid #f8faff; flex: 0.4; display: flex; justify-content: center; align-items: center; }
-        .d-time-text { font-size: 7.5rem; font-family: 'Courier New', monospace; font-weight: bold; }
+        #p1-side { border-left: 2px dashed #cbd5e1 !important; }
+        .d-time-box { background: white; border-radius: 30px; padding: 15px; margin: 20px 0; border: 10px solid #f8faff; flex: 0.4; display: flex; justify-content: center; align-items: center; min-height: 200px; }
+        .d-time-text { font-size: 7.5rem; font-family: 'Courier New', monospace; font-weight: bold; display: flex; justify-content: center; align-items: center; }
+        
         .d-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex: 0.5; }
-.d-opt-btn { 
-    background: white; 
-    border: 3px solid #e2e8f0; 
-    border-radius: 20px; 
-    font-size: 3rem;
-    font-weight: normal;
-    cursor: pointer; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    text-align: center; 
-}
+        .d-opt-btn { 
+            background: white; 
+            border: 3px solid #e2e8f0; 
+            border-radius: 20px; 
+            font-size: 3rem;
+            font-weight: normal;
+            cursor: pointer; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+        }
 
-        /* --- İLERLEME ÇUBUĞU --- */
+        /* --- YENİ GERÇEKÇİ SVG ANALOG SAAT --- */
+        .analog-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
+        }
+
+        .analog-wrapper.single { width: 280px; height: 280px; }
+        .analog-wrapper.duel { width: 180px; height: 180px; }
+        
+        .analog-clock-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
         .progress-bar { height: 18px; background: #e2e8f0; margin-top: 20px; border-radius: 10px; display: flex; overflow: hidden; width: 100%; }
         .segment { flex: 1; border-right: 2px solid white; transition: background 0.3s; }
 
-        /* --- DURUMLAR & ANİMASYONLAR --- */
         .correct { background: var(--correct) !important; color: white !important; border-color: var(--correct) !important; }
         .wrong { background: var(--wrong) !important; color: white !important; border-color: var(--wrong) !important; animation: shake 0.4s; }
         .selected { border-color: var(--p1-color); background: #f0f9ff; }
@@ -179,23 +253,52 @@
 </head>
 <body>
 
-    <audio id="audioMain" src="yonergesaat.wav"></audio>
-    <audio id="audioClick" src="click.wav"></audio>
-    <audio id="audioCorrect" src="correct.wav"></audio>
-    <audio id="audioWrong" src="wrong.wav"></audio>
+  <audio id="audioMain" src="yonergesaat.mp3"></audio> 
+    <audio id="audioClick" src="https://assets.mixkit.co/active_storage/sfx/2588/2588-preview.mp3"></audio>
+    <audio id="audioCorrect" src="https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3"></audio>
+    <audio id="audioWrong" src="https://assets.mixkit.co/active_storage/sfx/2569/2569-preview.mp3"></audio>
 
-    <a href="index.html" class="nav-btn back-home" id="homeBtn">🏠</a>
-    <button class="nav-btn back-menu" id="menuBtn" onclick="location.reload()">↩</button>
+    <a href="index.html" class="nav-btn back-home" id="homeBtn" title="الرئيسية">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+    </a>
+    <button class="nav-btn back-menu" id="menuBtn" onclick="location.reload()" title="العودة">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="20" y1="12" x2="4" y2="12"></line>
+            <polyline points="10 18 4 12 10 6"></polyline>
+        </svg>
+    </button>
 
     <div id="startScreen">
-        <h1> لُعْبَة السّاعَة الرَّقْمِيَّة</h1>
+        <h1> لُعْبَة السّاعَة</h1>
+        
+        <div class="toggle-container">
+            <div class="toggle-label active-label" id="labelDigital">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+                    <text x="12" y="14.5" text-anchor="middle" font-family="'AraKom', monospace" font-size="8" font-weight="normal" fill="currentColor" stroke="none">١٢:٠٠</text>
+                </svg>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="clockTypeToggle" onchange="toggleClockFormat()">
+                <span class="slider"></span>
+            </label>
+            <div class="toggle-label" id="labelAnalog">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </div>
+        </div>
+
         <div class="mode-container">
             <div class="mode-btn" onclick="startSingle()">
                 <div class="mode-icon">👤</div>
                 <div class="mode-title"> لاعِب </div>
             </div>
             <div class="mode-btn" onclick="startDuel()">
-
                 <div class="mode-icon">👥</div>
                 <div class="mode-title">لاعِبان</div>
             </div>
@@ -207,7 +310,8 @@
             <div style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; margin-bottom: 10px;">
                 <div style="font-size: 3rem; color: var(--star-gold); text-align: right;" id="s-score-container">⭐ <span id="s-score">0</span></div>
                 <div class="clock-label-big" style="margin-bottom: 0;">كَم السّاعَة؟</div>
-                <div></div> </div>
+                <div></div> 
+            </div>
             
             <div class="s-time-display" id="s-time">٠٠:٠٠</div>
             <div class="progress-bar" id="s-prog" style="width: 80%; margin-top: 40px;"></div>
@@ -222,7 +326,7 @@
                 <div style="font-size: 3rem; font-weight: bold; color: var(--p1-color); text-align: center;">كَم السّاعَة؟</div>
                 <div></div>
             </div>
-            <div class="d-time-box"><div class="d-time-text" id="p1-time">٠٠:٠٠</div></div>
+            <div class="d-time-box"><div class="d-time-text" id="p1-time" style="color:var(--p1-color);">٠٠:٠٠</div></div>
             <div class="d-options-grid" id="p1-opts"></div>
             <div class="progress-bar" id="p1-prog"></div>
         </div>
@@ -233,7 +337,7 @@
                 <div style="font-size: 3rem; font-weight: bold; color: var(--p2-color); text-align: center;">كَم السّاعَة؟</div>
                 <div></div>
             </div>
-            <div class="d-time-box"><div class="d-time-text" id="p2-time">٠٠:٠٠</div></div>
+            <div class="d-time-box"><div class="d-time-text" id="p2-time" style="color:var(--p2-color);">٠٠:٠٠</div></div>
             <div class="d-options-grid" id="p2-opts"></div>
             <div class="progress-bar" id="p2-prog"></div>
         </div>
@@ -248,217 +352,301 @@
         { h: "11", ar: "١١", a: "السّاعَة الحادِيَة عَشْرَة" }, { h: "12", ar: "١٢", a: "السّاعَة الثّانِيَة عَشْرَة" }
     ];
 
-   // --- DEĞİŞKENLER VE SES TANIMLAMALARI ---
-const yonergeSesi = new Audio('yonergesaat.mp3'); // Ses dosyasını tanımladık
-let p1 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
-let p2 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
-const TOTAL = 5; 
-let currentGameMode = ""; 
+    let p1 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null, currentQ: null };
+    let p2 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null, currentQ: null };
+    const TOTAL = 5; 
+    let currentGameMode = ""; 
+    let clockFormat = "digital"; 
 
-// --- SES ÇALMA FONKSİYONU ---
-function playS(id) { 
-    const a = document.getElementById(id); 
-    if(a){ a.currentTime=0; a.play(); } 
-}
-
-// --- OYUN HAZIRLIK VE BAŞLATMA ---
-function prepareGame() {
-    document.getElementById('startScreen').classList.add('hidden');
-    document.getElementById('homeBtn').classList.add('hidden');
-    document.getElementById('menuBtn').style.display = 'flex';
-    playS('audioMain');
-    
-    // Yönerge sesini burada çalıyoruz (Her iki mod için ortak hazırlık aşaması)
-    yonergeSesi.play(); 
-}
-
-function startSingle() {
-    currentGameMode = "single"; 
-    prepareGame();
-    document.getElementById('singleGame').style.display = 'flex';
-    setupProgressBar('s-prog');
-    loadSingle();
-}
-
-function startDuel() {
-    currentGameMode = "duel"; 
-    prepareGame();
-    document.getElementById('duelGame').style.display = 'flex';
-    setupProgressBar('p1-prog');
-    setupProgressBar('p2-prog');
-    loadDuelRound();
-}
-
-// --- SAYFA YÜKLENDİĞİNDE BUTONLARI BAĞLA ---
-document.addEventListener('DOMContentLoaded', () => {
-    // HTML'deki buton ID'lerinizin 'singlePlayerBtn' ve 'multiPlayerBtn' olduğunu varsayıyoruz
-    const singleBtn = document.getElementById('singlePlayerBtn');
-    if (singleBtn) {
-        singleBtn.addEventListener('click', startSingle);
+    function playS(id) { 
+        const a = document.getElementById(id); 
+        if(a){ a.currentTime=0; a.play(); } 
     }
 
-    const multiBtn = document.getElementById('multiPlayerBtn');
-    if (multiBtn) {
-        multiBtn.addEventListener('click', startDuel);
+    function toggleClockFormat() {
+        const isAnalog = document.getElementById('clockTypeToggle').checked;
+        clockFormat = isAnalog ? "analog" : "digital";
+        
+        document.getElementById('labelDigital').classList.toggle('active-label', !isAnalog);
+        document.getElementById('labelAnalog').classList.toggle('active-label', isAnalog);
+
+        if (currentGameMode === "single" && p1.currentQ) {
+            updateClockDisplay('s-time', p1.currentQ, "single");
+        } else if (currentGameMode === "duel" && p1.currentQ) {
+            updateClockDisplay('p1-time', p1.currentQ, "duel");
+            updateClockDisplay('p2-time', p2.currentQ, "duel");
+        }
     }
-});
 
-// --- DİĞER FONKSİYONLAR (Restart, Progress, Load vs.) ---
+    // Gerçekçi SVG Saati Üreten Fonksiyon
+// Yepyeni, Minimalist ve Modern SVG Saat Tasarımı (Tüm Ayarlar Açık)
+    function createRealisticSVGClock() {
+        
+        // --- AYARLAR BURADA ---
+        const rakamMerkezeUzaklik = 39; // Rakamların noktalara yakınlığı (Büyüttükçe yaklaşır)
+        const ciftRakamBoslugu = "-1.5px"; // İkili rakamlar arasındaki boşluk (Daraltmak için "-2px" vb.)
+        
+        // ÇUBUK BOYUTLARI (Merkez 50'dir. Sayıyı 50'ye yaklaştırdıkça çubuk KISALIR)
+        const yelkovanUcu = 19; // Eskiden 16'ydı. Kısaltmak için sayıyı büyüt (Örn: 25, 28)
+        const akrepUcu = 31;    // Eskiden 28'di. Kısaltmak için sayıyı büyüt (Örn: 36, 38)
+        // ----------------------
 
-function restartGame() {
-    document.getElementById('customAlert').style.display = 'none';
-    p1 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
-    p2 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null };
-    
-    if(document.getElementById('s-score')) document.getElementById('s-score').textContent = "0";
-    if(document.getElementById('p1-score')) document.getElementById('p1-score').textContent = "⭐ 0";
-    if(document.getElementById('p2-score')) document.getElementById('p2-score').textContent = "⭐ 0";
+        const arabicNums = ['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠', '١١', '١٢'];
+        
+        let ticks = '';
+        for(let i=0; i<60; i++) {
+            const isHour = i % 5 === 0;
+            const radius = 50; 
+            const angle = (i * 6 - 90) * (Math.PI / 180);
+            const cx = 50 + radius * Math.cos(angle);
+            const cy = 50 + radius * Math.sin(angle);
+            
+            if (isHour) {
+                ticks += `<circle cx="${cx}" cy="${cy}" r="1.5" fill="#64748b" />`;
+            } else {
+                ticks += `<circle cx="${cx}" cy="${cy}" r="0.5" fill="#cbd5e1" />`;
+            }
+        }
 
-    if (currentGameMode === "single") {
+        let numbers = '';
+        for(let i=1; i<=12; i++) {
+            const angle = (i * 30 - 90) * (Math.PI / 180);
+            
+            const x = 50 + rakamMerkezeUzaklik * Math.cos(angle);
+            const y = 50 + rakamMerkezeUzaklik * Math.sin(angle);
+            
+            numbers += `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" letter-spacing="${ciftRakamBoslugu}" font-family="'AraKom', sans-serif" font-size="13" font-weight="normal" fill="#1e293b">${arabicNums[i-1]}</text>`;
+        }
+
+        return `
+        <svg class="analog-clock-svg" viewBox="0 0 100 100" style="filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06));">
+            <circle cx="50" cy="50" r="49" fill="#ffffff" stroke="#f8fafc" stroke-width="2"/>
+            <circle cx="50" cy="50" r="47" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+            
+            ${ticks}
+            ${numbers}
+            
+            <g class="minute-hand" style="transform-origin: 50px 50px; transform: rotate(0deg); transition: transform 0.6s cubic-bezier(0.5, 2.5, 0.4, 1);">
+                <line x1="50" y1="50" x2="50" y2="${yelkovanUcu}" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" />
+            </g>
+            
+            <g class="hour-hand" style="transform-origin: 50px 50px; transform: rotate(0deg); transition: transform 0.6s cubic-bezier(0.5, 2.5, 0.4, 1);">
+                <line x1="50" y1="50" x2="50" y2="${akrepUcu}" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round" />
+            </g>
+            
+            <circle cx="50" cy="50" r="3.5" fill="#ffffff" stroke="var(--accent)" stroke-width="1.5"/>
+            <circle cx="50" cy="50" r="1.5" fill="#1e293b" />
+        </svg>
+        `;
+    }
+
+    function updateClockDisplay(containerId, qObj, sizeClass) {
+        const container = document.getElementById(containerId);
+        
+        if (clockFormat === "digital") {
+            container.innerHTML = qObj.ar + ':٠٠';
+        } else {
+            let svgWrapper = container.querySelector('.analog-wrapper');
+            
+            // Eğer SVG kapsayıcısı yoksa, HTML'e enjekte et
+            if (!svgWrapper) {
+                container.innerHTML = `<div class="analog-wrapper ${sizeClass}">${createRealisticSVGClock()}</div>`;
+                svgWrapper = container.querySelector('.analog-wrapper');
+            }
+            
+            const hour = parseInt(qObj.h);
+            const targetDeg = hour * 30;
+            
+            // CSS animasyonunun çalışması için ufak bir gecikme ile transform uyguluyoruz
+            setTimeout(() => {
+                const hourHand = svgWrapper.querySelector('.hour-hand');
+                if(hourHand) hourHand.style.transform = `rotate(${targetDeg}deg)`;
+            }, 10);
+        }
+    }
+
+    function prepareGame() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('homeBtn').classList.add('hidden');
+        document.getElementById('menuBtn').style.display = 'flex';
+        playS('audioMain');
+    }
+
+    function startSingle() {
+        currentGameMode = "single"; 
+        prepareGame();
+        document.getElementById('singleGame').style.display = 'flex';
         setupProgressBar('s-prog');
         loadSingle();
-    } else {
+    }
+
+    function startDuel() {
+        currentGameMode = "duel"; 
+        prepareGame();
+        document.getElementById('duelGame').style.display = 'flex';
         setupProgressBar('p1-prog');
         setupProgressBar('p2-prog');
         loadDuelRound();
     }
-}
 
-function setupProgressBar(id) {
-    const bar = document.getElementById(id);
-    bar.innerHTML = '';
-    for(let i=0; i<TOTAL; i++) {
-        let s = document.createElement('div');
-        s.className = 'segment';
-        bar.appendChild(s);
+    function restartGame() {
+        document.getElementById('customAlert').style.display = 'none';
+        p1 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null, currentQ: null };
+        p2 = { score: 0, current: 0, selection: null, time: 0, correct: false, btn: null, currentQ: null };
+        
+        if(document.getElementById('s-score')) document.getElementById('s-score').textContent = "0";
+        if(document.getElementById('p1-score')) document.getElementById('p1-score').textContent = "⭐ 0";
+        if(document.getElementById('p2-score')) document.getElementById('p2-score').textContent = "⭐ 0";
+
+        if (currentGameMode === "single") {
+            setupProgressBar('s-prog');
+            loadSingle();
+        } else {
+            setupProgressBar('p1-prog');
+            setupProgressBar('p2-prog');
+            loadDuelRound();
+        }
     }
-}
 
-function loadSingle() {
-    if(p1.current >= TOTAL) { showWinner("single"); return; }
-    
-    const q = data[Math.floor(Math.random()*data.length)];
-    document.getElementById('s-time').textContent = `${q.ar}:٠٠`;
-    let opts = [q.a];
-    while(opts.length < 4) { let r = data[Math.floor(Math.random()*data.length)].a; if(!opts.includes(r)) opts.push(r); }
-    opts.sort(() => Math.random() - 0.5);
-    
-    const cont = document.getElementById('s-opts'); cont.innerHTML = '';
-    opts.forEach(o => {
-        const b = document.createElement('div'); b.className='s-opt-btn'; b.textContent=o;
-        b.onclick = () => {
-            if(p1.selection) return; p1.selection=true;
-            const segments = document.getElementById('s-prog').children;
-            if(o === q.a) { 
-                b.classList.add('correct'); playS('audioCorrect'); 
-                p1.score += 20;
-                document.getElementById('s-score').textContent = p1.score;
-                if(segments[p1.current]) segments[p1.current].style.background = 'var(--correct)';
-            } else { 
-                b.classList.add('wrong'); playS('audioWrong'); 
-                if(segments[p1.current]) segments[p1.current].style.background = 'var(--wrong)';
-            }
-            setTimeout(() => { p1.selection=null; p1.current++; loadSingle(); }, 1200);
-        };
-        cont.appendChild(b);
-    });
-}
+    function setupProgressBar(id) {
+        const bar = document.getElementById(id);
+        bar.innerHTML = '';
+        for(let i=0; i<TOTAL; i++) {
+            let s = document.createElement('div');
+            s.className = 'segment';
+            bar.appendChild(s);
+        }
+    }
 
-function loadDuelRound() {
-    if(p1.current >= TOTAL) { showWinner(); return; }
-    p1.selection = p2.selection = null;
-    p1.btn = p2.btn = null;
-
-    [1, 2].forEach(n => {
-        const p = (n === 1) ? p1 : p2;
-        const q = data[Math.floor(Math.random() * data.length)];
-        p.ans = q.a; 
-        document.getElementById(`p${n}-time`).textContent = `${q.ar}:٠٠`;
+    function loadSingle() {
+        if(p1.current >= TOTAL) { showWinner("single"); return; }
+        
+        const q = data[Math.floor(Math.random()*data.length)];
+        p1.currentQ = q; 
+        
+        updateClockDisplay('s-time', q, "single");
         
         let opts = [q.a];
-        while(opts.length < 4) {
-            let r = data[Math.floor(Math.random() * data.length)].a;
-            if(!opts.includes(r)) opts.push(r);
-        }
+        while(opts.length < 4) { let r = data[Math.floor(Math.random()*data.length)].a; if(!opts.includes(r)) opts.push(r); }
         opts.sort(() => Math.random() - 0.5);
         
-        const cont = document.getElementById(`p${n}-opts`);
-        cont.innerHTML = ''; 
-        
+        const cont = document.getElementById('s-opts'); cont.innerHTML = '';
         opts.forEach(o => {
-            const b = document.createElement('div');
-            b.className = 'd-opt-btn';
-            b.textContent = o;
-            b.onclick = () => { 
-                if(p.selection) return; 
-                playS('audioClick');
-                p.selection = b; 
-                p.time = Date.now(); 
-                p.correct = (o === p.ans); 
-                p.btn = b; 
-                b.classList.add('selected'); 
-                if(p1.selection && p2.selection) revealDuel(); 
+            const b = document.createElement('div'); b.className='s-opt-btn'; b.textContent=o;
+            b.onclick = () => {
+                if(p1.selection) return; p1.selection=true;
+                const segments = document.getElementById('s-prog').children;
+                if(o === q.a) { 
+                    b.classList.add('correct'); playS('audioCorrect'); 
+                    p1.score += 20;
+                    document.getElementById('s-score').textContent = p1.score;
+                    if(segments[p1.current]) segments[p1.current].style.background = 'var(--correct)';
+                } else { 
+                    b.classList.add('wrong'); playS('audioWrong'); 
+                    if(segments[p1.current]) segments[p1.current].style.background = 'var(--wrong)';
+                }
+                setTimeout(() => { p1.selection=null; p1.current++; loadSingle(); }, 1200);
             };
             cont.appendChild(b);
         });
-    });
-}
-
-function revealDuel() {
-    const first = (p1.correct && (!p2.correct || p1.time < p2.time)) ? p1 : (p2.correct ? p2 : null);
-    [1,2].forEach(n => {
-        const p = n===1?p1:p2; const segs = document.getElementById(`p${n}-prog`).children;
-        if(p.correct) { 
-            p.btn.classList.add('correct'); playS('audioCorrect'); 
-            if(segs[p.current]) segs[p.current].style.background='var(--correct)';
-            setTimeout(() => { 
-                showPop(n,"+10","var(--correct)"); p.score+=10; updateDuelScore(n);
-                if(p===first){ setTimeout(()=>{ showPop(n,"+10 ⚡️","var(--star-gold)"); p.score+=10; updateDuelScore(n); },600); }
-            },300);
-        } else { 
-            p.btn.classList.add('wrong'); playS('audioWrong'); 
-            if(segs[p.current]) segs[p.current].style.background='var(--wrong)'; 
-        }
-    });
-    setTimeout(() => { p1.current++; p2.current++; loadDuelRound(); }, 2500);
-}
-
-function showWinner(mode = "duel") {
-    const modal = document.getElementById('customAlert');
-    const title = document.getElementById('alertTitle');
-    const score = document.getElementById('alertScore');
-
-    if (mode === "single") {
-        title.innerHTML = "🏁 اِنْتَهَت اللُّعْبَة!";
-        score.innerHTML = `مجموع النقاط: <span style="color:var(--accent)">${p1.score}</span>`;
-    } else {
-        let winTxt = "";
-        if (p1.score > p2.score) { winTxt = "🏆 الفائز: اللاعب الأول!"; } 
-        else if (p2.score > p1.score) { winTxt = "🏆 الفائز: اللاعب الثاني!"; } 
-        else { winTxt = "🤝 تعادل!"; }
-        title.textContent = winTxt;
-        score.innerHTML = `<span style="color:var(--p1-color)">${p1.score}</span> - <span style="color:var(--p2-color)">${p2.score}</span>`;
     }
-    modal.style.display = 'flex';
-}
 
-function showPop(n,t,c) { 
-    const side = document.getElementById(`p${n}-side`); 
-    const pop = document.createElement('div'); pop.className='score-pop'; pop.textContent=t; pop.style.color=c; 
-    side.appendChild(pop); setTimeout(()=>pop.remove(),1000); 
-}
+    function loadDuelRound() {
+        if(p1.current >= TOTAL) { showWinner(); return; }
+        p1.selection = p2.selection = null;
+        p1.btn = p2.btn = null;
 
-function updateDuelScore(n) { 
-    document.getElementById(`p${n}-score`).textContent = `⭐ ${n===1?p1.score:p2.score}`; 
-}
+        [1, 2].forEach(n => {
+            const p = (n === 1) ? p1 : p2;
+            const q = data[Math.floor(Math.random() * data.length)];
+            p.ans = q.a; 
+            p.currentQ = q; 
+            
+            updateClockDisplay(`p${n}-time`, q, "duel");
+            
+            let opts = [q.a];
+            while(opts.length < 4) {
+                let r = data[Math.floor(Math.random() * data.length)].a;
+                if(!opts.includes(r)) opts.push(r);
+            }
+            opts.sort(() => Math.random() - 0.5);
+            
+            const cont = document.getElementById(`p${n}-opts`);
+            cont.innerHTML = ''; 
+            
+            opts.forEach(o => {
+                const b = document.createElement('div');
+                b.className = 'd-opt-btn';
+                b.textContent = o;
+                b.onclick = () => { 
+                    if(p.selection) return; 
+                    playS('audioClick');
+                    p.selection = b; 
+                    p.time = Date.now(); 
+                    p.correct = (o === p.ans); 
+                    p.btn = b; 
+                    b.classList.add('selected'); 
+                    if(p1.selection && p2.selection) revealDuel(); 
+                };
+                cont.appendChild(b);
+            });
+        });
+    }
+
+    function revealDuel() {
+        const first = (p1.correct && (!p2.correct || p1.time < p2.time)) ? p1 : (p2.correct ? p2 : null);
+        [1,2].forEach(n => {
+            const p = n===1?p1:p2; const segs = document.getElementById(`p${n}-prog`).children;
+            if(p.correct) { 
+                p.btn.classList.add('correct'); playS('audioCorrect'); 
+                if(segs[p.current]) segs[p.current].style.background='var(--correct)';
+                setTimeout(() => { 
+                    showPop(n,"+10","var(--correct)"); p.score+=10; updateDuelScore(n);
+                    if(p===first){ setTimeout(()=>{ showPop(n,"+10 ⚡️","var(--star-gold)"); p.score+=10; updateDuelScore(n); },600); }
+                },300);
+            } else { 
+                p.btn.classList.add('wrong'); playS('audioWrong'); 
+                if(segs[p.current]) segs[p.current].style.background='var(--wrong)'; 
+            }
+        });
+        setTimeout(() => { p1.current++; p2.current++; loadDuelRound(); }, 2500);
+    }
+
+    function showWinner(mode = "duel") {
+        const modal = document.getElementById('customAlert');
+        const title = document.getElementById('alertTitle');
+        const score = document.getElementById('alertScore');
+
+        if (mode === "single") {
+            title.innerHTML = "🏁 اِنْتَهَت اللُّعْبَة!";
+            score.innerHTML = `<span style="color:var(--accent)">${p1.score}</span>`;
+        } else {
+            let winTxt = "";
+            if (p1.score > p2.score) { winTxt = "🏆 الفائز: اللاعب الأول!"; } 
+            else if (p2.score > p1.score) { winTxt = "🏆 الفائز: اللاعب الثاني!"; } 
+            else { winTxt = "🤝 تعادل!"; }
+            title.textContent = winTxt;
+            score.innerHTML = `<span style="color:var(--p1-color)">${p1.score}</span> - <span style="color:var(--p2-color)">${p2.score}</span>`;
+        }
+        modal.style.display = 'flex';
+    }
+
+    function showPop(n,t,c) { 
+        const side = document.getElementById(`p${n}-side`); 
+        const pop = document.createElement('div'); pop.className='score-pop'; pop.textContent=t; pop.style.color=c; 
+        side.appendChild(pop); setTimeout(()=>pop.remove(),1000); 
+    }
+
+    function updateDuelScore(n) { 
+        document.getElementById(`p${n}-score`).textContent = `⭐ ${n===1?p1.score:p2.score}`; 
+    }
 </script>
 <style>
-    /* Özel Uyarı/Bitiş Ekranı Tasarımı */
     #customAlert {
         display: none;
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 23, 42, 0.8); /* Koyu transparan arka plan */
+        background: rgba(15, 23, 42, 0.8);
         backdrop-filter: blur(8px);
         z-index: 9999;
         justify-content: center;
