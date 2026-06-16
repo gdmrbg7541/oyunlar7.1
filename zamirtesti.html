@@ -133,9 +133,10 @@
     #game-screen {
         display: none;
         flex-direction: column;
-        justify-content: space-between; 
+        justify-content: center; /* space-between yerine center kullanıyoruz */
+        gap: 1.5vh; /* Tüm elementler arasına orantılı ve dar bir boşluk ekler */
         height: 100vh;
-        padding: 15px 40px;
+        padding: 10px 40px; /* Üst-alt boşluğu biraz kıstık */
         position: relative;
     }
 
@@ -143,8 +144,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 10px;
+        margin-top: 0; /* Gereksiz margin kaldırıldı */
     }
+    
     .instruction {
         font-size: clamp(1.6rem, 2.2vw, 3rem); 
         color: #4a3f8a;
@@ -157,7 +159,7 @@
         display: flex;
         justify-content: center;
         gap: 15px; 
-        margin-top: 10px;
+        margin-top: 0; /* Gereksiz margin kaldırıldı */
     }
     .pro-badge {
         font-size: clamp(1.4rem, 1.8vw, 2.5rem); 
@@ -191,17 +193,17 @@
     }
 
     /* Cümle Alanı */
-    .sentence-wrapper {
+   .sentence-wrapper {
         display: flex;
         justify-content: center;
-        margin: 1.5vh 0 2vh 0; 
+        margin: 0; /* marginler kaldırıldı, gap yönetecek */
     }
     .sentence-area {
         text-align: center;
-        font-size: clamp(3rem, 4.5vw, 6.5rem); /* 1080p'de çok şişmez */
+        font-size: clamp(3rem, 6vw, 6.5rem);
         line-height: 1.4;
         color: #4a3f8a;
-        padding: 1.5vh 3vw;
+        padding: 0.5vh 3vw; /* Dikey iç boşluk (padding) daraltıldı */
     }
     .blank {
         display: inline-block;
@@ -216,25 +218,26 @@
         display: flex;
         flex-grow: 1;
         gap: 15px; 
-        margin-bottom: 10px;
+        margin-bottom: 0; /* Gereksiz margin kaldırıldı */
+        min-height: 0; /* Flexbox'ın taşmayı önleyip daralabilmesi için kritik kural */
     }
     .player-side {
         flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 10px; 
-        padding: 1.5vh 1.5vw; 
+        gap: 8px; /* Şıklar ile başlık arası boşluk daraltıldı */
+        padding: 1vh 1.5vw; /* Dikey padding daraltıldı */
     }
     .side-title {
         text-align: center;
         font-size: clamp(1.8rem, 2.5vw, 3.5rem); 
         color: #4a3f8a;
-        margin-bottom: 5px;
+        margin-bottom: 0; /* Gereksiz margin kaldırıldı */
     }
-    .opt-grid {
+   .opt-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 15px; 
+        gap: 10px; /* Butonlar arası boşluk daraltıldı */
         flex-grow: 1;
         position: relative;
     }
@@ -250,7 +253,7 @@
         align-items: center;
         justify-content: center;
         background: rgba(255, 255, 255, 0.75);
-        padding: 1vw; 
+        padding: 0.5vw; /* İç boşluk biraz daraltıldı */
         word-break: break-word;
     }
     .opt-btn:hover { transform: scale(1.02); background: rgba(255, 255, 255, 0.95); }
@@ -261,14 +264,14 @@
 
     /* TEK KİŞİLİK MOD (1080p ve 4K dengeli boyutlar) */
     .mode-1p .opt-btn {
-        font-size: clamp(2.8rem, 4vw, 6rem); 
-        min-height: clamp(90px, 12vh, 180px); 
+        font-size: clamp(2.8rem, 5vw, 6rem); 
+        min-height: clamp(60px, 10vh, 150px); /* Dikey taşmayı önlemek için min-height azaltıldı */
     }
 
     /* İKİ KİŞİLİK MOD */
     .mode-2p .opt-btn {
-        font-size: clamp(2rem, 3vw, 4.5rem); 
-        min-height: clamp(80px, 10vh, 150px);
+        font-size: clamp(2rem, 4vw, 4.5rem); 
+        min-height: clamp(50px, 8vh, 120px); /* Dikey taşmayı önlemek için min-height azaltıldı */
     }
 
     /* Navigasyon Alanı */
@@ -276,8 +279,8 @@
         display: flex;
         justify-content: center;
         gap: 15px; 
-        padding-bottom: 1vh; 
-        margin-top: 1vh; 
+        padding-bottom: 5px; /* Alt boşluk iyice kısıldı */
+        margin-top: 0; /* Margin kaldırıldı */
         direction: ltr; 
     }
 
@@ -510,15 +513,15 @@ function sesTikla() { _tone(900,0.04,'sine',0.12); }
 
 <script>
 const dbAll = [
-    {p:"هُوَ",s:"_____ في الصَّباحِ مُبَكِّرًا.",c:"يَسْتَيْقِظُ",w:["تَسْتَيْقِظُ","تَسْتَيْقِظينَ","أَسْتَيْقِظُ"], pId:"هو"},
-    {p:"هِيَ",s:"_____ الفَجْرَ.",c:"تُصَلِّي",w:["يُصَلّي","تُصَلّينَ","أُصَلّي"], pId:"هي"},
-    {p:"هُوَ",s:"_____ الفَطورَ مَعَ عائِلَتِهِ.",c:"يَتَناوَلُ",w:["تَتَناوَلُ","تَتَناوَلينَ","أَتَناوَلُ"], pId:"هو"},
+    {p:"هُوَ",s:"_____ في الصَّباح مُبَكِّرًا.",c:"يَسْتَيْقِظُ",w:["تَسْتَيْقِظُ","تَسْتَيْقِظينَ","أَسْتَيْقِظُ"], pId:"هو"},
+    {p:"هِيَ",s:"_____ الفَجْر.",c:"تُصَلّي",w:["يُصَلّي","تُصَلّينَ","أُصَلّي"], pId:"هي"},
+    {p:"هُوَ",s:"_____ الفَطور مَع عائِلَتِه.",c:"يَتَناوَلُ",w:["تَتَناوَلُ","تَتَناوَلينَ","أَتَناوَلُ"], pId:"هو"},
     {p:"هِيَ",s:"_____ مَلابِسَها.",c:"تَلْبَسُ",w:["يَلْبَسُ","تَلْبَسينَ","أَلْبَسُ"], pId:"هي"},
     {p:"أَنْتَ",s:"_____ إِلى المَدْرَسَة.",c:"تَذْهَبُ",w:["يَذْهَبُ","تَذْهَبينَ","أَذْهَبُ"], pId:"أنت"},
-    {p:"أَنْتِ",s:"_____ إِلى البَيْتِ ظُهْرًا.",c:"تَرْجِعينَ",w:["تَرْجِعُ","يَرْجِعُ","أَرْجِعُ"], pId:"أنت_f"},
-    {p:"أَنْتَ",s:"_____ أُمَّكَ في البَيْت.",c:"تُساعِدُ",w:["تُساعِدينَ","يُساعِدُ","أُساعِدُ"], pId:"أنت"},
-    {p:"أَنْتِ",s:"_____ الدُروسَ مَساءً.",c:"تَدْرُسينَ",w:["تَدْرُسُ","يَدْرُسُ","أَدْرُسُ"], pId:"أنت_f"},
-    {p:"أَنا",s:"_____ في الصَّباحِ مُبَكِّرًا.",c:"أَسْتَيْقِظُ",w:["يَسْتَيْقِظُ","تَسْتَيْقِظُ","تَسْتَيْقِظينَ"], pId:"أنا"},
+    {p:"أَنْتِ",s:"_____ إِلى البَيْت ظُهْرًا.",c:"تَرْجِعينَ",w:["تَرْجِعُ","يَرْجِعُ","أَرْجِعُ"], pId:"أنت_f"},
+    {p:"أَنْتَ",s:"_____ أُمَّك في البَيْت.",c:"تُساعِدُ",w:["تُساعِدينَ","يُساعِدُ","أُساعِدُ"], pId:"أنت"},
+    {p:"أَنْتِ",s:"_____ الدُروس مَساءً.",c:"تَدْرُسينَ",w:["تَدْرُسُ","يَدْرُسُ","أَدْرُسُ"], pId:"أنت_f"},
+    {p:"أَنا",s:"_____ في الصَّباح مُبَكِّرًا.",c:"أَسْتَيْقِظُ",w:["يَسْتَيْقِظُ","تَسْتَيْقِظُ","تَسْتَيْقِظينَ"], pId:"أنا"},
     {p:"أَنا",s:"_____ دُروسي مَساءً.",c:"أَدْرُسُ",w:["تَدْرُسُ","يَدْرُسُ","تَدْرُسينَ"], pId:"أنا"},
     {p:"أَنا",s:"_____ إِلى المَدْرَسَة.",c:"أَذْهَبُ",w:["يَذْهَبُ","تَذْهَبُ","تَذْهَبينَ"], pId:"أنا"},
     {p:"أَنا",s:"_____ أُمِّي في البَيْت.",c:"أُساعِدُ",w:["يُساعِدُ","تُساعِدُ","تُساعدِينَ"], pId:"أنا"}
