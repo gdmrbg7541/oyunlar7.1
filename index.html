@@ -160,9 +160,9 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             
-            flex: 1 1 calc(33.333% - 25px);
+            flex: 1 1 calc(25% - 25px);
             max-width: 320px;
-            min-width: clamp(120px, 35%, 240px); /* Mobilde çok daha fazla daralabilir */
+            min-width: clamp(120px, 22%, 220px); /* 4 kart yan yana sığabilmesi için küçültüldü */
             min-height: clamp(120px, 18vh, 190px);
             z-index: 1;
         }
@@ -292,37 +292,43 @@
         </div>
 
         <div class="grid-container">
-            <a href="kelime.html" class="game-card" data-num="1">
+
+             <a href="yaz.html" class="game-card" data-num="1">
+                <div class="icon-circle">✏️</div>
+                <h2>تَرْتيب الحُروف</h2>
+            </a>
+
+            <a href="kelime.html" class="game-card" data-num="2">
                 <div class="icon-circle">🎯</div>
                 <h2>صَيْد الرُّموز</h2>
             </a>
 
-            <a href="sestesti.html" class="game-card" data-num="2">
+            <a href="sestesti.html" class="game-card" data-num="3">
                 <div class="icon-circle">🎧</div>
                 <h2>اخْتِبار الاِسْتِماع</h2>
             </a>
 
-             <a href="evethayir.html" class="game-card" data-num="3">
+             <a href="evethayir.html" class="game-card" data-num="4">
                 <div class="icon-circle">✅</div>
                 <h2>مُسابَقَة نَعَمْ أَوْ لا</h2>
              </a>
 
-            <a href="hafizakarti.html" class="game-card" data-num="4">
+            <a href="hafizakarti.html" class="game-card" data-num="5">
                 <div class="icon-circle">🧠</div>
                 <h2>لُعْبَة الذّاكِرَة</h2>
             </a>
 
-            <a href="zamirtesti.html" class="game-card" data-num="5">
+            <a href="zamirtesti.html" class="game-card" data-num="6">
                 <div class="icon-circle">📝</div>
                 <h2>اِخْتَر الفِعْل الصَّحيح</h2>
             </a>
 
-            <a href="saat.html" class="game-card" data-num="6">
+            <a href="saat.html" class="game-card" data-num="7">
                 <div class="icon-circle">⏰</div>
                 <h2>قِراءَة السّاعَة</h2>
             </a>
 
-             
+           
         </div>
     </div>
 
