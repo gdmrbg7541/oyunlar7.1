@@ -249,10 +249,11 @@
         }
 
         .emoji {
-            font-size: 12rem;
+            font-size: clamp(5rem, 12vh, 12rem); /* Uzun kelimelerde sığması için esnek font */
             line-height: 1;
             animation: bounce 2s infinite;
             margin: auto 0;
+            flex-shrink: 1; /* Alana sıkışırsa ufalsın */
         }
 
         .word-box {
@@ -586,35 +587,47 @@
 
     <script>
        const allWords = [
-    { cleanWord: "ملح", displayWord: "مِلْح", emoji: "🧂" },
-    { cleanWord: "شاي", displayWord: "شاي", emoji: "☕" },
-    { cleanWord: "خبز", displayWord: "خُبْز", emoji: "🍞" },
-    { cleanWord: "حليب", displayWord: "حَليب", emoji: "🥛" },
-    { cleanWord: "عسل", displayWord: "عَسَل", emoji: "🍯" },
-    { cleanWord: "بيض", displayWord: "بَيْض", emoji: "🥚" },
-    { cleanWord: "مكرونة", displayWord: "مَكَرونَة", emoji: "🍝" },
-    { cleanWord: "فواكه", displayWord: "فَواكِه", emoji: "🍎" },
-    { cleanWord: "خضراوات", displayWord: "خَضْراوات", emoji: "🥬" },
-    { cleanWord: "بصل", displayWord: "بَصَل", emoji: "🧅" },
-    { cleanWord: "تفاح", displayWord: "تُفّاح", emoji: "🍎" },
-    { cleanWord: "مشمش", displayWord: "مِشْمِش", emoji: "🍑" },
-    { cleanWord: "برتقال", displayWord: "بُرْتُقال", emoji: "🍊" },
-    { cleanWord: "كرز", displayWord: "كَرَز", emoji: "🍒" },
-    { cleanWord: "طماطم", displayWord: "طَماطِم", emoji: "🍅" },
-    { cleanWord: "خيار", displayWord: "خِيار", emoji: "🥒" },
-    { cleanWord: "جزر", displayWord: "جَزَر", emoji: "🥕" },
-    { cleanWord: "باذنجان", displayWord: "باذِنْجان", emoji: "🍆" },
-    { cleanWord: "بطاطا", displayWord: "بَطاطا", emoji: "🥔" },
-    { cleanWord: "فلفل", displayWord: "فُلْفُل", emoji: "🫑" },
-    { cleanWord: "فاصوليا", displayWord: "فاصولْيا", emoji: "🫘" },
-    { cleanWord: "موز", displayWord: "مَوْز", emoji: "🍌" },
-    { cleanWord: "عنب", displayWord: "عِنَب", emoji: "🍇" },
-    { cleanWord: "زيتون", displayWord: "زَيْتون", emoji: "🫒" },
-    { cleanWord: "بقالة", displayWord: "بَقّالَة", emoji: "🏪" },
-    { cleanWord: "علبة", displayWord: "عُلْبَة", emoji: "🥫" },
-    { cleanWord: "صندوق", displayWord: "صُنْدوق", emoji: "📦" },
-    { cleanWord: "كيس", displayWord: "كيس", emoji: "🛍️" }
-];
+            { cleanWord: "أستيقظ", displayWord: "أَسْتَيْقِظُ", emoji: "🌅" },
+            { cleanWord: "أتوضأ", displayWord: "أَتَوَضَّأُ", emoji: "💧" },
+            { cleanWord: "أصلي", displayWord: "أُصَلّي", emoji: "🕌" },
+            { cleanWord: "فطور", displayWord: "فَطور", emoji: "🍳" },
+            { cleanWord: "غداء", displayWord: "غَداء", emoji: "🍲" },
+            { cleanWord: "عشاء", displayWord: "عَشاء", emoji: "🍽️" },
+            { cleanWord: "مدرسة", displayWord: "مَدْرَسَة", emoji: "🏫" },
+            { cleanWord: "بيت", displayWord: "بَيْت", emoji: "🏠" },
+            { cleanWord: "ألبس", displayWord: "أَلْبَسُ", emoji: "👕" },
+            { cleanWord: "ملابس", displayWord: "مَلابِس", emoji: "👔" },
+            { cleanWord: "أرجع", displayWord: "أَرْجِعُ", emoji: "🔙" },
+            { cleanWord: "أدرس", displayWord: "أَدْرُسُ", emoji: "📖" },
+            { cleanWord: "أنام", displayWord: "أَنامُ", emoji: "😴" },
+            { cleanWord: "صباح", displayWord: "صَباح", emoji: "🌤️" },
+            { cleanWord: "ظهر", displayWord: "ظُهْر", emoji: "☀️" },
+            { cleanWord: "مساء", displayWord: "مَساء", emoji: "🌆" },
+            { cleanWord: "ليل", displayWord: "لَيْل", emoji: "🌙" },
+            { cleanWord: "ساعة", displayWord: "ساعَة", emoji: "⏰" },
+            { cleanWord: "زيتون", displayWord: "زَيْتون", emoji: "🫒" },
+            { cleanWord: "جبن", displayWord: "جُبْن", emoji: "🧀" },
+            { cleanWord: "حليب", displayWord: "حَليب", emoji: "🥛" },
+            { cleanWord: "لحم", displayWord: "لَحْم", emoji: "🥩" },
+            { cleanWord: "أرز", displayWord: "أُرْز", emoji: "🍚" },
+            { cleanWord: "سمك", displayWord: "سَمَك", emoji: "🐟" },
+            { cleanWord: "سلطة", displayWord: "سَلَطَة", emoji: "🥗" },
+            { cleanWord: "دجاج", displayWord: "دَجاج", emoji: "🍗" },
+            { cleanWord: "كفتة", displayWord: "كُفْتَة", emoji: "🧆" },
+            { cleanWord: "مكرونة", displayWord: "مَكَرونَة", emoji: "🍝" },
+            { cleanWord: "عسل", displayWord: "عَسَل", emoji: "🍯" },
+            { cleanWord: "زبدة", displayWord: "زُبْدَة", emoji: "🧈" },
+            { cleanWord: "عصير", displayWord: "عَصير", emoji: "🧃" },
+            { cleanWord: "شاي", displayWord: "شاي", emoji: "🍵" },
+            { cleanWord: "قهوة", displayWord: "قَهْوَة", emoji: "☕" },
+            { cleanWord: "الاثنين", displayWord: "الاِثْنَيْن", emoji: "📅" },
+            { cleanWord: "الثلاثاء", displayWord: "الثُّلاثاء", emoji: "📅" },
+            { cleanWord: "الأربعاء", displayWord: "الأَرْبِعاء", emoji: "📅" },
+            { cleanWord: "الخميس", displayWord: "الخَميس", emoji: "📅" },
+            { cleanWord: "الجمعة", displayWord: "الجُمُعَة", emoji: "📅" },
+            { cleanWord: "السبت", displayWord: "السَّبْت", emoji: "📅" },
+            { cleanWord: "الأحد", displayWord: "الأَحَد", emoji: "📅" }
+        ];
 
         const ROUND_LENGTH = 5;
 

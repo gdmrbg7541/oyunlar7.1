@@ -465,72 +465,46 @@
 
     <script>
         const allQuestions = [
-            // --- NORMAL (EMOJİ EŞLEŞTİRME) SORULARI (2. Ünite) ---
-            { text: "هَلْ تُريدُ خُبْزًا طازَجًا؟", trueEmoji: "🍞", falseEmoji: "🥩", isFixed: false },
-            { text: "أَنا بِحاجَة إِلى خَضْراوات طازَجَة.", trueEmoji: "🥬", falseEmoji: "🍬", isFixed: false },
-            { text: "هَلْ عِنْدَكَ فَواكِه أَيْضًا؟", trueEmoji: "🍎", falseEmoji: "🥦", isFixed: false },
+    // Mevcut Sorular
+    { text: "هَلْ تَشْرَبُ القَهْوَة؟", trueEmoji: "☕", falseEmoji: "🧃" }, // [cite: 6]
+    { text: "هَلْ تَأْكُلُ الدَّجاج؟", trueEmoji: "🍗", falseEmoji: "🐟" }, // [cite: 8]
+    { text: "هَلْ تَتَناوَلُ الفَطور؟", trueEmoji: "🍳", falseEmoji: "🍔" }, // [cite: 1]
+    { text: "هَلْ تُنَظِّفُ أَسْنانَكَ؟", trueEmoji: "🪥", falseEmoji: "📺" }, // [cite: 3]
+    { text: "هَلْ تَذْهَبُ إِلى المَدْرَسَة؟", trueEmoji: "🏫", falseEmoji: "🏭" }, // [cite: 1]
+    { text: "هَلْ تَنامُ لَيْلًا؟", trueEmoji: "🛌", falseEmoji: "🏃" }, // [cite: 2]
 
-            // --- FİYAT KARŞILAŞTIRMALI SABİT CEVAPLI SORULAR ---
-            
-            // Kiraz elmadan daha mı pahalıdır? -> EVET (9₺ > 7₺)
-            { 
-                text: "هَل الكَرَز أَغْلى مِن التُّفّاح؟", 
-                isFixed: true, 
-                fixedAnswer: true, 
-                isPrice: true,
-                item1: { emoji: "🍒", price: "٩ ₺" },
-                item2: { emoji: "🍎", price: "٧ ₺" }
-            },
-            // Kayısı muzdan daha mı pahalıdır? -> HAYIR (8₺ < 12₺)
-            { 
-                text: "هَل المِشْمِش أَغْلى مِن المَوْز؟", 
-                isFixed: true, 
-                fixedAnswer: false, 
-                isPrice: true,
-                item1: { emoji: "🍑", price: "٨ ₺" },
-                item2: { emoji: "🍌", price: "١٢ ₺" }
-            },
-            // Üzüm elmadan daha mı ucuzdur? -> EVET (5₺ < 7₺)
-            { 
-                text: "هَل العِنَب أَرْخَص مِن التُّفّاح؟", 
-                isFixed: true, 
-                fixedAnswer: true, 
-                isPrice: true,
-                item1: { emoji: "🍇", price: "٥ ₺" },
-                item2: { emoji: "🍎", price: "٧ ₺" }
-            },
-            // Elma muzdan daha mı pahalıdır? -> HAYIR (7₺ < 12₺)
-            { 
-                text: "هَل التُّفّاح أَغْلى مِن المَوْز؟", 
-                isFixed: true, 
-                fixedAnswer: false, 
-                isPrice: true,
-                item1: { emoji: "🍎", price: "٧ ₺" },
-                item2: { emoji: "🍌", price: "١٢ ₺" }
-            },
-            // Bir yumurta iki lira mıdır? -> EVET (Tekli gösterim)
-            { 
-                text: "هَل البَيْضَة الواحِدَة بِليرَتَيْن؟", 
-                isFixed: true, 
-                fixedAnswer: true, 
-                isPrice: true,
-                singleItem: true,
-                item1: { emoji: "🥚", price: "٢ ₺" }
-            }
-        ];
+    // Yeni Eklenen Sorular (1. Ünite Cümleleri ve Diyalogları)
+    { text: "هَلْ تَسْتَيْقِظُ مُبَكِّرًا؟", trueEmoji: "🌅", falseEmoji: "🌃" }, // [cite: 1, 2]
+    { text: "هَلْ تُصَلّي الفَجْر الآن؟", trueEmoji: "🕌", falseEmoji: "⚽" }, // [cite: 1, 3]
+    { text: "هَلْ تَلْبَسُ مَلابِسَكَ؟", trueEmoji: "👕", falseEmoji: "🍽️" }, // [cite: 1]
+    { text: "هَلْ تَرْجِعُ إِلى البَيْت؟", trueEmoji: "🏠", falseEmoji: "🛒" }, // [cite: 2, 4]
+    { text: "هَلْ تُساعِدُ أُمَّكَ؟", trueEmoji: "🧹", falseEmoji: "🎮" }, // [cite: 2, 4]
+    { text: "هَلْ تَدْرُسُ دُروسَكَ مَساءً؟", trueEmoji: "📚", falseEmoji: "📺" }, // [cite: 2, 5]
+    { text: "هَلْ تَأْكُلُ الزَّيْتون؟", trueEmoji: "🫒", falseEmoji: "🍕" }, // [cite: 5]
+    { text: "هَلْ تَشْرَبُ الحَليب؟", trueEmoji: "🥛", falseEmoji: "🧃" }, // [cite: 6]
+    { text: "هَلْ تَأْكُلُ السَّمَك؟", trueEmoji: "🐟", falseEmoji: "🍗" }, // [cite: 6]
+    { text: "هَلْ تَشْرَبُ العَصير؟", trueEmoji: "🧃", falseEmoji: "☕" }, // [cite: 7]
+    { text: "هَلْ تَأْكُلُ العَسَل؟", trueEmoji: "🍯", falseEmoji: "🍉" }, // [cite: 7]
+    { text: "هَلْ تَغْسِلُ يَدَيْكَ؟", trueEmoji: "🧼", falseEmoji: "🚗" }, // [cite: 13, 14]
+    { text: "هَلْ تُحِبُّ الكُفْتَة؟", trueEmoji: "🧆", falseEmoji: "🥗" }, // [cite: 16]
+    { text: "هَلْ تُحِبُّ المَكَرونَة؟", trueEmoji: "🍝", falseEmoji: "🍔" } // [cite: 16]
+];
 
         let p1State = { index: 0, questions: [], currentAnswer: null };
         let p2State = { index: 0, questions: [], currentAnswer: null };
         let currentScreenMode = 'home'; 
-        let currentGameMode = 2;
+        let currentGameMode = 2; // YENİ: Varsayılan oyun modu (1 veya 2)
         
+        // Ses durumu yönetimi
         let audio = document.getElementById('yonergeAudio');
         let sineWave = document.getElementById('sineWave');
 
+        // Ses çalmaya başladığında dalgayı aktif et
         audio.addEventListener('playing', () => {
             sineWave.classList.add('active');
         });
 
+        // Ses duraklatıldığında veya bittiğinde dalgayı pasif et
         audio.addEventListener('pause', () => {
             sineWave.classList.remove('active');
         });
@@ -553,9 +527,10 @@
 
         function handleNav() {
             if (currentScreenMode === 'home') {
+                // Anasayfadayken butona basılırsa index.html dosyasına gider
                 window.location.href = 'index.html'; 
             } else {
-                goBackToHome(); 
+                goBackToHome(); // Oyun esnasında basılırsa oyunun başlangıç ekranına döner
             }
         }
 
@@ -598,7 +573,7 @@
         }
 
         function startGame(mode) {
-            if (mode) currentGameMode = mode; 
+            if (mode) currentGameMode = mode; // Seçilen modu kaydet
 
             playAudio(); 
 
@@ -608,18 +583,20 @@
             
             updateNavIcon('back'); 
 
+            // YENİ: Tek kişi veya iki kişi moduna göre ekranı ayarla
             const p1Side = document.getElementById('p1-side');
             const p2Side = document.getElementById('p2-side');
 
-            document.getElementById('game-screen').classList.remove('mode-1p', 'mode-2p');
             if (currentGameMode === 1) {
-                p2Side.style.display = 'none'; 
-                p1Side.style.borderLeft = 'none'; 
+                p2Side.style.display = 'none'; // İkinci oyuncuyu gizle
+                p1Side.style.borderLeft = 'none'; // Ortadaki kesik çizgiyi kaldır
                 document.getElementById('game-screen').classList.add('mode-1p');
+                document.getElementById('game-screen').classList.remove('mode-2p');
             } else {
-                p2Side.style.display = 'flex'; 
-                p1Side.style.borderLeft = '4px dashed #bdc3c7'; 
+                p2Side.style.display = 'flex'; // İkinci oyuncuyu göster
+                p1Side.style.borderLeft = '4px dashed #bdc3c7'; // Çizgiyi geri getir
                 document.getElementById('game-screen').classList.add('mode-2p');
+                document.getElementById('game-screen').classList.remove('mode-1p');
             }
 
             let shuffledAll = shuffle([...allQuestions]);
@@ -629,10 +606,11 @@
             let c1 = Math.random() > 0.5;
             let c2 = Math.random() > 0.5;
 
+            // 1. Oyuncu ayarları (Her iki modda da çalışır)
             p1State.questions = [
-                { ...roundQuestions[0], expectedAnswer: roundQuestions[0].isFixed ? roundQuestions[0].fixedAnswer : c0 }, 
-                { ...roundQuestions[1], expectedAnswer: roundQuestions[1].isFixed ? roundQuestions[1].fixedAnswer : c1 }, 
-                { ...roundQuestions[2], expectedAnswer: roundQuestions[2].isFixed ? roundQuestions[2].fixedAnswer : c2 }
+                { ...roundQuestions[0], expectedAnswer: c0 }, 
+                { ...roundQuestions[1], expectedAnswer: c1 }, 
+                { ...roundQuestions[2], expectedAnswer: c2 }
             ];
             p1State.index = 0;
             document.getElementById('p1-text').style.color = '#2c3e50';
@@ -642,11 +620,12 @@
             }
             loadQuestion('p1');
 
+            // 2. Oyuncu ayarları (Sadece İki Kişilik Modda çalışır)
             if (currentGameMode === 2) {
                 p2State.questions = [
-                    { ...roundQuestions[2], expectedAnswer: roundQuestions[2].isFixed ? roundQuestions[2].fixedAnswer : !c2 }, 
-                    { ...roundQuestions[0], expectedAnswer: roundQuestions[0].isFixed ? roundQuestions[0].fixedAnswer : !c0 }, 
-                    { ...roundQuestions[1], expectedAnswer: roundQuestions[1].isFixed ? roundQuestions[1].fixedAnswer : !c1 }
+                    { ...roundQuestions[2], expectedAnswer: !c2 }, 
+                    { ...roundQuestions[0], expectedAnswer: !c0 }, 
+                    { ...roundQuestions[1], expectedAnswer: !c1 }
                 ];
                 p2State.index = 0;
                 document.getElementById('p2-text').style.color = '#2c3e50';
@@ -660,11 +639,9 @@
 
         function loadQuestion(playerStr) {
             let state = playerStr === 'p1' ? p1State : p2State;
-            let emojiContainer = document.getElementById(`${playerStr}-emoji`);
             
             if (state.index >= 3) {
-                emojiContainer.innerHTML = "⏳";
-                emojiContainer.style.fontSize = "10rem";
+                document.getElementById(`${playerStr}-emoji`).innerText = "⏳";
                 document.getElementById(`${playerStr}-text`).innerText = "في الاِنْتِظار...";
                 document.getElementById(`${playerStr}-text`).style.color = "#27ae60";
                 document.getElementById(`${playerStr}-btn-container`).style.visibility = "hidden";
@@ -674,62 +651,13 @@
             }
 
             let q = state.questions[state.index];
+            
+            // Artık burada rastgele atama yapmıyoruz. 
+            // startGame içinde hazırladığımız o oyuncuya özel "expectedAnswer" (beklenen cevap) değerini kullanıyoruz.
             state.currentAnswer = q.expectedAnswer;
 
-            if (q.isPrice) {
-                emojiContainer.style.fontSize = "initial";
-                
-                if (q.singleItem) {
-                    emojiContainer.innerHTML = `
-                        <div class="price-display">
-                            <div class="price-item">
-                                <span class="emoji">${q.item1.emoji}</span>
-                                <span class="price">${q.item1.price}</span>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    emojiContainer.innerHTML = `
-                        <div class="price-display">
-                            <div class="price-item">
-                                <span class="emoji">${q.item1.emoji}</span>
-                                <span class="price">${q.item1.price}</span>
-                            </div>
-                            
-                            <div class="price-vs">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
-                                    <defs>
-                                        <linearGradient id="vsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#e74c3c; stop-opacity:1" />
-                                            <stop offset="100%" style="stop-color:#3498db; stop-opacity:1" />
-                                        </linearGradient>
-                                        <filter id="vsShadow" x="-20%" y="-20%" width="140%" height="140%">
-                                            <feDropShadow dx="0" dy="4" stdDeviation="3" flood-opacity="0.25"/>
-                                        </filter>
-                                    </defs>
-                                    <circle cx="50" cy="50" r="45" fill="url(#vsGradient)" filter="url(#vsShadow)" />
-                                    <circle cx="50" cy="50" r="38" fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.4" stroke-dasharray="6 4" />
-                                    <text x="52" y="59" font-family="'Segoe UI', Roboto, Helvetica, sans-serif" font-size="28" font-weight="900" fill="#ffffff" text-anchor="middle" font-style="italic" letter-spacing="0.5">VS</text>
-                                </svg>
-                            </div>
-                            
-                            <div class="price-item">
-                                <span class="emoji">${q.item2.emoji}</span>
-                                <span class="price">${q.item2.price}</span>
-                            </div>
-                        </div>
-                    `;
-                }
-            } 
-            else if (q.isFixed) {
-                emojiContainer.style.fontSize = "10rem";
-                emojiContainer.innerHTML = q.emoji;
-            } 
-            else {
-                emojiContainer.style.fontSize = "10rem";
-                emojiContainer.innerHTML = q.expectedAnswer ? q.trueEmoji : q.falseEmoji;
-            }
-            
+            // Beklenen cevaba göre doğru emojiyi veya yanlış emojiyi gösteriyoruz
+            document.getElementById(`${playerStr}-emoji`).innerText = q.expectedAnswer ? q.trueEmoji : q.falseEmoji;
             document.getElementById(`${playerStr}-text`).innerText = q.text;
         }
 
@@ -750,6 +678,7 @@
         function checkRoundEnd() {
             let isRoundOver = false;
             
+            // YENİ: Moda göre bitiş kontrolü
             if (currentGameMode === 1) {
                 isRoundOver = p1State.index >= 3;
             } else {
