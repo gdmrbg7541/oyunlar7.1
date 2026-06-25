@@ -213,10 +213,10 @@ header {
         }
         .rotate-text { font-size: 2.5rem; font-family: 'Arakom', Tahoma, sans-serif; }
 
-        /* YATAY OYNANIŞ YASAKLANDI (SADECE DİKEYE İZİN VERİLDİ) */
-        @media only screen and (max-width: 950px) and (orientation: landscape) {
+        /* YATAY OYNANIŞ SERBEST BIRAKILDI */
+        /* @media only screen and (max-width: 950px) and (orientation: landscape) {
             #rotate-message { display: flex !important; }
-        }
+        } */
 
         /* MOBİL DİKEY İÇİN (PORTRAIT) İKİ OYUNCULU UI DÜZENLEMESİ */
         @media only screen and (max-width: 950px) and (orientation: portrait) {
@@ -273,13 +273,44 @@ header {
             }
         }
 
-        @media screen and (max-height: 500px) {
-            body {
-                overflow-y: auto !important;
-                height: auto !important;
-                min-height: 100vh;
-                align-items: flex-start;
-                padding-top: 15px; padding-bottom: 15px;
+        /* MOBİL YATAY VE DAR EKRANLAR İÇİN UI DÜZENLEMESİ (3 EMOJİ YANYANA) */
+        @media screen and (max-height: 500px), screen and (max-width: 950px) and (orientation: landscape) {
+            body { overflow-y: hidden !important; }
+            #game-container {
+                flex-direction: row !important; /* Ekranı Sol(P1) - Sağ(P2) böl */
+            }
+            .player-zone {
+                padding: 10px 0 !important;
+                justify-content: space-around;
+            }
+            .options-container {
+                flex-direction: row !important; /* 3 Emoji YAN YANA Dizilsin */
+                justify-content: center;
+                gap: 3vw !important;
+                width: 95%;
+            }
+            .option-btn {
+                font-size: 14vh !important; /* Yükseklik az olduğu için yükseklik bazlı boyut büyük olmalı */
+                padding: 2vh 3vw !important;
+            }
+            .score-board {
+                font-size: 6vh !important;
+                padding: 5px 15px !important;
+            }
+            #audio-trigger {
+                width: 60px !important; 
+                height: 60px !important; 
+                font-size: 24px !important;
+                left: 50% !important;
+                right: auto !important;
+                top: calc(50% + 20px) !important;
+                transform: translate(-50%, -50%) !important; /* Tam ortaya getir */
+            }
+            .header-panel {
+                gap: 2vh !important;
+            }
+            .progress-container {
+                height: 10px !important;
             }
         }
 
