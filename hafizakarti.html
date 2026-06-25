@@ -92,7 +92,7 @@ body, button, div, span {
   #game-board{ flex-grow:1; width:auto; margin:0; padding:0; display:grid; gap:clamp(6px,1vw,12px);
                perspective:1200px; grid-template-columns:repeat(5,1fr); grid-template-rows:repeat(4,1fr); height:100%; }
   .card{ background:transparent; cursor:pointer; container-type:inline-size; }
-  .card-inner{ position:relative; width:100%; height:100%; transition:transform .6s; transform-style:preserve-3d; }
+  .card-inner{ position:relative; width:100%; height:100%; transition:transform .6s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style:preserve-3d; }
   .card.flipped .card-inner{ transform:rotateY(180deg); }
   .card-face{ position:absolute; inset:0; display:flex; justify-content:center; align-items:center;
               -webkit-backface-visibility:hidden; backface-visibility:hidden; border-radius:var(--border-radius-md);
@@ -297,12 +297,28 @@ body, button, div, span {
 }
 
 .game-instruction-title {
-    font-size: clamp(2.2rem, 3vw, 2.8rem) !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    font-size: clamp(2.5rem, 6vw, 4.5rem) !important;
     color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     margin: 0;
     font-weight: 400; /* 800 yerine 400 yaparak bold özelliğini kaldırdık */
     text-align: center;
-    line-height: 1.1;
+    line-height: 1.2;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.game-instruction-title.hide {
+    opacity: 0;
+    transform: translate(-50%, -60%);
 }
 
 @media (max-width:800px) {
@@ -769,6 +785,29 @@ start(words, playerMode=1){
     ]);
     this.populateBoard(Utils.shuffleArray(pairs));
 
+    const board = document.getElementById('game-board');
+    if(board) board.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+        const title = gameScreen.querySelector('.game-instruction-title');
+        if (title) {
+            title.classList.add('hide');
+            setTimeout(() => title.style.display = 'none', 500);
+        }
+        
+        const allCards = gameScreen.querySelectorAll('.card.flipped');
+        allCards.forEach(c => {
+            const delay = Math.random() * 800; // 0 ile 800ms asimetrik gecikme
+            setTimeout(() => {
+                try { App.playSound('flip'); } catch(e){}
+                c.classList.remove('flipped');
+            }, delay);
+        });
+        
+        setTimeout(() => {
+            if(board) board.style.pointerEvents = 'auto';
+        }, 1000); // 800ms max delay + 200ms extra
+    }, 3000);
 
     this.updateActivePlayerUI();
     this.dom.score1.textContent='0';
@@ -818,7 +857,7 @@ populateBoard(cards){
 
     cards.forEach(cd=>{
       const el = document.createElement('div');
-      el.className = 'card'; 
+      el.className = 'card flipped';
       el.dataset.id = cd.id;
       
       // Görsel ve metin ayrımı
@@ -877,7 +916,7 @@ populateBoard(cards){
           this.state.f=[]; this.state.l=false;
           if(this.state.playerMode===2){ this.state.c = (this.state.c===1?2:1); }
           this.updateActivePlayerUI();
-        }, 650);
+        }, 1800);
       }
     }
   },
@@ -936,8 +975,8 @@ const WordCardGame = {
         gameScreen.innerHTML = `
             <div id="game-container-inner" style="display: flex; flex-direction: column; width: 100%; height: 100%; align-items: center; padding: 10px; box-sizing: border-box;">
                 
-                <div class="game-header" style="width: 100%; position: relative; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
-                    <div style="position: absolute; left: 10px; z-index: 200;">
+                <div class="game-header" style="width: 100%; position: relative; margin-bottom: 0; height: 0; display: flex; align-items: center; justify-content: center;">
+                    <div style="position: absolute; top: 10px; left: 10px; z-index: 200;">
                         <button class="back-btn" title="Geri">
                             <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
                         </button>
@@ -976,7 +1015,7 @@ const WordCardGame = {
 
         shuffled.forEach(w => {
             const card = document.createElement('div');
-            card.className = 'card';
+            card.className = 'card flipped';
             card.style.width = "100%";
             card.style.height = "100%";
             
@@ -999,6 +1038,29 @@ const WordCardGame = {
             };
             board.appendChild(card);
         });
+
+        if(board) board.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+            const title = gameScreen.querySelector('.game-instruction-title');
+            if (title) {
+                title.classList.add('hide');
+                setTimeout(() => title.style.display = 'none', 500);
+            }
+
+            const allCards = gameScreen.querySelectorAll('.card.flipped');
+            allCards.forEach(c => {
+                const delay = Math.random() * 800; // 0 ile 800ms asimetrik gecikme
+                setTimeout(() => {
+                    try { App.playSound('flip'); } catch(e){}
+                    c.classList.remove('flipped');
+                }, delay);
+            });
+            
+            setTimeout(() => {
+                if(board) board.style.pointerEvents = 'auto';
+            }, 1000);
+        }, 3000);
     }
 };
 </script>
