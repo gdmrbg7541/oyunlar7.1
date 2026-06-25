@@ -249,10 +249,11 @@
         }
 
         .emoji {
-            font-size: 12rem;
+            font-size: clamp(5rem, 12vh, 12rem); /* Uzun kelimelerde sığması için esnek font */
             line-height: 1;
             animation: bounce 2s infinite;
             margin: auto 0;
+            flex-shrink: 1; /* Alana sıkışırsa ufalsın */
         }
 
         .word-box {
@@ -475,14 +476,43 @@
             #rotate-message { display: flex !important; }
         }
 
-        @media screen and (max-height: 500px) {
+        /* MOBİL YATAY EKRAN (LANDSCAPE) ÖZEL KOMPAKT TASARIM */
+        @media screen and (max-height: 500px) and (max-width: 950px) {
             body {
                 overflow-y: auto !important;
                 height: auto !important;
                 min-height: 100vh;
                 align-items: flex-start;
-                padding-top: 15px; padding-bottom: 15px;
+                padding-top: 5px; padding-bottom: 5px;
             }
+            
+            /* 1. Üst Menü ve Başlık Küçültme */
+            .icon-btn svg { width: 30px; height: 30px; }
+            .instruction-text { font-size: 1.5rem; margin: 2px 0; }
+            
+            /* 2. Başlangıç Ekranı Kompaktlaştırma */
+            .start-content { gap: 1vh; justify-content: flex-start; padding-top: 10px; }
+            .start-content h1 { font-size: 2rem; margin-bottom: 2px; }
+            .start-content p { display: none; /* Açıklama yatayda yer kaplamasın */ }
+            .start-img { max-height: 25vh; max-width: 250px; margin-bottom: 5px; }
+            .main-btn { font-size: 1.2rem; padding: 8px 30px; }
+            
+            /* 3. Oyun Ekranı Elemanları (Emoji ve Kutular) */
+            .game-content { padding: 5px 0; justify-content: flex-start; gap: 5px; }
+            .emoji { font-size: 3.5rem; margin: 5px 0; animation: none; /* Dikey alanı korumak için animasyon iptal */ }
+            .word-box { font-size: 2.2rem; min-height: 3.5rem; padding: 5px 15px; margin-bottom: 5px; width: 98%; border-width: 2px; }
+            .letters-container { gap: 5px; }
+            .letter-btn { font-size: 1.8rem; min-width: 45px; height: 45px; border-width: 2px; border-radius: 8px; }
+            
+            /* 4. UI Elementleri (Skor, Süre) */
+            .timer-modern { top: 5px; left: 5px; width: 45px; height: 45px; border-width: 2px; }
+            .timer-modern .timer-text { font-size: 1.2rem; }
+            .score-board { top: 5px; right: 5px; font-size: 1rem; padding: 5px 10px; }
+            
+            /* 5. Sonuç Ekranı */
+            .result-card { padding: 15px; gap: 10px; min-width: 80%; }
+            .result-card h1 { font-size: 2rem; }
+            .result-card .final-score { font-size: 2.5rem; margin: 5px 0; }
         }
 
     </style>
