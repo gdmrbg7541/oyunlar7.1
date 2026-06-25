@@ -15,7 +15,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Arakom', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             background-color: #f8f9fa;
         }
@@ -302,7 +302,8 @@
                 flex-direction: column-reverse !important; /* P2 ÜSTTE P1 ALTTA */
             }
             .player-side {
-                padding: 10px !important;
+                padding: 2px 5px !important;
+                justify-content: space-evenly !important; /* Dikeyde öğeleri tam ekrana sığacak şekilde dengeli dağıt */
             }
             #p2-side {
                 transform: rotate(180deg);
@@ -311,8 +312,8 @@
             }
             #p1-side { border-left: none !important; }
             
-            /* Game Header'ı ekranın tam ortasına alalım */
-            #game-header {
+            /* 2 Kişilik oyunda Header ortada olur */
+            .mode-2p #game-header {
                 position: absolute;
                 top: 50%; left: 50%;
                 transform: translate(-50%, -50%);
@@ -324,20 +325,31 @@
                 border-bottom: 2px solid #bdc3c7;
                 z-index: 50;
             }
+            /* 1 Kişilik oyunda Header en üstte (normal) olur */
+            .mode-1p #game-header {
+                position: relative;
+                top: 0; left: 0;
+                transform: none;
+                height: 50px;
+                border: none;
+                border-bottom: 2px solid #bdc3c7;
+                z-index: 50;
+            }
             .instruction-text { font-size: 2.5vh !important; }
             .sine-wave-container { height: 30px !important; }
 
-            /* Elementleri Dikey Ekrana Göre Orantıla */
-            .emoji-display { font-size: 15vh !important; height: auto !important; margin-bottom: 5px !important; }
-            .question-text { font-size: 5vh !important; height: auto !important; margin-bottom: 2vh !important; }
-            .btn-container { height: auto !important; gap: 10px !important; }
-            .btn { font-size: 4vh !important; padding: 2vh 4vw !important; }
-            .progress-bar { bottom: 10px !important; }
-            .progress-step { width: 40px !important; height: 10px !important; }
+            /* Elementleri Dikey Ekrana Göre İyice Küçült (Taşma Engelleme) */
+            .emoji-display { font-size: 10vh !important; height: auto !important; margin-bottom: 2px !important; }
+            .question-text { font-size: 3.5vh !important; height: auto !important; margin-bottom: 5px !important; line-height: 1.1 !important; }
+            .btn-container { height: auto !important; gap: 10px !important; margin-bottom: 25px !important; /* Alttaki progress-bar'a yer aç */ }
+            .btn { font-size: 3vh !important; padding: 1vh 4vw !important; gap: 5px !important; }
+            .progress-bar { bottom: 5px !important; gap: 8px !important; }
+            .progress-step { width: 30px !important; height: 8px !important; }
             
             /* Başlangıç Ekranı Optimize */
-            #start-screen h1 { font-size: clamp(3rem, 10vw, 5rem) !important; text-align: center; }
-            .main-btn { font-size: clamp(2rem, 6vw, 3.5rem) !important; padding: 15px 40px !important; }
+            .start-buttons { flex-direction: column !important; align-items: center !important; gap: 15px !important; }
+            #start-screen h1 { font-size: clamp(3rem, 10vw, 5rem) !important; text-align: center; margin-bottom: 15px !important; }
+            .main-btn { font-size: clamp(2rem, 6vw, 3.5rem) !important; padding: 15px 40px !important; width: 80% !important; }
             .nav-svg { width: 40px !important; height: 40px !important; top: 10px !important; left: 10px !important; }
         }
 
@@ -566,9 +578,13 @@
             if (currentGameMode === 1) {
                 p2Side.style.display = 'none'; // İkinci oyuncuyu gizle
                 p1Side.style.borderLeft = 'none'; // Ortadaki kesik çizgiyi kaldır
+                document.getElementById('game-screen').classList.add('mode-1p');
+                document.getElementById('game-screen').classList.remove('mode-2p');
             } else {
                 p2Side.style.display = 'flex'; // İkinci oyuncuyu göster
                 p1Side.style.borderLeft = '4px dashed #bdc3c7'; // Çizgiyi geri getir
+                document.getElementById('game-screen').classList.add('mode-2p');
+                document.getElementById('game-screen').classList.remove('mode-1p');
             }
 
             let shuffledAll = shuffle([...allQuestions]);
