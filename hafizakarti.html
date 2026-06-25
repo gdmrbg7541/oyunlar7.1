@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
-<title> لُعْبَة الذَّاكِرَة</title>
+<title> لُعْبَة الذّاكِرَة</title>
 
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -34,7 +34,7 @@ body, button, div, span {
 } 
 
   *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html,body{ width:100%; height:100%; margin:0; padding:0; overflow:hidden; }
+  html,body{ width:100%; height:100dvh; margin:0; padding:0; overflow:hidden; }
   body{ font-family:'Arakom',sans-serif; background:linear-gradient(180deg,var(--bg-start),var(--bg-end)); color:var(--text-color); text-align:center; }
   button,input,select{ font-family:inherit; }
 
@@ -445,17 +445,35 @@ body, button, div, span {
         .rotate-text { font-size: 2.5rem; font-family: 'Arakom', Tahoma, sans-serif; }
 
         @media only screen and (max-width: 900px) and (orientation: portrait) {
-            #rotate-message { display: flex !important; }
+            #rotate-message { display: none !important; }
+            #game-screen { flex-direction: column !important; padding: 5px !important; gap: 5px !important; }
+            .score-display { 
+                flex-direction: row !important; 
+                width: 100% !important; 
+                max-width: none !important;
+                height: 60px !important; 
+                padding: 5px 20px !important; 
+                gap: 15px !important; 
+                font-size: 2rem !important; 
+                margin: 0 !important;
+            }
+            .score-display svg { width: 30px !important; height: 30px !important; }
+            #game-container-inner { flex-grow: 1 !important; justify-content: center !important; }
+            #game-board { gap: 8px !important; }
         }
 
         @media screen and (max-height: 500px) {
-            body {
-                overflow-y: auto !important;
+            body { overflow: hidden !important; } /* Esnek grid olduğu için taşmaz */
+            #rotate-message { display: none !important; }
+            #game-screen { padding: 5px !important; gap: 5px !important; }
+            .score-display { 
+                width: 60px !important;
                 height: auto !important;
-                min-height: 100vh;
-                align-items: flex-start;
-                padding-top: 15px; padding-bottom: 15px;
+                padding: 5px !important;
+                font-size: 1.5rem !important;
             }
+            .score-display svg { width: 25px !important; height: 25px !important; }
+            #game-board { gap: 6px !important; }
         }
 
     </style>
@@ -773,12 +791,28 @@ start(words, playerMode=1){
 
 populateBoard(cards){
     const n = cards.length;
-    // 8 çift (16 kart) için 4x4 yerleşim en ideali
-    let cols=4, rows=Math.ceil(n/cols);
-
-    this.dom.board.style.gridTemplateColumns = `repeat(${cols},1fr)`;
-    this.dom.board.style.gridTemplateRows = `repeat(${rows},1fr)`;
     this.dom.board.innerHTML = '';
+
+    // Smart Grid Algorithm
+    const updateGrid = () => {
+        const isLandscape = window.innerWidth > window.innerHeight;
+        let cols = 4, rows = Math.ceil(n/cols);
+        if (isLandscape) {
+            cols = Math.ceil(Math.sqrt(n * 2));
+            rows = Math.ceil(n / cols);
+            if (rows > 3) { rows = 3; cols = Math.ceil(n / rows); }
+        } else {
+            cols = Math.floor(Math.sqrt(n * 0.6));
+            if (cols < 2) cols = 2;
+            if (cols > 4) cols = 4;
+            rows = Math.ceil(n / cols);
+        }
+        this.dom.board.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+        this.dom.board.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+    };
+    updateGrid();
+    window.currentGridUpdater = updateGrid; // Ekran çevrilince (resize) otomatik güncelle
+
 
     cards.forEach(cd=>{
       const el = document.createElement('div');
@@ -886,8 +920,11 @@ document.addEventListener('click', (ev)=>{
 });
 
 /* =========================
-   BOOT
+   BOOT & SMART RESIZE
 ========================= */
+window.addEventListener('resize', () => {
+    if (window.currentGridUpdater) window.currentGridUpdater();
+});
 document.addEventListener('DOMContentLoaded', ()=>App.init());
 const WordCardGame = {
     start(words) {
@@ -906,7 +943,7 @@ const WordCardGame = {
                     <h2 class="game-instruction-title" style="margin: 0; font-size: clamp(2.5rem, 5vw, 4rem); text-align: center; color: var(--primary-color);">اُنْظُرْ إِلى الصّورَة، خَمِّن المَعْنى، ثُمَّ اضْغَطْ‫.‬</h2>
                 </div>
 
-                <div id="game-board" style="display: grid; width: 100%; height: 100%; max-height: 75vh; gap: 12px; justify-content: center; align-content: center;"></div>
+                <div id="game-board" style="display: grid; width: 100%; height: 100%; gap: 12px; justify-content: center; align-content: center;"></div>
             </div>
         `;
 
@@ -914,11 +951,25 @@ const WordCardGame = {
         const shuffled = Utils.shuffleArray(words);
         const count = shuffled.length;
 
-        // Masaüstünde her zaman 4 sütun, mobilde 2 sütun (okunabilirlik için)
-        let cols = window.innerWidth < 800 ? 2 : 4; 
-
-        board.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-        board.style.gridTemplateRows = `repeat(${Math.ceil(count / cols)}, 1fr)`;
+        // Smart Grid Algorithm
+        const updateGrid = () => {
+            const isLandscape = window.innerWidth > window.innerHeight;
+            let cols = 4, rows = Math.ceil(count/cols);
+            if (isLandscape) {
+                cols = Math.ceil(Math.sqrt(count * 2));
+                rows = Math.ceil(count / cols);
+                if (rows > 3) { rows = 3; cols = Math.ceil(count / rows); }
+            } else {
+                cols = Math.floor(Math.sqrt(count * 0.6));
+                if (cols < 2) cols = 2;
+                if (cols > 4) cols = 4;
+                rows = Math.ceil(count / cols);
+            }
+            board.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            board.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+        };
+        updateGrid();
+        window.currentGridUpdater = updateGrid; // Ekran çevrilince otomatik güncelle
 
         shuffled.forEach(w => {
             const card = document.createElement('div');
