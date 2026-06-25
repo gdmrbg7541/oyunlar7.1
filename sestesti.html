@@ -100,13 +100,14 @@ header {
         }
 
         .options-container {
-            display: flex; flex-direction: column; gap: 3vh;
+            display: flex; flex-direction: column; align-items: center; gap: 3vh;
             width: 85%; max-width: 400px; margin-bottom: 20px;
         }
 
         .option-btn {
     padding: 2vh 2vh;
     font-size: 7vh; /* Emojileri daha büyük yapar */
+    width: 100%; /* Eskisi gibi tam genişlik */
     border: 1px solid #e2e8f0;
     border-radius: 25px; 
     cursor: pointer; 
@@ -231,8 +232,14 @@ header {
                 gap: 1vh !important; /* Header iç boşluğu daralt */
             }
             .options-container {
-                gap: 1.5vh !important; /* Şıklar arası dev boşlukları daralt */
+                display: flex !important;
+                flex-direction: row !important; /* Mobilde KESİNLİKLE YAN YANA OLACAK */
+                flex-wrap: nowrap !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 2vw !important; 
                 margin-bottom: 5px !important;
+                width: 95% !important;
             }
             #p2-zone {
                 transform: rotate(180deg); /* Üstteki 2. oyuncunun ekranı ters dursun */
@@ -243,8 +250,10 @@ header {
                 border-right: none !important;
             }
             .option-btn {
-                font-size: 4.5vh !important; /* Şıklar ekrana sığsın diye biraz daha küçültüldü */
-                padding: 1vh 2vh !important;
+                font-size: 4.5vh !important; 
+                padding: 1.5vh 1vw !important;
+                flex: 1 1 0px !important; /* Yan yana eşit sığması için BÜYÜK ZORLAMA */
+                width: auto !important; /* Masaüstünden gelen width: 100% ezilir */
             }
             .score-board {
                 font-size: 2.2vh !important; /* P1 ve P2 yazısı daha küçük yapıldı */
@@ -280,22 +289,23 @@ header {
                 flex-direction: row !important; /* Ekranı Sol(P1) - Sağ(P2) böl */
             }
             .player-zone {
-                padding: 10px 0 !important;
-                justify-content: space-around;
+                padding: 5px 0 !important;
+                justify-content: space-evenly;
             }
             .options-container {
                 flex-direction: row !important; /* 3 Emoji YAN YANA Dizilsin */
                 justify-content: center;
-                gap: 3vw !important;
+                gap: 2vw !important;
                 width: 95%;
+                margin-bottom: 2px !important;
             }
             .option-btn {
-                font-size: 14vh !important; /* Yükseklik az olduğu için yükseklik bazlı boyut büyük olmalı */
-                padding: 2vh 3vw !important;
+                font-size: 9vh !important; /* Font boyutu küçültüldü */
+                padding: 1vh 2vw !important; /* İç boşluklar kısıldı */
             }
             .score-board {
-                font-size: 6vh !important;
-                padding: 5px 15px !important;
+                font-size: 4vh !important; /* Skor tablosu küçültüldü */
+                padding: 2px 10px !important;
             }
             #audio-trigger {
                 width: 60px !important; 
