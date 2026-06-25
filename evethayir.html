@@ -292,18 +292,75 @@
         }
         .rotate-text { font-size: 2.5rem; font-family: 'Arakom', Tahoma, sans-serif; }
 
-        @media only screen and (max-width: 900px) and (orientation: portrait) {
-            #rotate-message { display: flex !important; }
+        /* MOBİL DİKEY EKRAN (KARŞILIKLI MASADA OYNAMA) */
+        @media only screen and (max-width: 950px) and (orientation: portrait) {
+            body { overflow: hidden !important; }
+            #rotate-message { display: none !important; } /* Eskiden portrait engelliydi, şimdi serbest */
+            
+            #game-screen { position: relative; }
+            #players-container {
+                flex-direction: column-reverse !important; /* P2 ÜSTTE P1 ALTTA */
+            }
+            .player-side {
+                padding: 10px !important;
+            }
+            #p2-side {
+                transform: rotate(180deg);
+                border-bottom: 2px dashed #bdc3c7; /* Ayıraç */
+                border-left: none !important;
+            }
+            #p1-side { border-left: none !important; }
+            
+            /* Game Header'ı ekranın tam ortasına alalım */
+            #game-header {
+                position: absolute;
+                top: 50%; left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%;
+                height: 50px;
+                border: none;
+                background-color: rgba(255,255,255,0.9);
+                border-top: 2px solid #bdc3c7;
+                border-bottom: 2px solid #bdc3c7;
+                z-index: 50;
+            }
+            .instruction-text { font-size: 2.5vh !important; }
+            .sine-wave-container { height: 30px !important; }
+
+            /* Elementleri Dikey Ekrana Göre Orantıla */
+            .emoji-display { font-size: 15vh !important; height: auto !important; margin-bottom: 5px !important; }
+            .question-text { font-size: 5vh !important; height: auto !important; margin-bottom: 2vh !important; }
+            .btn-container { height: auto !important; gap: 10px !important; }
+            .btn { font-size: 4vh !important; padding: 2vh 4vw !important; }
+            .progress-bar { bottom: 10px !important; }
+            .progress-step { width: 40px !important; height: 10px !important; }
+            
+            /* Başlangıç Ekranı Optimize */
+            #start-screen h1 { font-size: clamp(3rem, 10vw, 5rem) !important; text-align: center; }
+            .main-btn { font-size: clamp(2rem, 6vw, 3.5rem) !important; padding: 15px 40px !important; }
+            .nav-svg { width: 40px !important; height: 40px !important; top: 10px !important; left: 10px !important; }
         }
 
-        @media screen and (max-height: 500px) {
-            body {
-                overflow-y: auto !important;
-                height: auto !important;
-                min-height: 100vh;
-                align-items: flex-start;
-                padding-top: 15px; padding-bottom: 15px;
-            }
+        /* MOBİL YATAY VE DAR EKRANLAR (YAN YANA SIKIŞIK) */
+        @media screen and (max-height: 500px), screen and (max-width: 950px) and (orientation: landscape) {
+            body { overflow: hidden !important; }
+            #rotate-message { display: none !important; }
+            
+            #game-header { height: 40px !important; gap: 15px !important; }
+            .instruction-text { font-size: 4vh !important; }
+            .sine-wave-container { height: 25px !important; width: 60px !important; }
+            
+            .player-side { padding: 5px !important; justify-content: flex-start !important; padding-top: 10px !important; }
+            .emoji-display { font-size: 15vh !important; height: auto !important; margin-bottom: 5px !important; }
+            .question-text { font-size: 8vh !important; height: auto !important; margin-bottom: 5px !important; line-height: 1.1 !important; }
+            .btn-container { height: auto !important; gap: 15px !important; margin-top: 5px !important; }
+            .btn { font-size: 6vh !important; padding: 1vh 2vw !important; }
+            .progress-bar { bottom: 5px !important; gap: 5px !important; }
+            .progress-step { width: 30px !important; height: 8px !important; }
+            
+            #start-screen h1 { font-size: clamp(2.5rem, 8vw, 4rem) !important; margin-bottom: 10px !important;}
+            .main-btn { font-size: clamp(1.5rem, 5vw, 3rem) !important; padding: 10px 30px !important; }
+            .nav-svg { width: 35px !important; height: 35px !important; top: 10px !important; left: 10px !important; }
         }
 
     </style>
@@ -385,28 +442,28 @@
     <script>
         const allQuestions = [
     // Mevcut Sorular
-    { text: "هَل تَشْرَبُ القَهْوَة؟", trueEmoji: "☕", falseEmoji: "🧃" }, // [cite: 6]
-    { text: "هَل تَأْكُلُ الدَّجاج؟", trueEmoji: "🍗", falseEmoji: "🐟" }, // [cite: 8]
-    { text: "هَل تَتَناوَلُ الفَطور؟", trueEmoji: "🍳", falseEmoji: "🍔" }, // [cite: 1]
-    { text: "هَل تُنَظِّفُ أَسْنانَكَ؟", trueEmoji: "🪥", falseEmoji: "📺" }, // [cite: 3]
-    { text: "هَل تَذْهَبُ إِلى المَدْرَسَة؟", trueEmoji: "🏫", falseEmoji: "🏭" }, // [cite: 1]
-    { text: "هَل تَنامُ لَيْلًا؟", trueEmoji: "🛌", falseEmoji: "🏃" }, // [cite: 2]
+    { text: "هَلْ تَشْرَبُ القَهْوَة؟", trueEmoji: "☕", falseEmoji: "🧃" }, // [cite: 6]
+    { text: "هَلْ تَأْكُلُ الدَّجاج؟", trueEmoji: "🍗", falseEmoji: "🐟" }, // [cite: 8]
+    { text: "هَلْ تَتَناوَلُ الفَطور؟", trueEmoji: "🍳", falseEmoji: "🍔" }, // [cite: 1]
+    { text: "هَلْ تُنَظِّفُ أَسْنانَكَ؟", trueEmoji: "🪥", falseEmoji: "📺" }, // [cite: 3]
+    { text: "هَلْ تَذْهَبُ إِلى المَدْرَسَة؟", trueEmoji: "🏫", falseEmoji: "🏭" }, // [cite: 1]
+    { text: "هَلْ تَنامُ لَيْلًا؟", trueEmoji: "🛌", falseEmoji: "🏃" }, // [cite: 2]
 
     // Yeni Eklenen Sorular (1. Ünite Cümleleri ve Diyalogları)
-    { text: "هَل تَسْتَيْقِظُ مُبَكِّرًا؟", trueEmoji: "🌅", falseEmoji: "🌃" }, // [cite: 1, 2]
-    { text: "هَل تُصَلّي الفَجْر الآن؟", trueEmoji: "🕌", falseEmoji: "⚽" }, // [cite: 1, 3]
-    { text: "هَل تَلْبَسُ مَلابِسَكَ؟", trueEmoji: "👕", falseEmoji: "🍽️" }, // [cite: 1]
-    { text: "هَل تَرْجِعُ إِلى البَيْت؟", trueEmoji: "🏠", falseEmoji: "🛒" }, // [cite: 2, 4]
-    { text: "هَل تُساعِدُ أُمَّكَ؟", trueEmoji: "🧹", falseEmoji: "🎮" }, // [cite: 2, 4]
-    { text: "هَل تَدْرُسُ دُروسَكَ مَساءً؟", trueEmoji: "📚", falseEmoji: "📺" }, // [cite: 2, 5]
-    { text: "هَل تَأْكُلُ الزَّيْتون؟", trueEmoji: "🫒", falseEmoji: "🍕" }, // [cite: 5]
-    { text: "هَل تَشْرَبُ الحَليب؟", trueEmoji: "🥛", falseEmoji: "🧃" }, // [cite: 6]
-    { text: "هَل تَأْكُلُ السَّمَك؟", trueEmoji: "🐟", falseEmoji: "🍗" }, // [cite: 6]
-    { text: "هَل تَشْرَبُ العَصير؟", trueEmoji: "🧃", falseEmoji: "☕" }, // [cite: 7]
-    { text: "هَل تَأْكُلُ العَسَل؟", trueEmoji: "🍯", falseEmoji: "🍉" }, // [cite: 7]
-    { text: "هَل تَغْسِلُ يَدَيْكَ؟", trueEmoji: "🧼", falseEmoji: "🚗" }, // [cite: 13, 14]
-    { text: "هَل تُحِبُّ الكُفْتَة؟", trueEmoji: "🧆", falseEmoji: "🥗" }, // [cite: 16]
-    { text: "هَل تُحِبُّ المَكَرونَة؟", trueEmoji: "🍝", falseEmoji: "🍔" } // [cite: 16]
+    { text: "هَلْ تَسْتَيْقِظُ مُبَكِّرًا؟", trueEmoji: "🌅", falseEmoji: "🌃" }, // [cite: 1, 2]
+    { text: "هَلْ تُصَلّي الفَجْر الآن؟", trueEmoji: "🕌", falseEmoji: "⚽" }, // [cite: 1, 3]
+    { text: "هَلْ تَلْبَسُ مَلابِسَكَ؟", trueEmoji: "👕", falseEmoji: "🍽️" }, // [cite: 1]
+    { text: "هَلْ تَرْجِعُ إِلى البَيْت؟", trueEmoji: "🏠", falseEmoji: "🛒" }, // [cite: 2, 4]
+    { text: "هَلْ تُساعِدُ أُمَّكَ؟", trueEmoji: "🧹", falseEmoji: "🎮" }, // [cite: 2, 4]
+    { text: "هَلْ تَدْرُسُ دُروسَكَ مَساءً؟", trueEmoji: "📚", falseEmoji: "📺" }, // [cite: 2, 5]
+    { text: "هَلْ تَأْكُلُ الزَّيْتون؟", trueEmoji: "🫒", falseEmoji: "🍕" }, // [cite: 5]
+    { text: "هَلْ تَشْرَبُ الحَليب؟", trueEmoji: "🥛", falseEmoji: "🧃" }, // [cite: 6]
+    { text: "هَلْ تَأْكُلُ السَّمَك؟", trueEmoji: "🐟", falseEmoji: "🍗" }, // [cite: 6]
+    { text: "هَلْ تَشْرَبُ العَصير؟", trueEmoji: "🧃", falseEmoji: "☕" }, // [cite: 7]
+    { text: "هَلْ تَأْكُلُ العَسَل؟", trueEmoji: "🍯", falseEmoji: "🍉" }, // [cite: 7]
+    { text: "هَلْ تَغْسِلُ يَدَيْكَ؟", trueEmoji: "🧼", falseEmoji: "🚗" }, // [cite: 13, 14]
+    { text: "هَلْ تُحِبُّ الكُفْتَة؟", trueEmoji: "🧆", falseEmoji: "🥗" }, // [cite: 16]
+    { text: "هَلْ تُحِبُّ المَكَرونَة؟", trueEmoji: "🍝", falseEmoji: "🍔" } // [cite: 16]
 ];
 
         let p1State = { index: 0, questions: [], currentAnswer: null };
