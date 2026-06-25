@@ -206,15 +206,42 @@ header {
             width: 20%; height: 4px; background: white; border-radius: 2px;
         }
         @keyframes rotate-phone {
-            0% { transform: rotate(0deg); opacity: 1; }
-            25% { transform: rotate(90deg); opacity: 1; }
-            70% { transform: rotate(90deg); opacity: 1; }
-            100% { transform: rotate(90deg); opacity: 0; }
+            0% { transform: rotate(90deg); opacity: 1; }
+            25% { transform: rotate(0deg); opacity: 1; }
+            70% { transform: rotate(0deg); opacity: 1; }
+            100% { transform: rotate(0deg); opacity: 0; }
         }
         .rotate-text { font-size: 2.5rem; font-family: 'Arakom', Tahoma, sans-serif; }
 
-        @media only screen and (max-width: 900px) and (orientation: portrait) {
+        /* YATAY OYNANIŞ YASAKLANDI (SADECE DİKEYE İZİN VERİLDİ) */
+        @media only screen and (max-width: 950px) and (orientation: landscape) {
             #rotate-message { display: flex !important; }
+        }
+
+        /* MOBİL DİKEY İÇİN (PORTRAIT) İKİ OYUNCULU UI DÜZENLEMESİ */
+        @media only screen and (max-width: 950px) and (orientation: portrait) {
+            #game-container {
+                flex-direction: column !important; /* Ekranı alt-üst ikiye böl */
+            }
+            #p2-zone {
+                transform: rotate(180deg); /* Üstteki 2. oyuncunun ekranı ters dursun */
+                border-right: none !important;
+                border-bottom: 2px solid rgba(0,0,0,0.1);
+            }
+            #p1-zone {
+                border-right: none !important;
+            }
+            .option-btn {
+                font-size: 5vh; /* Butonlar dikeyde çok şişmesin diye daraltıldı */
+                padding: 1.5vh 2vh;
+            }
+            .score-board {
+                font-size: 3.5vh;
+                padding: 5px 20px;
+            }
+            #audio-trigger {
+                width: 90px; height: 90px; font-size: 35px;
+            }
         }
 
         @media screen and (max-height: 500px) {
