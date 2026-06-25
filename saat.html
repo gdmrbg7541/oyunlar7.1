@@ -32,7 +32,7 @@
 
         body {
             background-color: var(--bg);
-            height: 100vh;
+            height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -167,11 +167,11 @@
             width: 320px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
-        .mode-btn:hover { transform: translateY(-15px); border-color: var(--p1-color); box-shadow: 0 20px 30px rgba(99, 102, 241, 0.1); }
+        .mode-btn:hover { transform: translateY(-5px); border-color: var(--p1-color); box-shadow: 0 20px 30px rgba(99, 102, 241, 0.1); }
         .mode-icon { font-size: 7rem; margin-bottom: 25px; }
         .mode-title { font-size: 2.5rem; font-weight: normal; color: #1e293b; }
 
-        .game-container { display: none; width: 100%; height: 100vh; position: relative; padding: 20px; }
+        .game-container { display: none; width: 100%; height: 100dvh; position: relative; padding: 20px; }
         .hidden { display: none !important; }
 
         #singleGame { flex-direction: row-reverse; gap: 40px; align-items: center; padding: 60px; }
@@ -301,21 +301,39 @@
         }
         .rotate-text { font-size: 2.5rem; font-family: 'Arakom', Tahoma, sans-serif; }
 
-        @media only screen and (max-width: 900px) and (orientation: portrait) {
-            #rotate-message { display: flex !important; }
-        }
+        /* Rotate mesajı kaldırıldı */
 
         @media screen and (max-height: 500px) {
             body {
                 overflow-y: auto !important;
                 height: auto !important;
-                min-height: 100vh;
+                min-height: 100dvh;
                 align-items: flex-start;
                 padding-top: 15px; padding-bottom: 15px;
             }
         }
 
-    </style>
+    /* Mobil (800px altı ve Dikey) Kapsamlı Düzenlemeler */
+@media (max-width: 800px) {
+    .btn-p2 { display: none !important; }
+    .btn-p1 .mode-title { display: none !important; }
+    .btn-p1 .mobile-text { display: block !important; }
+    .btn-p1 { width: 80vw !important; padding: 20px !important; }
+    .btn-p1 .mode-icon { display: none !important; }
+    
+    #singleGame { flex-direction: column !important; padding: 10px !important; gap: 5px !important; }
+    .s-digital-section { width: 100% !important; padding: 10px !important; min-height: 15vh !important; height: auto !important; }
+    .s-options-section { width: 100% !important; gap: 5px !important; }
+    .s-time-display { font-size: clamp(3rem, 12vw, 4.5rem) !important; min-height: 80px !important; }
+    .s-time-display svg { width: clamp(100px, 30vw, 150px) !important; height: clamp(100px, 30vw, 150px) !important; }
+    .clock-label-big { font-size: clamp(1.8rem, 6vw, 2.5rem) !important; margin-bottom: 5px !important; }
+    .progress-bar { margin-top: 10px !important; }
+    .s-opt-btn { font-size: clamp(1.5rem, 6vw, 2.5rem) !important; padding: 10px !important; }
+    
+    #startScreen h1 { font-size: clamp(3rem, 10vw, 4.5rem) !important; }
+    .toggle-container { margin-bottom: 20px !important; }
+}
+</style>
 </head>
 <body>
 
@@ -346,17 +364,17 @@
 <p class="subtitle">اُنْظُرْ إِلى السّاعَة، ثُمَّ اخْتَر الجُمْلَة الصَّحيحَة.</p>
         
         <div class="toggle-container">
-            <div class="toggle-label active-label" id="labelDigital">
+            <div class="toggle-label" id="labelDigital">
                 <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
                     <text x="12" y="14.5" text-anchor="middle" font-family="'AraKom', monospace" font-size="8" font-weight="normal" fill="currentColor" stroke="none">١٢:٠٠</text>
                 </svg>
             </div>
             <label class="switch">
-                <input type="checkbox" id="clockTypeToggle" onchange="toggleClockFormat()">
+                <input type="checkbox" id="clockTypeToggle" onchange="toggleClockFormat()" checked>
                 <span class="slider"></span>
             </label>
-            <div class="toggle-label" id="labelAnalog">
+            <div class="toggle-label active-label" id="labelAnalog">
                 <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
@@ -365,11 +383,12 @@
         </div>
 
         <div class="mode-container">
-            <div class="mode-btn" onclick="startSingle()">
+            <div class="mode-btn btn-p1" onclick="startSingle()">
                 <div class="mode-icon">👤</div>
                 <div class="mode-title"> لاعِب </div>
+                <div class="mobile-text" style="display:none; font-size: clamp(3rem, 10vw, 5rem); font-weight: normal;">اِبْدَأْ</div>
             </div>
-            <div class="mode-btn" onclick="startDuel()">
+            <div class="mode-btn btn-p2" onclick="startDuel()">
                 <div class="mode-icon">👥</div>
                 <div class="mode-title">لاعِبان</div>
             </div>
@@ -428,7 +447,7 @@
     const TOTAL = 5; 
     let currentGameMode = "";
     let audioCtx = null; 
-    let clockFormat = "digital"; 
+    let clockFormat = "analog"; 
 
 
 
@@ -849,21 +868,39 @@
         }
         .rotate-text { font-size: 2.5rem; font-family: 'Arakom', Tahoma, sans-serif; }
 
-        @media only screen and (max-width: 900px) and (orientation: portrait) {
-            #rotate-message { display: flex !important; }
-        }
+        /* Rotate mesajı kaldırıldı */
 
         @media screen and (max-height: 500px) {
             body {
                 overflow-y: auto !important;
                 height: auto !important;
-                min-height: 100vh;
+                min-height: 100dvh;
                 align-items: flex-start;
                 padding-top: 15px; padding-bottom: 15px;
             }
         }
 
-    </style>
+    /* Mobil (800px altı ve Dikey) Kapsamlı Düzenlemeler */
+@media (max-width: 800px) {
+    .btn-p2 { display: none !important; }
+    .btn-p1 .mode-title { display: none !important; }
+    .btn-p1 .mobile-text { display: block !important; }
+    .btn-p1 { width: 80vw !important; padding: 20px !important; }
+    .btn-p1 .mode-icon { display: none !important; }
+    
+    #singleGame { flex-direction: column !important; padding: 10px !important; gap: 5px !important; }
+    .s-digital-section { width: 100% !important; padding: 10px !important; min-height: 15vh !important; height: auto !important; }
+    .s-options-section { width: 100% !important; gap: 5px !important; }
+    .s-time-display { font-size: clamp(3rem, 12vw, 4.5rem) !important; min-height: 80px !important; }
+    .s-time-display svg { width: clamp(100px, 30vw, 150px) !important; height: clamp(100px, 30vw, 150px) !important; }
+    .clock-label-big { font-size: clamp(1.8rem, 6vw, 2.5rem) !important; margin-bottom: 5px !important; }
+    .progress-bar { margin-top: 10px !important; }
+    .s-opt-btn { font-size: clamp(1.5rem, 6vw, 2.5rem) !important; padding: 10px !important; }
+    
+    #startScreen h1 { font-size: clamp(3rem, 10vw, 4.5rem) !important; }
+    .toggle-container { margin-bottom: 20px !important; }
+}
+</style>
 
 <div id="customAlert">
     <div class="alert-card">

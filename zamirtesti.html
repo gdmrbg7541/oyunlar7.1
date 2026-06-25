@@ -24,7 +24,7 @@
         font-family: 'Arakom', 'Segoe UI', Tahoma, sans-serif; 
         background: linear-gradient(135deg, #fdfbfb 0%, #e2ebf0 100%);
         color: #333; 
-        height: 100vh; 
+        height: 100dvh; 
         overflow: hidden; 
         font-weight: normal;
     }
@@ -84,7 +84,7 @@
         font-weight: normal;
     }
     .btn:hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px);
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
     .btn:disabled {
@@ -101,7 +101,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100vh;
+        height: 100dvh;
         text-align: center;
     }
     #start-screen h1 {
@@ -135,7 +135,7 @@
         flex-direction: column;
         justify-content: center; /* space-between yerine center kullanıyoruz */
         gap: 1.5vh; /* Tüm elementler arasına orantılı ve dar bir boşluk ekler */
-        height: 100vh;
+        height: 100dvh;
         padding: 10px 40px; /* Üst-alt boşluğu biraz kıstık */
         position: relative;
     }
@@ -353,7 +353,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100vh;
+        height: 100dvh;
         text-align: center;
     }
 
@@ -444,21 +444,35 @@
         }
         .rotate-text { font-size: 2.5rem; font-family: 'Arakom', Tahoma, sans-serif; }
 
-        @media only screen and (max-width: 900px) and (orientation: portrait) {
-            #rotate-message { display: flex !important; }
-        }
+        /* Rotate mesajı kaldırıldı */
 
         @media screen and (max-height: 500px) {
             body {
                 overflow-y: auto !important;
                 height: auto !important;
-                min-height: 100vh;
+                min-height: 100dvh;
                 align-items: flex-start;
                 padding-top: 15px; padding-bottom: 15px;
             }
         }
 
-    </style>
+    /* Mobil (800px altı) Kapsamlı Düzenlemeler */
+@media (max-width: 800px) {
+    .btn-p2 { display: none !important; }
+    .btn-p1 .text { display: none !important; }
+    .btn-p1 .mobile-text { display: block !important; }
+    .btn-p1 { min-width: 80vw !important; padding: 20px !important; }
+    .btn-p1 .emoji { display: none !important; } /* Mobilde ikon gizlensin, sadece BAŞLA yazısı olsun */
+    #game-screen { gap: 1dvh !important; padding: 5px 15px !important; }
+    .instruction { font-size: clamp(1.4rem, 6vw, 2.5rem) !important; margin-bottom: 5px !important; }
+    .pro-badge { padding: 5px 3vw !important; font-size: clamp(1.2rem, 5vw, 2rem) !important; }
+    .sentence-wrapper { gap: 5px !important; }
+    .word-box { padding: 5px 15px !important; font-size: clamp(1.5rem, 6vw, 2.8rem) !important; }
+    .opt-grid { gap: 10px !important; }
+    .opt-btn { padding: 15px 10px !important; font-size: clamp(1.3rem, 5vw, 2.5rem) !important; }
+    .top-left-controls { top: 5px !important; left: 5px !important; }
+}
+</style>
 </head>
 <body>
 
@@ -500,11 +514,12 @@ function sesTikla() { _tone(900,0.04,'sine',0.12); }
 <div id="start-screen">
     <h1>اِخْتَر الفِعْل الصَّحيح</h1>
     <div class="start-buttons">
-        <button class="btn glass" onclick="startGame(1)">
+        <button class="btn glass btn-p1" onclick="startGame(1)">
             <span class="emoji">👤</span>
-            <span>شَخْص واحد</span>
+            <span class="text">شَخْص واحد</span>
+            <span class="mobile-text" style="display:none; font-size: clamp(3rem, 10vw, 5rem); font-weight: normal;">اِبْدَأْ</span>
         </button>
-        <button class="btn glass" id="btn-2p" onclick="startGame(2)">
+        <button class="btn glass btn-p2" id="btn-2p" onclick="startGame(2)">
             <span class="emoji">👥</span>
             <span>شَخْصان</span>
         </button>

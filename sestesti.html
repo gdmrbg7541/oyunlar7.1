@@ -431,6 +431,7 @@ let isFirstRoundOfGame = true;
 
 // Tarayıcının Web Audio API motorunu başlatıyoruz
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const gameAudio = new Audio(); // Mobil kısıtlamalarını aşmak için TEK bir küresel oynatıcı
 
 // --- SİNÜS DALGASI SES SENTEZLEYİCİSİ ---
 function playTone(frequency, duration, type = 'sine') {
@@ -489,14 +490,14 @@ function initProgressBars() {
 
 function startGameWithAudio() {
     playClickSound();
-    const introAudio = new Audio('yonergesestesti.mp3');
+    gameAudio.src = 'yonergesestesti.mp3'; // İlk tıklamada küresel oynatıcıyı kilit dışına çıkar
     document.getElementById('start-screen').style.display = 'none';
 
-    introAudio.onended = () => {
+    gameAudio.onended = () => {
         startFirstRoundFlow();
     };
 
-    introAudio.play().catch(e => {
+    gameAudio.play().catch(e => {
         console.log("Yönerge sesi yüklenemedi, oyun direkt başlıyor.");
         startFirstRoundFlow();
     });
@@ -551,16 +552,16 @@ function playCurrentAudio() {
         
         let sesDosyaAdi = currentWord.tr.trim().toLowerCase() + '.mp3';
         
-        const audio = new Audio(sesDosyaAdi);
-        audio.play().catch(e => {
+        gameAudio.src = sesDosyaAdi;
+        gameAudio.play().catch(e => {
             console.error(`Ses dosyası klasörde bulunamadı: ${sesDosyaAdi}`);
         });
         
-        audio.onended = () => {
+        gameAudio.onended = () => {
             icon.classList.replace('fa-volume-low', 'fa-volume-high');
         };
 
-        audio.onerror = () => {
+        gameAudio.onerror = () => {
             icon.classList.replace('fa-volume-low', 'fa-volume-high');
         };
     }

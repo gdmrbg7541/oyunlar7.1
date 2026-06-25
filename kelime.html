@@ -88,18 +88,30 @@
 
         /* Oyun Öğeleri */
   #instruction-text {
-    position: absolute;
-    top: clamp(60px, 15vh, 100px); /* Sayfanın üst kısmında sabit durması için */
-    left: 50%;
-    transform: translateX(-50%);
+    position: fixed !important;
+    top: 50vh !important;
+    left: 50vw !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 9999 !important;
     width: 90%;
-    font-size: clamp(2rem, 6vw, 4.5rem); /* Dinamik boyutlandırma */
-    color: #00796b;
-    font-weight: normal;
-    z-index: 200;
+    max-width: 800px;
+    font-size: clamp(2.5rem, 6vw, 4.5rem) !important;
+    color: var(--primary);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    margin: 0;
+    font-weight: 400;
     text-align: center;
-    text-shadow: 0 4px 10px rgba(255,255,255,0.9);
+    line-height: 1.2;
     pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+#instruction-text.hide {
+    opacity: 0 !important;
+    transform: translate(-50%, -60%) !important;
 }
 
         #progress-container {
@@ -141,7 +153,7 @@
             position: absolute;
             font-size: clamp(4rem, 12vw, 7rem);
             cursor: pointer;
-            z-index: 10;
+            z-index: 150;
         }
 /* Kelime kutusu için burgu (sallanma) animasyonu */
 @keyframes twist {
@@ -202,7 +214,7 @@
             }
             h1 { font-size: 2.5rem; margin-bottom: 10px; }
             .btn { font-size: 1.5rem; padding: 10px 40px; margin: 5px; }
-            #instruction-text { top: 40px; font-size: 1.8rem; }
+            
             #word-display { bottom: 15px; font-size: 2rem; padding: 5px 30px; border-width: 3px; border-radius: 20px; }
             .emoji { font-size: 3rem; }
             #progress-container { top: 15px; }
@@ -290,16 +302,17 @@ function startGame() {
     document.getElementById('game-ui').style.display = 'block';
     
     // 1. Yazıyı göster
+    instruction.classList.remove('hide');
     instruction.style.display = 'block';
     
     // 2. Sesi baştan başlat ve çal
-    audio.currentTime = 0;
-    audio.play();
+    try { audio.currentTime = 0; audio.play(); } catch(e) {}
 
-    // 3. Yazıyı tam 4 saniye sonra gizle (Ses bitişinden bağımsız)
+    // 3. Animasyonla gizle
     setTimeout(function() {
-        instruction.style.display = 'none';
-    }, 5000); 
+        instruction.classList.add('hide');
+        setTimeout(() => instruction.style.display = 'none', 500);
+    }, 4000); 
     
     isGameRunning = true;
     initRound();
@@ -396,7 +409,7 @@ function initRound() {
         const obj = {
     el: el,
     x: Math.random() * (window.innerWidth - 150),
-    y: Math.random() * (window.innerHeight - 350) + 150,
+    y: Math.random() * (window.innerHeight - 400) + 150,
     dx: (Math.random() - 0.5) * 1.5, // 4 yerine 1.5 veya 2 yazarak hızı düşürdük
     dy: (Math.random() - 0.5) * 1.5
 };
@@ -421,7 +434,7 @@ function initRound() {
                 obj.y += obj.dy;
 
                 if (obj.x <= 0 || obj.x >= window.innerWidth - 120) obj.dx *= -1;
-                if (obj.y <= 100 || obj.y >= window.innerHeight - 150) obj.dy *= -1;
+                if (obj.y <= 100 || obj.y >= window.innerHeight - 280) obj.dy *= -1;
 
                 obj.el.style.left = obj.x + 'px';
                 obj.el.style.top = obj.y + 'px';
