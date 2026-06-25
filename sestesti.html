@@ -221,7 +221,7 @@ header {
         /* MOBİL DİKEY İÇİN (PORTRAIT) İKİ OYUNCULU UI DÜZENLEMESİ */
         @media only screen and (max-width: 950px) and (orientation: portrait) {
             #game-container {
-                flex-direction: column !important; /* Ekranı alt-üst ikiye böl */
+                flex-direction: column-reverse !important; /* P2 üstte, P1 altta olacak şekilde ters diz */
             }
             .player-zone {
                 padding: 1vh 0 !important; /* 40px dev boşlukları kaldır */
@@ -247,8 +247,8 @@ header {
                 padding: 1vh 2vh !important;
             }
             .score-board {
-                font-size: 3vh;
-                padding: 5px 20px;
+                font-size: 2.2vh !important; /* P1 ve P2 yazısı daha küçük yapıldı */
+                padding: 3px 15px !important;
             }
             #audio-trigger {
                 width: 60px !important; 
@@ -258,6 +258,18 @@ header {
                 right: 20px !important;
                 transform: translateY(-50%) !important;
                 top: calc(50% + 60px) !important; /* Biraz daha aşağı alındı */
+            }
+            .progress-container {
+                height: 8px !important; /* İlerleme çubuğu daha ince yapıldı */
+            }
+            .home-btn {
+                width: 30px !important; /* Anasayfa butonu daha küçük */
+                height: 30px !important;
+                left: 10px !important;
+            }
+            .home-btn svg {
+                width: 16px !important;
+                height: 16px !important;
             }
         }
 
