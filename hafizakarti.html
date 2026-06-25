@@ -54,10 +54,10 @@ body, button, div, span {
 
   /* Start */
   #start-screen{ gap:10px; }
-  .start-title{ font-size:clamp(2.2rem,4vw,3rem); margin:10px 0; }
+  .start-title{ font-size:clamp(2.5rem,5vw,3.5rem); margin:10px 0; }
   .start-options{ display:flex; flex-direction:column; gap:15px; width:80%; max-width:700px; }
   .option-group{ display:flex; flex-direction:column; gap:10px; }
-  .option-group label{ font-size:1.1rem; font-weight:400; color:var(--primary-color); text-align:left; }
+  .option-group label{ font-size:1.4rem; font-weight:500; color:var(--primary-color); text-align:left; }
   .player-buttons{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 
   .player-button, #lesson-select, #start-game-btn{
@@ -72,13 +72,13 @@ body, button, div, span {
   #lesson-select{ width:100%; appearance:none; -webkit-appearance:none;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235E81AC'%3E%3Cpath d='M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z'/%3E%3C/svg%3E");
     background-repeat:no-repeat; background-position:right 10px center; background-size:24px; padding-right:40px; text-align-last:center; }
-  #start-game-btn{ margin-top:6px; font-size:1.25rem; font-weight:500; }
+  #start-game-btn{ margin:10px auto 0 auto; font-size:1rem; padding: 10px 25px; width:auto; max-width: 250px; font-weight:500; }
   #start-game-btn:disabled{ background:#bdc3c7; color:#7f8c8d; opacity:.7; box-shadow:none; cursor:not-allowed; }
   #start-game-btn:not(:disabled){ background:var(--correct-color); color:#fff; }
 
   /* Game */
   #game-screen{ flex-direction:row; justify-content:space-between; align-items:stretch; gap:15px; padding:15px; overflow:hidden; }
-  #game-screen.single-player-mode #player2-display{ display:none; }
+  #game-screen.single-player-mode .score-display { display:none !important; }
   .score-display{
     flex:0 0 clamp(100px, 15%, 150px); max-width:150px; height:100%;
     display:flex; flex-direction:column; justify-content:center; align-items:center; gap:clamp(10px,3vh,20px);
@@ -120,8 +120,8 @@ body, button, div, span {
     .start-title{ margin-bottom:12px; }
     .start-options{ gap:18px; }
     #game-screen{ flex-direction:column; padding:10px; gap:10px; }
-    .score-display{ flex-direction:row; height:auto; width:100%; max-width:none; font-size:2rem; padding:6px 10px; gap:10px; order:-1; }
-    .score-display svg{ width:30px; height:30px; }
+    .score-display{ flex-direction:row; height:40px; width:100%; max-width:none; font-size:1.4rem; padding:4px 10px; gap:8px; order:-1; }
+    .score-display svg{ width:22px; height:22px; }
     #game-board{ grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(5,1fr); gap:6px; width:100%; }
     .card-face{ font-size:clamp(1rem,12cqw,1.8rem); padding:4px; border-radius:var(--border-radius-sm); }
     .game-over-overlay{ padding:20px 30px; width:90%; }
@@ -297,16 +297,16 @@ body, button, div, span {
 }
 
 .game-instruction-title {
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-size: clamp(2.2rem, 3vw, 2.8rem) !important;
     color: var(--primary-color);
     margin: 0;
     font-weight: 400; /* 800 yerine 400 yaparak bold özelliğini kaldırdık */
     text-align: center;
+    line-height: 1.1;
 }
 
 @media (max-width:800px) {
     .game-header { margin-bottom: 5px; }
-    .game-instruction-title { font-size: 1.6rem; }
 }
 
 /* Tek kişilik modda Player 1 panelini her zaman aktif ve renkli yap */
@@ -451,13 +451,13 @@ body, button, div, span {
                 flex-direction: row !important; 
                 width: 100% !important; 
                 max-width: none !important;
-                height: 60px !important; 
-                padding: 5px 20px !important; 
-                gap: 15px !important; 
-                font-size: 2rem !important; 
+                height: 40px !important; 
+                padding: 2px 10px !important; 
+                gap: 10px !important; 
+                font-size: 1.5rem !important; 
                 margin: 0 !important;
             }
-            .score-display svg { width: 30px !important; height: 30px !important; }
+            .score-display svg { width: 22px !important; height: 22px !important; }
             #game-container-inner { flex-grow: 1 !important; justify-content: center !important; }
             #game-board { gap: 8px !important; }
         }
@@ -467,12 +467,13 @@ body, button, div, span {
             #rotate-message { display: none !important; }
             #game-screen { padding: 5px !important; gap: 5px !important; }
             .score-display { 
-                width: 60px !important;
+                width: 45px !important;
                 height: auto !important;
-                padding: 5px !important;
-                font-size: 1.5rem !important;
+                padding: 3px !important;
+                font-size: 1.2rem !important;
+                gap: 5px !important;
             }
-            .score-display svg { width: 25px !important; height: 25px !important; }
+            .score-display svg { width: 20px !important; height: 20px !important; }
             #game-board { gap: 6px !important; }
         }
 
@@ -793,18 +794,19 @@ populateBoard(cards){
     const n = cards.length;
     this.dom.board.innerHTML = '';
 
-    // Smart Grid Algorithm
+    // Smart Grid Algorithm (Perfect Symmetry)
     const updateGrid = () => {
         const isLandscape = window.innerWidth > window.innerHeight;
-        let cols = 4, rows = Math.ceil(n/cols);
-        if (isLandscape) {
-            cols = Math.ceil(Math.sqrt(n * 2));
-            rows = Math.ceil(n / cols);
-            if (rows > 3) { rows = 3; cols = Math.ceil(n / rows); }
-        } else {
-            cols = Math.floor(Math.sqrt(n * 0.6));
-            if (cols < 2) cols = 2;
-            if (cols > 4) cols = 4;
+        let cols = 4, rows = 4;
+        if (n === 16) { cols = 4; rows = 4; }
+        else if (n === 20) { cols = isLandscape ? 5 : 4; rows = isLandscape ? 4 : 5; }
+        else if (n === 12) { cols = isLandscape ? 4 : 3; rows = isLandscape ? 3 : 4; }
+        else if (n === 18) { cols = isLandscape ? 6 : 3; rows = isLandscape ? 3 : 6; }
+        else if (n === 14) { cols = isLandscape ? 7 : 2; rows = isLandscape ? 2 : 7; }
+        else if (n === 10) { cols = isLandscape ? 5 : 2; rows = isLandscape ? 2 : 5; }
+        else if (n === 8) { cols = isLandscape ? 4 : 2; rows = isLandscape ? 2 : 4; }
+        else {
+            cols = Math.ceil(Math.sqrt(n));
             rows = Math.ceil(n / cols);
         }
         this.dom.board.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
@@ -951,18 +953,19 @@ const WordCardGame = {
         const shuffled = Utils.shuffleArray(words);
         const count = shuffled.length;
 
-        // Smart Grid Algorithm
+        // Smart Grid Algorithm (Perfect Symmetry)
         const updateGrid = () => {
             const isLandscape = window.innerWidth > window.innerHeight;
-            let cols = 4, rows = Math.ceil(count/cols);
-            if (isLandscape) {
-                cols = Math.ceil(Math.sqrt(count * 2));
-                rows = Math.ceil(count / cols);
-                if (rows > 3) { rows = 3; cols = Math.ceil(count / rows); }
-            } else {
-                cols = Math.floor(Math.sqrt(count * 0.6));
-                if (cols < 2) cols = 2;
-                if (cols > 4) cols = 4;
+            let cols = 4, rows = 4;
+            if (count === 16) { cols = 4; rows = 4; }
+            else if (count === 20) { cols = isLandscape ? 5 : 4; rows = isLandscape ? 4 : 5; }
+            else if (count === 12) { cols = isLandscape ? 4 : 3; rows = isLandscape ? 3 : 4; }
+            else if (count === 18) { cols = isLandscape ? 6 : 3; rows = isLandscape ? 3 : 6; }
+            else if (count === 14) { cols = isLandscape ? 7 : 2; rows = isLandscape ? 2 : 7; }
+            else if (count === 10) { cols = isLandscape ? 5 : 2; rows = isLandscape ? 2 : 5; }
+            else if (count === 8) { cols = isLandscape ? 4 : 2; rows = isLandscape ? 2 : 4; }
+            else {
+                cols = Math.ceil(Math.sqrt(count));
                 rows = Math.ceil(count / cols);
             }
             board.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
