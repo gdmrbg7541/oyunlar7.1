@@ -67,7 +67,7 @@ header {
             border-radius: 15px; text-decoration: none; font-size: 1.5rem;
         }
 
-        #game-container { display: flex; width: 100vw; height: 100vh; }
+        #game-container { display: flex; width: 100vw; height: 100dvh; }
 
         .player-zone {
             flex: 1; display: flex; flex-direction: column;
@@ -334,7 +334,7 @@ header {
         <div class="rotate-text">يُرْجى تَدْوير الجِهاز</div> 
     </div>
 
-<div id="start-screen" dir="rtl" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5000; color: white; font-family: var(--font-main);">
+<div id="start-screen" dir="rtl" style="position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; background: #2c3e50; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5000; color: white; font-family: var(--font-main);">
     <h1 style="font-size: clamp(2rem, 8vw, 3.5rem); margin-bottom: 20px; text-align: center;">مُسابَقَة السُّرْعَة </h1>
     
     <button id="real-start-btn" onclick="startGameWithAudio()" dir="ltr" style="padding: 20px 60px; font-size: 2.5rem; border-radius: 50px; cursor: pointer; background: #27ae60; color: white; border: none; box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 20px;">
@@ -370,7 +370,7 @@ header {
     <i class="fas fa-volume-high"></i>
 </button>
 
-<div id="game-container" style="height: calc(100vh - 80px);">
+<div id="game-container" style="height: calc(100dvh - 80px);">
     <div id="p1-zone" class="player-zone" style="background: #f0f8ff; border-right: 1px solid rgba(0,0,0,0.05);">
         <div class="header-panel">
             <div class="score-board" style="box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 20px; background: white; color: #2c3e50;">P1: <span id="p1-score">0</span></div>
