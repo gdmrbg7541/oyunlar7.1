@@ -223,6 +223,17 @@ header {
             #game-container {
                 flex-direction: column !important; /* Ekranı alt-üst ikiye böl */
             }
+            .player-zone {
+                padding: 1vh 0 !important; /* 40px dev boşlukları kaldır */
+                justify-content: space-around;
+            }
+            .header-panel {
+                gap: 1vh !important; /* Header iç boşluğu daralt */
+            }
+            .options-container {
+                gap: 1.5vh !important; /* Şıklar arası dev boşlukları daralt */
+                margin-bottom: 5px !important;
+            }
             #p2-zone {
                 transform: rotate(180deg); /* Üstteki 2. oyuncunun ekranı ters dursun */
                 border-right: none !important;
@@ -232,11 +243,11 @@ header {
                 border-right: none !important;
             }
             .option-btn {
-                font-size: 5vh; /* Butonlar dikeyde çok şişmesin diye daraltıldı */
-                padding: 1.5vh 2vh;
+                font-size: 4.5vh !important; /* Şıklar ekrana sığsın diye biraz daha küçültüldü */
+                padding: 1vh 2vh !important;
             }
             .score-board {
-                font-size: 3.5vh;
+                font-size: 3vh;
                 padding: 5px 20px;
             }
             #audio-trigger {
