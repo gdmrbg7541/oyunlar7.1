@@ -597,21 +597,29 @@ const Data = {
   pdfUnit: {
     title: "١. الوَحْدَة", 
     words: {
-      unit1: {
+      unit2: {
         title: { tr: "1. Ünite" },
         description: { tr: "Günlük Hayat" },
         lessons: {
           lesson1: {
             description: { tr: "Günlük Eylemler" },
             words: [
-              { id: 1, arabic: 'تَنامُ', turkish: '1.jpeg' },
-  { id: 2, arabic: 'أَدْرُسُ دُروسي', turkish: '2.jpeg' },
-  { id: 3, arabic: 'تَذْهَبُ إِلى المَدْرَسَة', turkish: '3.jpeg' },
-  { id: 4, arabic: 'أَسْتَيْقِظُ ', turkish: '4.jpeg' },
-  { id: 5, arabic: 'أَغْسِلُ يَدَيّ ', turkish: '5.jpeg' },
-  { id: 6, arabic: 'يَتَناوَلُ الفَطور ', turkish: '6.jpeg' },
-  { id: 7, arabic: 'أُساعِدُ أُمّي', turkish: '7.jpeg' },
-  { id: 8, arabic: 'أَلْبَسُ مَلابِسي', turkish: '8.jpeg' }
+  { id: 1, arabic: 'طَماطِم', turkish: '1.jpeg' },
+  { id: 2, arabic: 'بَطاطا', turkish: '2.jpeg' },
+  { id: 3, arabic: 'بُرْتُقال', turkish: '3.jpeg' },
+  { id: 4, arabic: 'عَسَل', turkish: '4.jpeg' },
+  { id: 5, arabic: 'ماء', turkish: '5.jpeg' },
+  { id: 6, arabic: 'خُبْز', turkish: '6.jpeg' },
+  { id: 7, arabic: 'سُكَّر', turkish: '7.jpeg' },
+  { id: 8, arabic: 'مِلْح', turkish: '8.jpeg' },
+  { id: 9, arabic: 'شاي', turkish: '9.jpeg' },
+  { id: 10, arabic: 'مِشْمِش', turkish: '10.jpeg' },
+  { id: 11, arabic: 'بَصَل', turkish: '11.jpeg' },
+  { id: 12, arabic: 'عِنَب', turkish: '12.jpeg' },
+  { id: 13, arabic: 'تُفّاح', turkish: '13.jpeg' },
+  { id: 14, arabic: 'جَزَر', turkish: '14.jpeg' },
+  { id: 15, arabic: 'كَرَز', turkish: '15.jpeg' },
+  { id: 16, arabic: 'باذِنْجان', turkish: '16.jpeg' }
             ]
           }
         }
@@ -679,7 +687,7 @@ initStartScreenListeners() {
     this.dom.startGameBtn.onclick = () => {
       this.playSound('menuClick');
       const mode = this.state.selectedPlayers;
-      const words = Data.pdfUnit.words.unit1.lessons.lesson1.words;
+      const words = Data.pdfUnit.words.unit2.lessons.lesson1.words;
 
       if (mode === 3) {
         // --- KARTLAR (BİTAGAT) MODU ---
@@ -867,7 +875,7 @@ start(words, playerMode=1){
     document.getElementById('play-again-memory-btn').onclick = ()=>{
       App.playSound('menuClick');
       // Veriyi doğrudan mevcut Data objesinden çekiyoruz
-      const currentWords = Data.pdfUnit.words.unit1.lessons.lesson1.words;
+      const currentWords = Data.pdfUnit.words.unit2.lessons.lesson1.words;
       this.start(currentWords, this.state.playerMode);
     }; 
 
