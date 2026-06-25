@@ -389,6 +389,12 @@
         }
     /* --- استجابة الجوال (Mobil Uyum - Responsive Design) --- */
         @media (max-width: 768px) {
+            body {
+                overflow-y: auto !important;
+                height: auto !important;
+                min-height: 100vh;
+                padding-bottom: 30px;
+            }
             .instruction-text { font-size: 1.8rem; margin: 2px 0; }
             .start-content h1 { font-size: 2.5rem; }
             .start-content p { font-size: 1.2rem; }
@@ -396,15 +402,15 @@
             .icon-btn svg { width: 35px; height: 35px; }
 
             .timer-modern {
-                top: 50px; left: 10px;
+                top: 80px; left: 10px;
                 width: 60px; height: 60px;
                 border-width: 2px;
             }
             .timer-modern .timer-text { font-size: 1.8rem; margin-top: 0; }
             
             .score-board {
-                top: 50px; right: 10px;
-                font-size: 1.2rem;
+                top: 80px; right: 10px;
+                font-size: 1.5rem;
                 padding: 5px 15px;
             }
 
@@ -434,9 +440,9 @@
         }
 
         @media (max-width: 480px) {
-            .timer-modern { top: 45px; left: 5px; width: 50px; height: 50px; }
+            .timer-modern { top: 75px; left: 5px; width: 50px; height: 50px; }
             .timer-modern .timer-text { font-size: 1.4rem; }
-            .score-board { top: 45px; right: 5px; font-size: 1rem; padding: 5px 10px; }
+            .score-board { top: 75px; right: 5px; font-size: 1.3rem; padding: 5px 10px; }
             .emoji { font-size: 5rem; margin: 30px 0 auto 0; }
             .letter-btn { min-width: 50px; height: 50px; font-size: 2rem; }
         }
