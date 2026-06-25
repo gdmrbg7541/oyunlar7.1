@@ -188,18 +188,25 @@
         }
         .rotate-text { font-size: 2.5rem; font-family: 'Arakom', Tahoma, sans-serif; }
 
-        @media only screen and (max-width: 900px) and (orientation: portrait) {
+        /* Her iki yönde de oynamak serbest - Uyarı Devre Dışı */
+        /* @media only screen and (max-width: 900px) and (orientation: portrait) {
             #rotate-message { display: flex !important; }
-        }
+        } */
 
+        /* YATAY ve DAR YÜKSEKLİKLİ EKRANLAR İÇİN DAHA KÜÇÜK TASARIM */
         @media screen and (max-height: 500px) {
             body {
-                overflow-y: auto !important;
-                height: auto !important;
-                min-height: 100vh;
-                align-items: flex-start;
-                padding-top: 15px; padding-bottom: 15px;
+                overflow-y: hidden !important; /* Ekrana tam sığsın */
+                height: 100vh !important;
+                padding: 0;
             }
+            h1 { font-size: 2.5rem; margin-bottom: 10px; }
+            .btn { font-size: 1.5rem; padding: 10px 40px; margin: 5px; }
+            #instruction-text { top: 40px; font-size: 1.8rem; }
+            #word-display { bottom: 15px; font-size: 2rem; padding: 5px 30px; border-width: 3px; border-radius: 20px; }
+            .emoji { font-size: 2.5rem; }
+            #progress-container { top: 15px; }
+            .back-icon-btn { width: 45px; height: 45px; font-size: 1.5rem; top: 10px; left: 10px; }
         }
 
     </style>
