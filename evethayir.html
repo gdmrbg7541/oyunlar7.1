@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مسابقة نعم أو لا</title>
     <style>
+    h1, h2, h3, h4, h5, h6, strong, b { font-weight: normal !important; }
+
         /* Arakom Fontu Tanımlaması */
         @font-face {
             font-family: 'Arakom';
@@ -388,11 +390,12 @@
     }
 </style>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
     <!-- CİHAZ DÖNDÜRME UYARISI (TÜM OYUNLAR ORTAK) -->
-    <div id="rotate-message">
+    <div id="rotate-message" style="display: none;">
         <div class="phone-animation"></div>
         <div class="rotate-text">يُرْجى تَدْوير الجِهاز</div> 
     </div>
@@ -406,7 +409,7 @@
     </svg>
 
   <div id="start-screen">
-        <h1>مُسابَقَة نَعَم أَو لا</h1>
+        <h1>مُسابَقَة نَعَمْ أَوْ لا</h1>
         <div class="start-buttons">
             <button class="main-btn" onclick="startGame(1)">👤 لاعِب واحِد</button>
             <button class="main-btn" onclick="startGame(2)">👥 لاعِبان</button>
@@ -429,7 +432,7 @@
                     <div id="p1-emoji" class="emoji-display">❓</div>
                     <div id="p1-text" class="question-text">جاري التحميل...</div>
                     <div id="p1-btn-container" class="btn-container">
-                        <button class="btn btn-yes" onclick="checkAnswer('p1', true)">نَعَم 👍</button>
+                        <button class="btn btn-yes" onclick="checkAnswer('p1', true)">نَعَمْ 👍</button>
                         <button class="btn btn-no" onclick="checkAnswer('p1', false)">لا 👎</button>
                     </div>
                 </div>
@@ -445,7 +448,7 @@
                     <div id="p2-emoji" class="emoji-display">❓</div>
                     <div id="p2-text" class="question-text">جاري التحميل...</div>
                     <div id="p2-btn-container" class="btn-container">
-                        <button class="btn btn-yes" onclick="checkAnswer('p2', true)">نَعَم 👍</button>
+                        <button class="btn btn-yes" onclick="checkAnswer('p2', true)">نَعَمْ 👍</button>
                         <button class="btn btn-no" onclick="checkAnswer('p2', false)">لا 👎</button>
                     </div>
                 </div>
@@ -459,6 +462,7 @@
     </div>
 
     <div id="end-screen">
+        <div id="score-text" style="font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 20px; color: var(--primary); text-align: center; white-space: pre-line;"></div>
         <div class="bitti-mesaj">دَوْر الطُّلّاب الجُدُد</div>
         <button class="main-btn" onclick="resetGame()">اِبْدَأْ جَوْلَة جَديدَة</button>
     </div>
@@ -466,28 +470,28 @@
     <script>
         const allQuestions = [
     // Mevcut Sorular
-    { text: "هَلْ تَشْرَبُ القَهْوَة؟", trueEmoji: "☕", falseEmoji: "🧃" }, // [cite: 6]
-    { text: "هَلْ تَأْكُلُ الدَّجاج؟", trueEmoji: "🍗", falseEmoji: "🐟" }, // [cite: 8]
-    { text: "هَلْ تَتَناوَلُ الفَطور؟", trueEmoji: "🍳", falseEmoji: "🍔" }, // [cite: 1]
-    { text: "هَلْ تُنَظِّفُ أَسْنانَكَ؟", trueEmoji: "🪥", falseEmoji: "📺" }, // [cite: 3]
-    { text: "هَلْ تَذْهَبُ إِلى المَدْرَسَة؟", trueEmoji: "🏫", falseEmoji: "🏭" }, // [cite: 1]
-    { text: "هَلْ تَنامُ لَيْلًا؟", trueEmoji: "🛌", falseEmoji: "🏃" }, // [cite: 2]
+    { text: "أَشْرَبُ القَهْوَة.", trueEmoji: "☕", falseEmoji: "🧃" }, // [cite: 6]
+    { text: "آكُلُ الدَّجاج.", trueEmoji: "🍗", falseEmoji: "🐟" }, // [cite: 8]
+    { text: "أَتَناوَلُ الفَطور.", trueEmoji: "🍳", falseEmoji: "🍔" }, // [cite: 1]
+    { text: "أُنَظِّفُ أَسْناني.", trueEmoji: "🪥", falseEmoji: "📺" }, // [cite: 3]
+    { text: "أَذْهَبُ إِلى المَدْرَسَة.", trueEmoji: "🏫", falseEmoji: "🏭" }, // [cite: 1]
+    { text: "أَنامُ لَيْلًا.", trueEmoji: "🛌", falseEmoji: "🏃" }, // [cite: 2]
 
     // Yeni Eklenen Sorular (1. Ünite Cümleleri ve Diyalogları)
-    { text: "هَلْ تَسْتَيْقِظُ مُبَكِّرًا؟", trueEmoji: "🌅", falseEmoji: "🌃" }, // [cite: 1, 2]
-    { text: "هَلْ تُصَلّي الفَجْر الآن؟", trueEmoji: "🕌", falseEmoji: "⚽" }, // [cite: 1, 3]
-    { text: "هَلْ تَلْبَسُ مَلابِسَكَ؟", trueEmoji: "👕", falseEmoji: "🍽️" }, // [cite: 1]
-    { text: "هَلْ تَرْجِعُ إِلى البَيْت؟", trueEmoji: "🏠", falseEmoji: "🛒" }, // [cite: 2, 4]
-    { text: "هَلْ تُساعِدُ أُمَّكَ؟", trueEmoji: "🧹", falseEmoji: "🎮" }, // [cite: 2, 4]
-    { text: "هَلْ تَدْرُسُ دُروسَكَ مَساءً؟", trueEmoji: "📚", falseEmoji: "📺" }, // [cite: 2, 5]
-    { text: "هَلْ تَأْكُلُ الزَّيْتون؟", trueEmoji: "🫒", falseEmoji: "🍕" }, // [cite: 5]
-    { text: "هَلْ تَشْرَبُ الحَليب؟", trueEmoji: "🥛", falseEmoji: "🧃" }, // [cite: 6]
-    { text: "هَلْ تَأْكُلُ السَّمَك؟", trueEmoji: "🐟", falseEmoji: "🍗" }, // [cite: 6]
-    { text: "هَلْ تَشْرَبُ العَصير؟", trueEmoji: "🧃", falseEmoji: "☕" }, // [cite: 7]
-    { text: "هَلْ تَأْكُلُ العَسَل؟", trueEmoji: "🍯", falseEmoji: "🍉" }, // [cite: 7]
-    { text: "هَلْ تَغْسِلُ يَدَيْكَ؟", trueEmoji: "🧼", falseEmoji: "🚗" }, // [cite: 13, 14]
-    { text: "هَلْ تُحِبُّ الكُفْتَة؟", trueEmoji: "🧆", falseEmoji: "🥗" }, // [cite: 16]
-    { text: "هَلْ تُحِبُّ المَكَرونَة؟", trueEmoji: "🍝", falseEmoji: "🍔" } // [cite: 16]
+    { text: "أَسْتَيْقِظُ مُبَكِّرًا.", trueEmoji: "🌅", falseEmoji: "🌃" }, // [cite: 1, 2]
+    { text: "أُصَلّي الفَجْر الآن.", trueEmoji: "🕌", falseEmoji: "⚽" }, // [cite: 1, 3]
+    { text: "أَلْبَسُ مَلابِسي.", trueEmoji: "👕", falseEmoji: "🍽️" }, // [cite: 1]
+    { text: "أَرْجِعُ إِلى البَيْت.", trueEmoji: "🏠", falseEmoji: "🛒" }, // [cite: 2, 4]
+    { text: "أُساعِدُ أُمّي.", trueEmoji: "🧹", falseEmoji: "🎮" }, // [cite: 2, 4]
+    { text: "أَدْرُسُ دُروسي مَساءً.", trueEmoji: "📚", falseEmoji: "📺" }, // [cite: 2, 5]
+    { text: "آكُلُ الزَّيْتون.", trueEmoji: "🫒", falseEmoji: "🍕" }, // [cite: 5]
+    { text: "أَشْرَبُ الحَليب.", trueEmoji: "🥛", falseEmoji: "🧃" }, // [cite: 6]
+    { text: "آكُلُ السَّمَك.", trueEmoji: "🐟", falseEmoji: "🍗" }, // [cite: 6]
+    { text: "أَشْرَبُ العَصير.", trueEmoji: "🧃", falseEmoji: "☕" }, // [cite: 7]
+    { text: "آكُلُ العَسَل.", trueEmoji: "🍯", falseEmoji: "🍉" }, // [cite: 7]
+    { text: "أَغْسِلُ يَدَيَّ.", trueEmoji: "🧼", falseEmoji: "🚗" }, // [cite: 13, 14]
+    { text: "أُحِبُّ الكُفْتَة.", trueEmoji: "🧆", falseEmoji: "🥗" }, // [cite: 16]
+    { text: "أُحِبُّ المَكَرونَة.", trueEmoji: "🍝", falseEmoji: "🍔" } // [cite: 16]
 ];
 
         let p1State = { index: 0, questions: [], currentAnswer: null };
@@ -523,6 +527,27 @@
                     });
                 }
             }
+        }
+
+        function playSound(type) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.type = 'sine';
+                if (type === 'success') {
+                    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
+                    oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.2);
+                } else {
+                    oscillator.frequency.setValueAtTime(220, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.3);
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+                    oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.4);
+                }
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+            } catch(e) { console.log("Ses sistemi hatası."); }
         }
 
         function handleNav() {
@@ -667,18 +692,19 @@
             
             if (userSelection === state.currentAnswer) {
                 stepDiv.classList.add('correct');
+                playSound('success');
             } else {
                 stepDiv.classList.add('wrong');
+                playSound('error');
             }
 
             state.index++;
             loadQuestion(playerStr);
         }
 
-        function checkRoundEnd() {
+                        function checkRoundEnd() {
             let isRoundOver = false;
             
-            // YENİ: Moda göre bitiş kontrolü
             if (currentGameMode === 1) {
                 isRoundOver = p1State.index >= 3;
             } else {
@@ -686,11 +712,52 @@
             }
 
             if (isRoundOver) {
-                setTimeout(() => {
-                    document.getElementById('game-screen').style.display = 'none';
-                    document.getElementById('end-screen').style.display = 'flex';
-                    updateNavIcon('home');
-                }, 800);
+                if (currentGameMode === 1) {
+                    setTimeout(() => {
+                        document.getElementById('game-screen').style.display = 'none';
+                        let scoreDisp = document.getElementById('score-text');
+                        if (scoreDisp) scoreDisp.innerText = ''; // Clear for single player
+                        document.getElementById('end-screen').style.display = 'flex';
+                        updateNavIcon('home');
+                    }, 800);
+                } else {
+                    let p1Score = document.querySelectorAll('#p1-step-0.correct, #p1-step-1.correct, #p1-step-2.correct').length;
+                    let p2Score = document.querySelectorAll('#p2-step-0.correct, #p2-step-1.correct, #p2-step-2.correct').length;
+                    
+                    let originX = 0.5; 
+                    
+                    if (p1Score > p2Score) {
+                        originX = 0.8; 
+                    } else if (p2Score > p1Score) {
+                        originX = 0.2; 
+                    }
+
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 150,
+                            spread: 70,
+                            origin: { x: originX, y: 0.5 },
+                            colors: ['#26ccff', '#a25afd', '#ff5e7e', '#88ff5a', '#fcff42', '#ffa62d', '#ff36ff']
+                        });
+                        try { playSound('success'); } catch(e){}
+                    }
+                    
+                    let scoreDisplay = document.getElementById('score-text');
+                    if(scoreDisplay) {
+                        let winMsg = "";
+                        if (p1Score > p2Score) winMsg = "اللاعب 1 فاز! 🏆"; 
+                        else if (p2Score > p1Score) winMsg = "اللاعب 2 فاز! 🏆";
+                        else winMsg = "تَعادُل! 🤝"; 
+                        scoreDisplay.innerText = `${p1Score} - ${p2Score}
+${winMsg}`;
+                    }
+                    
+                    setTimeout(() => {
+                        document.getElementById('game-screen').style.display = 'none';
+                        document.getElementById('end-screen').style.display = 'flex';
+                        updateNavIcon('home');
+                    }, 2500);
+                }
             }
         }
 

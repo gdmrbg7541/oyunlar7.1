@@ -7,6 +7,8 @@
     <!-- Font Awesome İkon Kütüphanesi -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+    h1, h2, h3, h4, h5, h6, strong, b { font-weight: normal !important; }
+
         @font-face {
     font-family: 'Arakom';
     src: url('arakom.ttf') format('truetype');
@@ -329,7 +331,7 @@ header {
 <body>
 
     <!-- CİHAZ DÖNDÜRME UYARISI (TÜM OYUNLAR ORTAK) -->
-    <div id="rotate-message">
+    <div id="rotate-message" style="display: none;">
         <div class="phone-animation"></div>
         <div class="rotate-text">يُرْجى تَدْوير الجِهاز</div> 
     </div>
@@ -394,7 +396,7 @@ const words = [
     { tr: 'uyaniyorum', ar: 'أَسْتَيْقِظُ', emoji: '⏰' },
     { tr: 'sabah', ar: 'صَباح', emoji: '🌅' },
     { tr: 'abdestaliyorum', ar: 'أَتَوَضَّأُ', emoji: '💪🏽💦' },
-    { tr: 'namazkiliyorum', ar: 'أُصَلّي', emoji: '🧎' },
+    { tr: 'namazkiliyorum', ar: 'أُصَلّي', emoji: '🕌' },
     { tr: 'kahvalti', ar: 'فَطور', emoji: '🍳' },
     { tr: 'aile', ar: 'عائِلَة', emoji: '👨‍👩‍👧‍👦' },
     { tr: 'giyiyorum', ar: 'مَلابِس', emoji: '👕' },
@@ -426,6 +428,7 @@ let scores = { p1: 0, p2: 0 };
 let roundStep = 0, maxRounds = 5, roundActive = false;
 let currentWord = null, usedWordsInRound = [];
 let playerResponses = {};
+let roundTimeout;
 let roundStartTime = 0;
 let isFirstRoundOfGame = true;
 
@@ -536,11 +539,13 @@ function initRound() {
             document.getElementById('audio-trigger').classList.remove('button-highlight');
             roundStartTime = Date.now();
             isFirstRoundOfGame = false;
+            startRoundTimer();
         }, 1500);
     } else {
         setTimeout(() => { 
             playCurrentAudio(); 
             roundStartTime = Date.now();
+            startRoundTimer();
         }, 800);
     }
 }
@@ -605,9 +610,22 @@ function handleInput(player, choice, btn) {
     document.querySelectorAll(`#${player}-options .option-btn`).forEach(b => b.disabled = true);
 
     if (Object.keys(playerResponses).length === 2) {
+        clearTimeout(roundTimeout);
         roundActive = false;
         processResults();
     }
+}
+
+function startRoundTimer() {
+    clearTimeout(roundTimeout);
+    roundTimeout = setTimeout(() => {
+        if(roundActive) {
+            if(!playerResponses.p1) playerResponses.p1 = { isCorrect: false, time: 8000 };
+            if(!playerResponses.p2) playerResponses.p2 = { isCorrect: false, time: 8000 };
+            roundActive = false;
+            processResults();
+        }
+    }, 8000); // 8 saniye sonra otomatik tur sonu
 }
 
 function processResults() {
@@ -615,7 +633,7 @@ function processResults() {
     const p2 = playerResponses.p2;
 
     const calculatePoints = (res) => {
-        if (!res.isCorrect) return -50;
+        if (!res.isCorrect) return 0;
         let speedBonus = Math.max(0, 50 - (res.time / 100)); 
         return Math.round(150 + speedBonus);
     };
