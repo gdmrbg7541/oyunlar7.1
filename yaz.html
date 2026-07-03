@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لُعْبَة تَرْتيب الحُروف العَرَبِيَّة</title>
     <style>
+    h1, h2, h3, h4, h5, h6, strong, b { font-weight: normal !important; }
+
         /* Arakom Yazı Tipi Tanımlaması */
         @font-face {
             font-family: 'Arakom';
@@ -480,7 +482,7 @@
 
         /* YATAY OYNANIŞ YASAKLANDI (SADECE DİKEYE İZİN VERİLDİ) */
         @media only screen and (max-width: 950px) and (orientation: landscape) {
-            #rotate-message { display: flex !important; }
+            #rotate-message { display: none !important; }
         }
 
         /* MOBİL YATAY EKRAN (LANDSCAPE) ÖZEL KOMPAKT TASARIM */
@@ -523,11 +525,69 @@
         }
 
     </style>
+
+    <!-- EBA SCORM Cihaz Döndürme Uyarısını Kapatma Hack'i -->
+    <script>
+    (function() {
+        // EBA SCORM Player DOM'una müdahale et (CORS izin verirse)
+        try {
+            var frames = [window.parent, window.top];
+            frames.forEach(function(frm) {
+                if(frm && frm.document) {
+                    var style = frm.document.createElement('style');
+                    style.innerHTML = `
+                        #rotate, #rotateDevice, .rotateDevice, #orientation-alert, 
+                        .orientation-alert, #portrait-warning, .portrait-warning, 
+                        [id*='rotate'], [class*='rotate-device'], [class*='orientation-'] 
+                        { display: none !important; z-index: -9999 !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+                    `;
+                    frm.document.head.appendChild(style);
+                }
+            });
+        } catch(e) { }
+
+        // Tarayıcının orientation (döndürme) API'sini maskele
+        try {
+            Object.defineProperty(window.screen, 'orientation', {
+                get: function() { return { type: 'landscape-primary', angle: 90 }; }
+            });
+        } catch(e) { }
+        
+        try {
+            Object.defineProperty(window, 'orientation', {
+                get: function() { return 90; }
+            });
+        } catch(e) { }
+    })();
+    </script>
+
+    <!-- Düşük Çözünürlük ve Küçük Mobil Ekranlar İçin Daraltma -->
+    <style>
+    /* Düşük çözünürlüklü PC'ler ve akıllı tahtalar (örn: 1366x768 veya 1024x768) */
+    @media screen and (max-height: 800px) {
+        body { zoom: 0.9; }
+    }
+    @media screen and (max-height: 700px) {
+        body { zoom: 0.85; }
+    }
+    @media screen and (max-width: 900px), screen and (max-height: 600px) {
+        body { zoom: 0.8; }
+    }
+    @media screen and (max-width: 650px), screen and (max-height: 500px) {
+        body { zoom: 0.75; }
+    }
+    @media screen and (max-width: 450px), screen and (max-height: 400px) {
+        body { zoom: 0.65; }
+    }
+    @media screen and (max-height: 350px) {
+        body { zoom: 0.5; }
+    }
+    </style>
 </head>
 <body>
 
     <!-- CİHAZ DÖNDÜRME UYARISI (TÜM OYUNLAR ORTAK) -->
-    <div id="rotate-message">
+    <div id="rotate-message" style="display: none;">
         <div class="phone-animation"></div>
         <div class="rotate-text">يُرْجى تَدْوير الجِهاز</div> 
     </div>

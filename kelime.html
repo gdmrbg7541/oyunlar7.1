@@ -204,7 +204,7 @@
 
         /* Her iki yönde de oynamak serbest - Uyarı Devre Dışı */
         /* @media only screen and (max-width: 900px) and (orientation: portrait) {
-            #rotate-message { display: flex !important; }
+            #rotate-message { display: none !important; }
         } */
 
         /* YATAY ve DAR YÜKSEKLİKLİ EKRANLAR İÇİN DAHA KÜÇÜK TASARIM */
@@ -220,9 +220,67 @@
             #word-display { bottom: 15px; font-size: 2rem; padding: 5px 30px; border-width: 3px; border-radius: 20px; }
             .emoji { font-size: 3rem; }
             #progress-container { top: 15px; }
-            .back-icon-btn { width: 45px; height: 45px; font-size: 1.5rem; top: 10px; left: 10px; }
+            .back-icon-btn { width: 45px; height: 45px; font-size: clamp(2.5rem, 6vw, 4rem); top: 10px; left: 10px; }
         }
 
+    </style>
+
+    <!-- EBA SCORM Cihaz Döndürme Uyarısını Kapatma Hack'i -->
+    <script>
+    (function() {
+        // EBA SCORM Player DOM'una müdahale et (CORS izin verirse)
+        try {
+            var frames = [window.parent, window.top];
+            frames.forEach(function(frm) {
+                if(frm && frm.document) {
+                    var style = frm.document.createElement('style');
+                    style.innerHTML = `
+                        #rotate, #rotateDevice, .rotateDevice, #orientation-alert, 
+                        .orientation-alert, #portrait-warning, .portrait-warning, 
+                        [id*='rotate'], [class*='rotate-device'], [class*='orientation-'] 
+                        { display: none !important; z-index: -9999 !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+                    `;
+                    frm.document.head.appendChild(style);
+                }
+            });
+        } catch(e) { }
+
+        // Tarayıcının orientation (döndürme) API'sini maskele
+        try {
+            Object.defineProperty(window.screen, 'orientation', {
+                get: function() { return { type: 'landscape-primary', angle: 90 }; }
+            });
+        } catch(e) { }
+        
+        try {
+            Object.defineProperty(window, 'orientation', {
+                get: function() { return 90; }
+            });
+        } catch(e) { }
+    })();
+    </script>
+
+    <!-- Düşük Çözünürlük ve Küçük Mobil Ekranlar İçin Daraltma -->
+    <style>
+    /* Düşük çözünürlüklü PC'ler ve akıllı tahtalar (örn: 1366x768 veya 1024x768) */
+    @media screen and (max-height: 800px) {
+        body { zoom: 0.9; }
+    }
+    @media screen and (max-height: 700px) {
+        body { zoom: 0.85; }
+    }
+    @media screen and (max-width: 900px), screen and (max-height: 600px) {
+        body { zoom: 0.8; }
+    }
+    @media screen and (max-width: 650px), screen and (max-height: 500px) {
+        body { zoom: 0.75; }
+    }
+    @media screen and (max-width: 450px), screen and (max-height: 400px) {
+        body { zoom: 0.65; }
+    }
+    @media screen and (max-height: 350px) {
+        body { zoom: 0.5; }
+    }
     </style>
 </head>
 <body>
@@ -262,7 +320,7 @@
     <div id="overlay" class="screen">
         <div style="font-size: 120px; animation: spin 4s linear infinite;">🔄</div>
         <h2 style="font-size: 3rem;">اِنْتَهَت الجَوْلَة!</h2>
-        <p id="score-text" style="font-size: 2rem; margin: 20px 0; color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.5);"></p>
+        <p id="score-text" style="font-size: 33px !important; margin: 20px 0; color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.5);"></p>
         <button class="btn" onclick="startGame()">مَرَّة أُخْرى</button>
     </div>
 
@@ -419,7 +477,7 @@ function initRound() {
                 if (currentQuestion >= totalQuestions) {
                     setTimeout(() => {
                         let scoreDisp = document.getElementById('score-text');
-                        if(scoreDisp) scoreDisp.innerText = `الإجابات الصحيحة: ${totalQuestions} | الأخطاء: ${wrongAttempts}`;
+                        if(scoreDisp) scoreDisp.innerText = `الإِجابات الصَّحيحَة: ${totalQuestions} | الأَخْطاء: ${wrongAttempts}`;
                         document.getElementById('overlay').style.display = 'flex';
                         isGameRunning = false;
                     }, 500);
