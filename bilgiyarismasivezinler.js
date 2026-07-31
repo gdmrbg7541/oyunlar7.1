@@ -1,5 +1,5 @@
 /* ===========================================================
-   Bilgi Yarışması — 7. Sınıf · 1. Ünite (ماذا فَعَلْتُ اليَوْم؟)
+   Bilgi Yarışması — 7. Sınıf · 1. Ünite (ماذا فَعَلْت اليَوْم؟)
    Firebase 8.10.1 (compat) · proje: bilgiyarismasi7sinif1unite
    Soru biçimleri: test · sürükle-bırak · eşleştirme · klavyeyle yazma
    Mod 1 (ADMIN): dosyayı sade adresle açan kişi = öğretmen (giriş yok).
@@ -33,7 +33,7 @@ const KOLEKSIYON = "bilgiYarismasi";
 const PDF_AKTIF = false;     // PDF'ler hazır olunca true yap → PDF önizleme/indirme geri gelir
 const SORU_SURESI = 60;      // saniye
 const TUR_SORU_SAYISI = 20;  // varsayılan soru sayısı
-const SORU_SAYI_SECENEK = [10, 15, 20, 25, 50];
+const SORU_SAYI_SECENEK = [10, 20, 25, 50];
 const TOPLAM_PUAN = 1000;    // ana tur toplam puanı (yedekler hariç)
 const ZAMAN_PAYI = 0.15;     // puanın en fazla %15'i hızdan (çok fazla değil)
 const PUAN = { 1: 10, 2: 20, 3: 30 };  // (eski; artık 1000 üzerinden hesaplanır)
@@ -46,14 +46,14 @@ const PUAN = { 1: 10, 2: 20, 3: 30 };  // (eski; artık 1000 üzerinden hesaplan
      eslestir → eşleştirme        { ciftler:[["sol","sağ"], ...] }
      yazma    → klavyeyle yaz     { cevapYazi:"بيت", tuslar:[... en fazla 10 ...] }   */
 const BICIM_BILGI = {
-  "test":     { ad: "اخْتِيَارٌ",           emoji: "🔘" },
-  "surukle":  { ad: "تَرْتِيبٌ",  emoji: "🧲" },
-  "eslestir": { ad: "وَصْلٌ",     emoji: "🔗" },
-  "yazma":    { ad: "كِتَابَةٌ",  emoji: "⌨️" }
+  "test":     { ad: "اخْتِيار",           emoji: "🔘" },
+  "surukle":  { ad: "تَرْتيب",  emoji: "🧲" },
+  "eslestir": { ad: "وَصْل",     emoji: "🔗" },
+  "yazma":    { ad: "كِتابَة",  emoji: "⌨️" }
 };
 function bicimAl(s){ return (s && s.bicim) || "test"; }
 // Metin Arapça mı? (kutulara doğru yazı tipini vermek için)
-function arMi(t){ return /[\u0600-\u06FF]/.test(String(t == null ? "" : t)); }
+function arMi(t){ return /[؀-ۿ]/.test(String(t == null ? "" : t)); }
 function karistir(dizi){
   const a = (dizi || []).slice();
   for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); const g = a[i]; a[i] = a[j]; a[j] = g; }
@@ -102,13 +102,14 @@ function secimHtml(soru, secilen){
   if (b === "yazma")
     return '<span class="biy-rev-metin ar">' + kacis(String(secilen)) + '</span>';
   const harf = String.fromCharCode(65 + secilen);
-  const ar = soru.arSecenek ? ' ar' : '';
+  const sMetin = (soru.secenekler || [])[secilen] || "";
+  const ar = arMi(sMetin) ? ' ar' : ' biy-ltr';
   return '<b class="biy-rev-harf">' + harf + '</b> <span class="biy-rev-metin' + ar + '">' +
-         kacis((soru.secenekler || [])[secilen] || "") + '</span>';
+         kacis(sMetin) + '</span>';
 }
 
 /* ---------------- Seed soru havuzu ---------------- */
-/* 7. SINIF — 1. ÜNİTE:  ماذا فَعَلْتُ اليَوْم؟  (Bugün Ne Yaptım?)
+/* 7. SINIF — 1. ÜNİTE:  ماذا فَعَلْت اليَوْم؟  (Bugün Ne Yaptım?)
    Konular: günlük rutin fiilleri, yiyecek-içecekler, saatler,
             haftanın günleri, namaz vakitleri, zamir-fiil uyumu.
    Soru id'leri konu grupları arasında ÇAKIŞMAMALIDIR (birleşik konu kullanıldığı için). */
@@ -239,6 +240,93 @@ const TIP_BILGI = {
 };
 const ZORLUK_AD = { 1: "سَهْلٌ", 2: "مُتَوَسِّطٌ", 3: "صَعْبٌ" };
 const SIK_RENK = ["#E74C3C", "#3498DB", "#F1C40F", "#27AE60", "#9B59B6"]; // A B C D E
+
+/* =====================================================================
+   KARAKTERLER — katilimci adinin yaninda gorunen ozel SVG avatarlar.
+   Birey odalarinda 30 tek karakter (hayvan · esya · uzay/robot),
+   takim odalarinda 12 arma, okul (sinif) odalarinda 12 okul rozeti.
+   Her avatari yalnizca BIR katilimci alabilir; sahiplenme Firestore
+   tarafinda islem (transaction) ile yapilir → kim once kaparsa onun.
+   SVG'lerde id yoktur (duz renk), bu yuzden her yere guvenle klonlanir.
+   ===================================================================== */
+const KRK_BIREY = [
+  { i:"kedi", a:"قِطٌّ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFE0B2"/><path d="M13 19l-1.5-9 8.5 4.5z" fill="#EF6C00"/><path d="M35 19l1.5-9-8.5 4.5z" fill="#EF6C00"/><circle cx="24" cy="27" r="13" fill="#F59E0B"/><circle cx="19" cy="25" r="2.3" fill="#3E2723"/><circle cx="29" cy="25" r="2.3" fill="#3E2723"/><path d="M24 30l-2.4 2.2h4.8z" fill="#5D4037"/><path d="M8 27h7M8 32h7M40 27h-7M40 32h-7" stroke="#5D4037" stroke-width="1.5" stroke-linecap="round"/></svg>' },
+  { i:"kopek", a:"كَلْبٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#D7CCC8"/><ellipse cx="11.5" cy="23" rx="4.5" ry="9" fill="#6D4C41"/><ellipse cx="36.5" cy="23" rx="4.5" ry="9" fill="#6D4C41"/><circle cx="24" cy="26" r="13" fill="#A1887F"/><circle cx="19" cy="23" r="2.2" fill="#3E2723"/><circle cx="29" cy="23" r="2.2" fill="#3E2723"/><ellipse cx="24" cy="31" rx="7" ry="5.5" fill="#EFEBE9"/><ellipse cx="24" cy="29.5" rx="2.8" ry="2.1" fill="#3E2723"/><path d="M24 32v3.5" stroke="#3E2723" stroke-width="1.5" stroke-linecap="round"/></svg>' },
+  { i:"tavsan", a:"أَرْنَبٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#F8BBD0"/><ellipse cx="18" cy="14" rx="4.2" ry="10" fill="#FAFAFA"/><ellipse cx="30" cy="14" rx="4.2" ry="10" fill="#FAFAFA"/><ellipse cx="18" cy="14.5" rx="2" ry="6.8" fill="#F06292"/><ellipse cx="30" cy="14.5" rx="2" ry="6.8" fill="#F06292"/><circle cx="24" cy="31" r="12" fill="#FAFAFA"/><circle cx="19.6" cy="29" r="2.1" fill="#5D4037"/><circle cx="28.4" cy="29" r="2.1" fill="#5D4037"/><path d="M24 33l-2.2 2h4.4z" fill="#F06292"/><path d="M24 35v2" stroke="#5D4037" stroke-width="1.3" stroke-linecap="round"/></svg>' },
+  { i:"tilki", a:"ثَعْلَبٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFCCBC"/><path d="M12 20l-1-10 9 5z" fill="#E64A19"/><path d="M36 20l1-10-9 5z" fill="#E64A19"/><circle cx="24" cy="26" r="13" fill="#FB8C00"/><path d="M24 24c4 0 7 4 7 8s-3 5-7 5-7-1-7-5 3-8 7-8z" fill="#FFF8E1"/><circle cx="18.5" cy="23" r="2.1" fill="#3E2723"/><circle cx="29.5" cy="23" r="2.1" fill="#3E2723"/><circle cx="24" cy="31" r="2.3" fill="#3E2723"/></svg>' },
+  { i:"ayi", a:"دُبٌّ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#BCAAA4"/><circle cx="13" cy="15" r="6" fill="#795548"/><circle cx="35" cy="15" r="6" fill="#795548"/><circle cx="13" cy="15" r="3" fill="#D7CCC8"/><circle cx="35" cy="15" r="3" fill="#D7CCC8"/><circle cx="24" cy="27" r="14" fill="#8D6E63"/><circle cx="19" cy="24" r="2.2" fill="#3E2723"/><circle cx="29" cy="24" r="2.2" fill="#3E2723"/><ellipse cx="24" cy="32" rx="7.5" ry="6" fill="#D7CCC8"/><ellipse cx="24" cy="30" rx="3" ry="2.2" fill="#3E2723"/></svg>' },
+  { i:"panda", a:"بَانْدَا", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#CFD8DC"/><circle cx="13" cy="15" r="6" fill="#263238"/><circle cx="35" cy="15" r="6" fill="#263238"/><circle cx="24" cy="27" r="14" fill="#FAFAFA"/><ellipse cx="18" cy="24" rx="4.6" ry="5.6" fill="#263238" transform="rotate(-16 18 24)"/><ellipse cx="30" cy="24" rx="4.6" ry="5.6" fill="#263238" transform="rotate(16 30 24)"/><circle cx="18.6" cy="24" r="1.8" fill="#FAFAFA"/><circle cx="29.4" cy="24" r="1.8" fill="#FAFAFA"/><ellipse cx="24" cy="31" rx="3" ry="2.2" fill="#263238"/><path d="M24 33.5v2" stroke="#263238" stroke-width="1.5" stroke-linecap="round"/></svg>' },
+  { i:"aslan", a:"أَسَدٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFE082"/><g fill="#E65100"><circle cx="24" cy="8" r="5"/><circle cx="35" cy="12" r="5"/><circle cx="40" cy="23" r="5"/><circle cx="35" cy="34" r="5"/><circle cx="24" cy="39" r="5"/><circle cx="13" cy="34" r="5"/><circle cx="8" cy="23" r="5"/><circle cx="13" cy="12" r="5"/></g><circle cx="24" cy="24" r="13" fill="#FBC02D"/><circle cx="19" cy="22" r="2.2" fill="#4E342E"/><circle cx="29" cy="22" r="2.2" fill="#4E342E"/><path d="M24 27l-2.6 2.4h5.2z" fill="#4E342E"/><path d="M17 32q7 5 14 0" stroke="#4E342E" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>' },
+  { i:"kurbaga", a:"ضِفْدَعٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#C8E6C9"/><circle cx="15" cy="16" r="7" fill="#66BB6A"/><circle cx="33" cy="16" r="7" fill="#66BB6A"/><circle cx="15" cy="16" r="4" fill="#FAFAFA"/><circle cx="33" cy="16" r="4" fill="#FAFAFA"/><circle cx="15" cy="16.5" r="2.2" fill="#1B5E20"/><circle cx="33" cy="16.5" r="2.2" fill="#1B5E20"/><path d="M8 27a16 12 0 0 0 32 0z" fill="#43A047"/><path d="M14 30q10 7 20 0" stroke="#1B5E20" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="12" cy="27" r="1.6" fill="#1B5E20" opacity=".5"/><circle cx="36" cy="27" r="1.6" fill="#1B5E20" opacity=".5"/></svg>' },
+  { i:"baykus", a:"بُومَةٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#D1C4E9"/><path d="M12 16l3-9 6 6z" fill="#5E35B1"/><path d="M36 16l-3-9-6 6z" fill="#5E35B1"/><ellipse cx="24" cy="27" rx="14" ry="15" fill="#7E57C2"/><circle cx="18" cy="23" r="6" fill="#FAFAFA"/><circle cx="30" cy="23" r="6" fill="#FAFAFA"/><circle cx="18" cy="23" r="2.8" fill="#311B92"/><circle cx="30" cy="23" r="2.8" fill="#311B92"/><path d="M24 27l-3 4h6z" fill="#FB8C00"/><path d="M17 35q7 4 14 0" stroke="#5E35B1" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>' },
+  { i:"balik", a:"سَمَكَةٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#B3E5FC"/><path d="M38 24l8-7v14z" fill="#0288D1"/><ellipse cx="22" cy="24" rx="16" ry="11" fill="#29B6F6"/><path d="M22 13q5 4 5 11t-5 11" stroke="#0288D1" stroke-width="2" fill="none"/><circle cx="12" cy="21" r="2.6" fill="#FAFAFA"/><circle cx="11.4" cy="21" r="1.4" fill="#01579B"/><path d="M20 13v-5l7 5z" fill="#0288D1"/></svg>' },
+  { i:"kitap", a:"كِتَابٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFCDD2"/><path d="M10 12h11a4 4 0 0 1 3 1.6A4 4 0 0 1 27 12h11v25H27a3 3 0 0 0-3 2 3 3 0 0 0-3-2H10z" fill="#EF5350"/><path d="M22.4 15.4V37a4.6 4.6 0 0 0-2.4-.7h-8V15.4z" fill="#FFEBEE"/><path d="M25.6 15.4V37a4.6 4.6 0 0 1 2.4-.7h8V15.4z" fill="#FFEBEE"/><path d="M14 20h6M14 24h6M28 20h6M28 24h6" stroke="#EF9A9A" stroke-width="1.5" stroke-linecap="round"/></svg>' },
+  { i:"kalem", a:"قَلَمٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFF9C4"/><path d="M12 36l2-8 18-18 6 6-18 18z" fill="#FDD835"/><path d="M32 10l6 6 3-3a4.2 4.2 0 0 0-6-6z" fill="#EC407A"/><path d="M14 28l6 6-8 2z" fill="#FFF8E1"/><path d="M12 36l3-1-2-2z" fill="#455A64"/><path d="M28 14l6 6" stroke="#F9A825" stroke-width="2" stroke-linecap="round"/></svg>' },
+  { i:"saat", a:"سَاعَةٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#B2EBF2"/><circle cx="24" cy="25" r="15" fill="#00838F"/><circle cx="24" cy="25" r="12" fill="#FAFAFA"/><path d="M24 17v8l6 4" stroke="#00838F" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="25" r="1.8" fill="#00838F"/><path d="M18 8h12v4H18z" fill="#00838F"/></svg>' },
+  { i:"canta", a:"حَقِيبَةٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#D7CCC8"/><path d="M18 16v-3a6 6 0 0 1 12 0v3" stroke="#5D4037" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="9" y="16" width="30" height="22" rx="4" fill="#8D6E63"/><rect x="9" y="23" width="30" height="4" fill="#5D4037"/><rect x="21" y="21" width="6" height="8" rx="2" fill="#FFCA28"/></svg>' },
+  { i:"ampul", a:"مِصْبَاحٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFF59D"/><path d="M24 7a12 12 0 0 0-7 21.7V33h14v-4.3A12 12 0 0 0 24 7z" fill="#FDD835"/><rect x="18" y="33" width="12" height="3.4" rx="1.4" fill="#90A4AE"/><rect x="19.5" y="37" width="9" height="3.4" rx="1.4" fill="#78909C"/><path d="M21 28v-6h6v6" stroke="#F57F17" stroke-width="1.6" fill="none"/><path d="M5 24h3M40 24h3M9 10l2 2M39 10l-2 2" stroke="#F9A825" stroke-width="2" stroke-linecap="round"/></svg>' },
+  { i:"fincan", a:"كُوبٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFE0B2"/><path d="M30 21h4a5 5 0 0 1 0 10h-4" stroke="#8D6E63" stroke-width="3" fill="none"/><path d="M10 17h22v14a8 8 0 0 1-8 8h-6a8 8 0 0 1-8-8z" fill="#FAFAFA"/><path d="M10 17h22v5H10z" fill="#EF6C00"/><path d="M17 12q2-3 0-6M25 12q2-3 0-6" stroke="#BCAAA4" stroke-width="2" fill="none" stroke-linecap="round"/></svg>' },
+  { i:"anahtar", a:"مِفْتَاحٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFECB3"/><circle cx="16" cy="19" r="9" fill="none" stroke="#FFA000" stroke-width="5"/><circle cx="16" cy="19" r="3" fill="#FFF8E1"/><path d="M22 25l14 14" stroke="#FFA000" stroke-width="5" stroke-linecap="round"/><path d="M31 30l4-4M35 34l4-4" stroke="#FFA000" stroke-width="4" stroke-linecap="round"/></svg>' },
+  { i:"balon", a:"بَالُونٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#F8BBD0"/><ellipse cx="24" cy="19" rx="12" ry="14" fill="#EC407A"/><path d="M20 33h8l-4 4z" fill="#AD1457"/><path d="M24 37q4 4 0 8" stroke="#AD1457" stroke-width="1.8" fill="none" stroke-linecap="round"/><ellipse cx="19" cy="14" rx="3" ry="4.5" fill="#F8BBD0" opacity=".75" transform="rotate(-22 19 14)"/></svg>' },
+  { i:"ud", a:"عُودٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#D7CCC8"/><path d="M31 8l8 8-6 6-8-8z" fill="#8D6E63"/><ellipse cx="19" cy="30" rx="13" ry="11" fill="#A1887F" transform="rotate(-45 19 30)"/><path d="M24 24l8-8" stroke="#5D4037" stroke-width="4" stroke-linecap="round"/><circle cx="18" cy="29" r="4.5" fill="#4E342E"/><path d="M25 22l-9 9M28 25l-9 9" stroke="#FFE0B2" stroke-width="1.2"/></svg>' },
+  { i:"kamera", a:"كَامِيرَا", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#B0BEC5"/><path d="M17 12h14l2.5 4H39a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V20a4 4 0 0 1 4-4h5.5z" fill="#455A64"/><circle cx="24" cy="27" r="9" fill="#90A4AE"/><circle cx="24" cy="27" r="5.5" fill="#263238"/><circle cx="22" cy="25" r="1.8" fill="#B0BEC5"/><circle cx="36" cy="21" r="1.8" fill="#FFCA28"/></svg>' },
+  { i:"roket", a:"صَارُوخٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#C5CAE9"/><path d="M24 5c6 5 9 12 9 20v6H15v-6c0-8 3-15 9-20z" fill="#FAFAFA"/><path d="M15 25l-6 8 6-1zM33 25l6 8-6-1z" fill="#EF5350"/><circle cx="24" cy="19" r="4.6" fill="#42A5F5"/><circle cx="24" cy="19" r="2.4" fill="#E3F2FD"/><path d="M19 31h10l-1 4H20z" fill="#B0BEC5"/><path d="M24 36l3 7h-6z" fill="#FB8C00"/><path d="M24 39l1.6 4h-3.2z" fill="#FFEB3B"/></svg>' },
+  { i:"robot", a:"إِنْسَانٌ آلِيٌّ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#B2DFDB"/><path d="M24 4v5" stroke="#00897B" stroke-width="2.4" stroke-linecap="round"/><circle cx="24" cy="4.5" r="2.6" fill="#FF7043"/><rect x="10" y="10" width="28" height="21" rx="6" fill="#B0BEC5"/><rect x="14" y="15" width="20" height="11" rx="4" fill="#263238"/><circle cx="19.5" cy="20.5" r="2.6" fill="#4DD0E1"/><circle cx="28.5" cy="20.5" r="2.6" fill="#4DD0E1"/><rect x="14" y="33" width="20" height="10" rx="3" fill="#90A4AE"/><rect x="5" y="34" width="7" height="4" rx="2" fill="#78909C"/><rect x="36" y="34" width="7" height="4" rx="2" fill="#78909C"/><rect x="20" y="36" width="8" height="3" rx="1.5" fill="#FF7043"/></svg>' },
+  { i:"uydu", a:"قَمَرٌ صِنَاعِيٌّ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#B3E5FC"/><rect x="19" y="18" width="10" height="14" rx="3" fill="#90A4AE"/><rect x="3" y="20" width="13" height="10" rx="2" fill="#1E88E5"/><rect x="32" y="20" width="13" height="10" rx="2" fill="#1E88E5"/><path d="M3 25h13M32 25h13" stroke="#0D47A1" stroke-width="1.4"/><path d="M24 18v-6" stroke="#607D8B" stroke-width="2.4"/><circle cx="24" cy="9.5" r="3.4" fill="#FFCA28"/><path d="M24 32v5" stroke="#607D8B" stroke-width="2.4"/><ellipse cx="24" cy="39" rx="5" ry="2.6" fill="#78909C"/></svg>' },
+  { i:"gezegen", a:"كَوْكَبٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#D1C4E9"/><circle cx="24" cy="23" r="12" fill="#7E57C2"/><path d="M14 18a12 12 0 0 1 9-4M18 30a12 12 0 0 0 14-2" stroke="#B39DDB" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="24" cy="27" rx="21" ry="6" fill="none" stroke="#FFB300" stroke-width="3" transform="rotate(-18 24 27)"/><circle cx="40" cy="11" r="1.8" fill="#FFF"/><circle cx="8" cy="38" r="1.5" fill="#FFF"/></svg>' },
+  { i:"yildiz", a:"نَجْمَةٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFF9C4"/><path d="M24 6l5.5 11.2 12.4 1.8-9 8.7 2.2 12.3L24 34.2 12.9 40l2.2-12.3-9-8.7 12.4-1.8z" fill="#FDD835"/><circle cx="19.5" cy="22" r="1.9" fill="#5D4037"/><circle cx="28.5" cy="22" r="1.9" fill="#5D4037"/><path d="M20 27q4 3.5 8 0" stroke="#5D4037" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>' },
+  { i:"ay", a:"هِلَالٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#B39DDB"/><path d="M30 6a19 19 0 1 0 12 26A19 19 0 0 1 30 6z" fill="#FFF176"/><circle cx="28" cy="18" r="2.6" fill="#FBC02D" opacity=".6"/><circle cx="24" cy="30" r="3.4" fill="#FBC02D" opacity=".5"/><circle cx="12" cy="10" r="1.8" fill="#FFF"/><circle cx="8" cy="20" r="1.4" fill="#FFF"/><circle cx="15" cy="40" r="1.5" fill="#FFF"/></svg>' },
+  { i:"ufo", a:"طَبَقٌ طَائِرٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#B2EBF2"/><path d="M14 22a10 8 0 0 1 20 0z" fill="#4DD0E1"/><ellipse cx="24" cy="24" rx="18" ry="6" fill="#90A4AE"/><circle cx="13" cy="24" r="1.9" fill="#FFCA28"/><circle cx="24" cy="25" r="1.9" fill="#FF7043"/><circle cx="35" cy="24" r="1.9" fill="#FFCA28"/><path d="M17 29l-5 12h24l-5-12z" fill="#4DD0E1" opacity=".38"/></svg>' },
+  { i:"astronot", a:"رَائِدُ فَضَاءٍ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#CFD8DC"/><circle cx="24" cy="20" r="13" fill="#FAFAFA"/><path d="M14 19a10 8 0 0 1 20 0 10 8 0 0 1-20 0z" fill="#263238"/><path d="M17 17a6 4 0 0 1 7-2" stroke="#78909C" stroke-width="2" fill="none" stroke-linecap="round"/><rect x="9" y="16" width="4" height="7" rx="2" fill="#B0BEC5"/><rect x="35" y="16" width="4" height="7" rx="2" fill="#B0BEC5"/><path d="M14 33h20l2 10H12z" fill="#ECEFF1"/><rect x="20" y="36" width="8" height="4" rx="1.6" fill="#FF7043"/></svg>' },
+  { i:"kuyruklu", a:"مُذَنَّبٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#B3E5FC"/><path d="M4 42l18-18 6 6z" fill="#4FC3F7" opacity=".55"/><path d="M10 42l14-14 4 4z" fill="#29B6F6" opacity=".8"/><circle cx="31" cy="17" r="9" fill="#FFB300"/><circle cx="31" cy="17" r="5.5" fill="#FFE082"/><circle cx="41" cy="8" r="1.7" fill="#FFF"/><circle cx="14" cy="10" r="1.5" fill="#FFF"/></svg>' },
+  { i:"teleskop", a:"مِرْقَبٌ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#C5CAE9"/><path d="M8 27l22-12 5 8-22 12z" fill="#5C6BC0"/><path d="M30 15l6-3 5 8-6 3z" fill="#3949AB"/><path d="M14 32l-4 10M22 30l6 12" stroke="#455A64" stroke-width="3" stroke-linecap="round"/><circle cx="41" cy="9" r="1.7" fill="#FFF176"/><circle cx="34" cy="5" r="1.3" fill="#FFF176"/></svg>' }
+];
+const KRK_TAKIM = [
+  { i:"t-yildiz", a:"فَرِيقُ النَّجْمِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#E3F2FD"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#1565C0"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#42A5F5"/><path d="M24 13l3.4 7 7.6 1.1-5.5 5.3 1.3 7.6L24 30.4l-6.8 3.6 1.3-7.6-5.5-5.3 7.6-1.1z" fill="#FFF176"/></svg>' },
+  { i:"t-simsek", a:"فَرِيقُ البَرْقِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFF8E1"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#F57F17"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#FFCA28"/><path d="M27 11l-9 13h6l-3 11 10-14h-6z" fill="#FFFDE7"/></svg>' },
+  { i:"t-alev", a:"فَرِيقُ اللَّهَبِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFEBEE"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#B71C1C"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#EF5350"/><path d="M24 11c4 5 8 7 8 13a8 8 0 0 1-16 0c0-4 2-6 4-8 0 3 1 4 2 4 0-4 1-6 2-9z" fill="#FFE082"/></svg>' },
+  { i:"t-kupa", a:"فَرِيقُ الكَأْسِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#F3E5F5"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#6A1B9A"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#AB47BC"/><path d="M17 12h14v7a7 7 0 0 1-14 0z" fill="#FFD54F"/><path d="M17 14h-3a4 4 0 0 0 4 4M31 14h3a4 4 0 0 1-4 4" stroke="#FFD54F" stroke-width="2" fill="none"/><path d="M22 26h4v5h-4z" fill="#FFD54F"/><path d="M18 31h12v3H18z" fill="#FFD54F"/></svg>' },
+  { i:"t-nesir", a:"فَرِيقُ النَّسْرِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#E0F7FA"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#00695C"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#26A69A"/><path d="M24 14l10 6-6 1 4 4-8-2-8 2 4-4-6-1z" fill="#FFF8E1"/><path d="M24 22v9M20 33h8" stroke="#FFF8E1" stroke-width="2.2" stroke-linecap="round"/></svg>' },
+  { i:"t-mihlab", a:"فَرِيقُ المِخْلَبِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#EFEBE9"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#4E342E"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#8D6E63"/><path d="M17 13c1 6 1 10 0 14M22 12c1 7 1 11 0 15M27 12c-1 7-1 11 0 15M32 13c-1 6-1 10 0 14" stroke="#FFF8E1" stroke-width="3" fill="none" stroke-linecap="round"/></svg>' },
+  { i:"t-seyf", a:"فَرِيقُ السَّيْفِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#ECEFF1"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#37474F"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#78909C"/><path d="M16 12l16 20M32 12L16 32" stroke="#ECEFF1" stroke-width="3.4" stroke-linecap="round"/><path d="M14 30l4 4M34 30l-4 4" stroke="#FFCA28" stroke-width="3.4" stroke-linecap="round"/></svg>' },
+  { i:"t-tac", a:"فَرِيقُ التَّاجِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFF3E0"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#E65100"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#FB8C00"/><path d="M14 30l-2-15 6 5 6-8 6 8 6-5-2 15z" fill="#FFE082"/><path d="M14 32h20" stroke="#FFE082" stroke-width="3" stroke-linecap="round"/></svg>' },
+  { i:"t-dir", a:"فَرِيقُ الدِّرْعِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#E8EAF6"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#283593"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#5C6BC0"/><path d="M24 12l9 3.5v8c0 5.5-4.2 9-9 11-4.8-2-9-5.5-9-11v-8z" fill="none" stroke="#FFF8E1" stroke-width="2.6"/><path d="M24 18v10M19 23h10" stroke="#FFF8E1" stroke-width="2.6" stroke-linecap="round"/></svg>' },
+  { i:"t-wisam", a:"فَرِيقُ الوِسَامِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FCE4EC"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#AD1457"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#EC407A"/><path d="M18 11l3 8h6l3-8" stroke="#FFF8E1" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="24" cy="27" r="8" fill="#FFD54F"/><circle cx="24" cy="27" r="4.6" fill="#FFF8E1"/></svg>' },
+  { i:"t-karn", a:"فَرِيقُ القَرْنِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#EDE7F6"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#4527A0"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#7E57C2"/><path d="M13 14c-1 8 4 12 11 12s12-4 11-12" stroke="#FFF8E1" stroke-width="3.4" fill="none" stroke-linecap="round"/><circle cx="24" cy="31" r="4.5" fill="#FFF8E1"/></svg>' },
+  { i:"t-sehm", a:"فَرِيقُ السَّهْمِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#E0F2F1"/><path d="M24 4l16 5.5v15C40 34.5 32.5 41 24 44.5 15.5 41 8 34.5 8 24.5v-15z" fill="#00838F"/><path d="M24 8l12 4.2v12c0 7.6-5.6 12.6-12 15.4-6.4-2.8-12-7.8-12-15.4v-12z" fill="#26C6DA"/><path d="M24 11l7 9h-4v14h-6V20h-4z" fill="#FFF8E1"/></svg>' }
+];
+const KRK_SINIF = [
+  { i:"s-madrasa", a:"صَفُّ المَدْرَسَةِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#E3F2FD"/><circle cx="24" cy="24" r="19" fill="#1E88E5"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><path d="M24 10l13 7v3H11v-3z" fill="#FFF8E1"/><rect x="13" y="20" width="22" height="14" rx="2" fill="#FFECB3"/><rect x="21" y="25" width="6" height="9" rx="1.4" fill="#1565C0"/><rect x="15.5" y="24" width="4" height="4" rx="1" fill="#1565C0"/><rect x="28.5" y="24" width="4" height="4" rx="1" fill="#1565C0"/></svg>' },
+  { i:"s-taharruc", a:"صَفُّ التَّخَرُّجِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#EDE7F6"/><circle cx="24" cy="24" r="19" fill="#5E35B1"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><path d="M24 12l14 6-14 6-14-6z" fill="#FFF8E1"/><path d="M15 22v7c0 3 4.5 5 9 5s9-2 9-5v-7" fill="none" stroke="#FFF8E1" stroke-width="2.6"/><path d="M37 19v9" stroke="#FFD54F" stroke-width="2.2" stroke-linecap="round"/><circle cx="37" cy="30" r="2.2" fill="#FFD54F"/></svg>' },
+  { i:"s-daftar", a:"صَفُّ الدَّفْتَرِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFF3E0"/><circle cx="24" cy="24" r="19" fill="#EF6C00"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><rect x="13" y="11" width="20" height="26" rx="2.6" fill="#FFF8E1"/><path d="M18 17h11M18 22h11M18 27h7" stroke="#EF6C00" stroke-width="1.9" stroke-linecap="round"/><rect x="11" y="11" width="4" height="26" rx="2" fill="#FFB300"/></svg>' },
+  { i:"s-sabbura", a:"صَفُّ السَّبُّورَةِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#E8F5E9"/><circle cx="24" cy="24" r="19" fill="#2E7D32"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><rect x="11" y="12" width="26" height="18" rx="2.4" fill="#1B5E20"/><rect x="13.4" y="14.4" width="21.2" height="13.2" rx="1.4" fill="#388E3C"/><path d="M17 19h9M17 23h13" stroke="#FFF8E1" stroke-width="1.8" stroke-linecap="round"/><path d="M16 30v5M32 30v5" stroke="#8D6E63" stroke-width="2.4" stroke-linecap="round"/></svg>' },
+  { i:"s-tuffaha", a:"صَفُّ التُّفَّاحَةِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFEBEE"/><circle cx="24" cy="24" r="19" fill="#C62828"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><path d="M24 15c-3-3-11-2-11 7 0 7 5 14 8 14 1.5 0 2-1 3-1s1.5 1 3 1c3 0 8-7 8-14 0-9-8-10-11-7z" fill="#FFCDD2"/><path d="M24 15v-4" stroke="#6D4C41" stroke-width="2.2" stroke-linecap="round"/><path d="M24 13c3-3 6-3 7-2 0 3-3 5-7 4z" fill="#66BB6A"/></svg>' },
+  { i:"s-hafila", a:"صَفُّ الحَافِلَةِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFFDE7"/><circle cx="24" cy="24" r="19" fill="#F9A825"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><rect x="9" y="15" width="30" height="16" rx="4" fill="#FFF8E1"/><rect x="12" y="18" width="9" height="7" rx="1.6" fill="#4FC3F7"/><rect x="24" y="18" width="9" height="7" rx="1.6" fill="#4FC3F7"/><circle cx="16" cy="32" r="3.4" fill="#37474F"/><circle cx="32" cy="32" r="3.4" fill="#37474F"/><rect x="9" y="27" width="30" height="2.6" fill="#F57F17"/></svg>' },
+  { i:"s-jaras", a:"صَفُّ الجَرَسِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FFF8E1"/><circle cx="24" cy="24" r="19" fill="#FFA000"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><path d="M24 11a10 10 0 0 1 10 10v7l3 4H11l3-4v-7a10 10 0 0 1 10-10z" fill="#FFF8E1"/><circle cx="24" cy="35" r="3.2" fill="#FFF8E1"/><path d="M24 8v3" stroke="#FFF8E1" stroke-width="2.4" stroke-linecap="round"/></svg>' },
+  { i:"s-kura", a:"صَفُّ الكُرَةِ الأَرْضِيَّةِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#E0F7FA"/><circle cx="24" cy="24" r="19" fill="#00838F"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><circle cx="24" cy="23" r="12" fill="#4DD0E1"/><path d="M12 23h24M24 11c4 5 4 19 0 24M24 11c-4 5-4 19 0 24" stroke="#00695C" stroke-width="1.8" fill="none"/><path d="M24 35v4M18 39h12" stroke="#FFF8E1" stroke-width="2.4" stroke-linecap="round"/></svg>' },
+  { i:"s-mijhar", a:"صَفُّ المِجْهَرِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#F3E5F5"/><circle cx="24" cy="24" r="19" fill="#7B1FA2"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><path d="M27 11l6 4-9 13-6-4z" fill="#FFF8E1"/><path d="M18 24l6 4-3 4-6-4z" fill="#E1BEE7"/><path d="M14 34h20" stroke="#FFF8E1" stroke-width="2.8" stroke-linecap="round"/><path d="M20 34c-3-4-2-9 2-11" stroke="#FFF8E1" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>' },
+  { i:"s-alwan", a:"صَفُّ الأَلْوَانِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#FCE4EC"/><circle cx="24" cy="24" r="19" fill="#D81B60"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><path d="M24 11c8 0 14 5 14 11 0 4-3 5-6 5h-3c-2 0-3 1-3 3s1 2 1 3-1 2-3 2c-8 0-14-6-14-13S16 11 24 11z" fill="#FFF8E1"/><circle cx="18" cy="19" r="2.2" fill="#EF5350"/><circle cx="25" cy="17" r="2.2" fill="#42A5F5"/><circle cx="31" cy="21" r="2.2" fill="#66BB6A"/><circle cx="17" cy="27" r="2.2" fill="#FFCA28"/></svg>' },
+  { i:"s-midad", a:"صَفُّ المِعْدَادِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#E8EAF6"/><circle cx="24" cy="24" r="19" fill="#3949AB"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><rect x="11" y="12" width="26" height="24" rx="3" fill="none" stroke="#FFF8E1" stroke-width="2.6"/><path d="M11 20h26M11 28h26" stroke="#FFF8E1" stroke-width="1.8"/><circle cx="17" cy="16" r="2.6" fill="#FF7043"/><circle cx="24" cy="16" r="2.6" fill="#FFCA28"/><circle cx="19" cy="24" r="2.6" fill="#4DD0E1"/><circle cx="30" cy="24" r="2.6" fill="#66BB6A"/><circle cx="22" cy="32" r="2.6" fill="#EC407A"/><circle cx="31" cy="32" r="2.6" fill="#FFF8E1"/></svg>' },
+  { i:"s-kutub", a:"صَفُّ الكُتُبِ", s:'<svg viewBox="0 0 48 48" class="biy-krk-svg" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#E0F2F1"/><circle cx="24" cy="24" r="19" fill="#00695C"/><circle cx="24" cy="24" r="19" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".7"/><rect x="11" y="28" width="26" height="6" rx="1.6" fill="#FFF8E1"/><rect x="13" y="21" width="22" height="6" rx="1.6" fill="#FFD54F"/><rect x="15" y="14" width="18" height="6" rx="1.6" fill="#FF8A65"/><path d="M11 31h26M13 24h22M15 17h18" stroke="#00695C" stroke-width="1.2" opacity=".45"/></svg>' }
+];
+
+function krkSeti(mod){
+  return mod === "takim" ? KRK_TAKIM : (mod === "okul" ? KRK_SINIF : KRK_BIREY);
+}
+function krkBul(id){
+  if (!id) return null;
+  const hepsi = KRK_BIREY.concat(KRK_TAKIM, KRK_SINIF);
+  for (let i = 0; i < hepsi.length; i++) if (hepsi[i].i === id) return hepsi[i];
+  return null;
+}
+function krkAd(id){ const k = krkBul(id); return k ? k.a : ""; }
+/* Avatari isim yanina koymak icin: krkSvg("kedi", "biy-krk-mini") */
+function krkSvg(id, ek){
+  const k = krkBul(id);
+  if (!k) return "";
+  return '<span class="biy-krk ' + (ek || "") + '" title="' + k.a + '" aria-hidden="true">' + k.s + '</span>';
+}
+
 const SEVIYE_ZORLUK = { kolay: 1, orta: 2, zor: 3 };
 
 /* ---------------- Konular ----------------
@@ -248,13 +336,13 @@ const SEVIYE_ZORLUK = { kolay: 1, orta: 2, zor: 3 };
    • sorular: SORULAR ile aynı biçimde; boşsa o konuda yarışma başlatılamaz.
    NOT: Soru id'leri aynı konu içinde benzersiz olmalıdır (birleşik konu da dâhil).      */
 const KONULAR = [
-  { id: "unite1",  ad: "الوَحْدَةُ الأُولَى — كُلُّ الأَسْئِلَةِ (ماذا فَعَلْتُ اليَوْم؟)", pdf: "", sorular: SORULAR },
-  { id: "gunluk",  ad: "الرُّوتِينُ اليَوْمِيُّ",        pdf: "", sorular: S_GUNLUK },
-  { id: "yemek",   ad: "الطَّعَامُ وَالشَّرَابُ",pdf: "", sorular: S_YEMEK },
-  { id: "saat",    ad: "السَّاعَاتُ",             pdf: "", sorular: S_SAAT },
-  { id: "gunler",  ad: "أَيَّامُ الأُسْبُوعِ",    pdf: "", sorular: S_GUNLER },
-  { id: "namaz",   ad: "أَوْقَاتُ الصَّلَاةِ",     pdf: "", sorular: S_NAMAZ },
-  { id: "zamir",   ad: "الضَّمِيرُ وَالفِعْلُ",  pdf: "", sorular: S_ZAMIR }
+  { id: "unite1",  ad: "الوَحْدَة الأولى — كُلّ الأَسْئِلَة (ماذا فَعَلْت اليَوْم؟)", pdf: "", sorular: SORULAR },
+  { id: "gunluk",  ad: "الرُّوتين اليَوْمِيّ",        pdf: "", sorular: S_GUNLUK },
+  { id: "yemek",   ad: "الطَّعام وَالشَّراب",pdf: "", sorular: S_YEMEK },
+  { id: "saat",    ad: "السَّاعات",             pdf: "", sorular: S_SAAT },
+  { id: "gunler",  ad: "أَيَّام الأُسْبوع",    pdf: "", sorular: S_GUNLER },
+  { id: "namaz",   ad: "أَوْقات الصَّلاة",     pdf: "", sorular: S_NAMAZ },
+  { id: "zamir",   ad: "الضَّمير وَالفِعْل",  pdf: "", sorular: S_ZAMIR }
 ];
 
 /* ---------------- Biçime göre HTML üreticileri ---------------- */
@@ -265,13 +353,15 @@ function sikKartHtml(s, dogruGoster){
     let h = "";
     (s.secenekler || []).forEach((sec, i) => {
       const dogruMu = dogruGoster && i === s.dogru;
-      const sinif = "biy-secenek" + (dogruMu ? " dogru" : "") + (s.arSecenek ? " biy-arapca-secenek" : "");
-      h += '<div class="'+sinif+'"><span class="biy-sik">'+String.fromCharCode(65+i)+'</span><span class="biy-secenek-metin">'+kacis(sec)+'</span></div>';
+      // Yon sik metnine gore: Arapca harf varsa RTL, yoksa (Turkce cevap) LTR
+      const sAr = arMi(sec);
+      const sinif = "biy-secenek" + (dogruMu ? " dogru" : "") + (sAr ? " biy-arapca-secenek" : "");
+      h += '<div class="'+sinif+'"><span class="biy-sik">'+String.fromCharCode(65+i)+'</span><span class="biy-secenek-metin'+(sAr?'':' biy-ltr')+'">'+kacis(sec)+'</span></div>';
     });
     return h;
   }
   const bb = BICIM_BILGI[b] || { ad: b, emoji: "❓" };
-  const govde = dogruGoster ? dogruCevapMetni(s) : ("سُؤَالٌ · " + bb.ad);
+  const govde = dogruGoster ? dogruCevapMetni(s) : ("سُؤال · " + bb.ad);
   return '<div class="biy-secenek'+(dogruGoster?' dogru':'')+' biy-arapca-secenek biy-bicim-kutu">' +
          '<span class="biy-sik">'+bb.emoji+'</span><span class="biy-secenek-metin">'+kacis(govde)+'</span></div>';
 }
@@ -282,7 +372,7 @@ function tahtaIcerikHtml(soru, sonucMu){
     let h = "";
     (soru.secenekler || []).forEach((sec, i) => {
       const dogru = sonucMu && i === soru.dogru;
-      h += '<div class="biy-a-opt'+(dogru?' dogru':'')+(soru.arSecenek?' ar':'')+'" style="--c:'+SIK_RENK[i % SIK_RENK.length]+'">' +
+      h += '<div class="biy-a-opt'+(dogru?' dogru':'')+(arMi(sec)?' ar':' biy-ltr')+'" style="--c:'+SIK_RENK[i % SIK_RENK.length]+'">' +
            '<span class="biy-a-harf">'+String.fromCharCode(65+i)+'</span><span class="biy-a-metin">'+kacis(sec)+'</span>' +
            (dogru?'<span class="biy-a-tik">✓</span>':'') + '</div>';
     });
@@ -421,9 +511,9 @@ function odaLinki(oda){
    birey : tek karekod, herkes kendi adını yazar, öğretmen onaylar
    okul  : tek karekod, öğrenci adını yazar + sınıfını seçer, sınıflar ORTALAMA puanla yarışır  */
 const MOD_BILGI = {
-  takim: { ad: "نِظَامُ الفِرَقِ", emoji: "👥", kisi: "فَرِيقٌ", cog: "فِرَق",      baslik: "إِنْشَاءُ الفِرَقِ وَالانْتِظَارُ" },
-  birey: { ad: "نِظَامُ الأَفْرَادِ", emoji: "🙋", kisi: "مُشَارِكٌ",  cog: "مُشارِكونَ", baslik: "المُشَارِكُونَ وَالانْتِظَارُ" },
-  okul:  { ad: "نِظَامُ الصُّفُوفِ",  emoji: "🏫", kisi: "صَفٌّ", cog: "صُفوف",      baslik: "إِنْشَاءُ الصُّفُوفِ وَالانْتِظَارُ" }
+  takim: { ad: "نِظام الفِرَق", emoji: "👥", kisi: "فَريق", cog: "فِرَق",      baslik: "إِنْشاء الفِرَق وَالانْتِظار" },
+  birey: { ad: "نِظام الأَفْراد", emoji: "🙋", kisi: "مُشارِك",  cog: "مُشارِكون", baslik: "المُشارِكون وَالانْتِظار" },
+  okul:  { ad: "نِظام الصُّفوف",  emoji: "🏫", kisi: "صَفّ", cog: "صُفوف",      baslik: "إِنْشاء الصُّفوف وَالانْتِظار" }
 };
 function modAl(){ return MOD_BILGI[state.oyunModu] ? state.oyunModu : "takim"; }
 function tekKarekod(){ return modAl() === "birey"; }   // yalnız birey: tek ortak karekod
@@ -507,13 +597,13 @@ function isimTemizle(t){
 /* uygunsa "" döner, değilse kullanıcıya gösterilecek sebebi döner */
 function isimSorunu(ad){
   const ham = isimTemizle(ad);
-  if (ham.length < 2) return "اكْتُبِ اسْمَكَ بِحَرْفَيْنِ عَلَى الأَقَلِّ.";
-  if (!/[a-zA-ZçğıöşüÇĞİÖŞÜ]/.test(ham)) return "يَجِبُ أَنْ يَكُونَ فِي الاسْمِ حُرُوفٌ.";
+  if (ham.length < 2) return "اكْتُب اسْمَك بِحَرْفَيْن عَلى الأَقَلّ.";
+  if (!/[a-zA-ZçğıöşüÇĞİÖŞÜ]/.test(ham)) return "يَجِبُ أَنْ يَكونَ في الاسْم حُروف.";
   const n = isimNormal(ham);
   const kelimeler = n.split(" ").filter(Boolean);
-  for (const k of kelimeler){ if (YASAK_TAM.indexOf(k) >= 0) return "هَذَا الاسْمُ غَيْرُ مُنَاسِبٍ، اكْتُبِ اسْمَكَ الحَقِيقِيَّ."; }
+  for (const k of kelimeler){ if (YASAK_TAM.indexOf(k) >= 0) return "هَذا الاسْم غَيْر مُناسِب، اكْتُب اسْمَك الحَقيقِيّ."; }
   const bitisik = n.replace(/ /g,"");
-  for (const p of YASAK_PARCA){ if (bitisik.indexOf(p) >= 0) return "هَذَا الاسْمُ غَيْرُ مُنَاسِبٍ، اكْتُبِ اسْمَكَ الحَقِيقِيَّ."; }
+  for (const p of YASAK_PARCA){ if (bitisik.indexOf(p) >= 0) return "هَذا الاسْم غَيْر مُناسِب، اكْتُب اسْمَك الحَقيقِيّ."; }
   return "";
 }
 /* aynı isimden ikinci kişi gelirse "Ahmet (2)" yapılır */
@@ -590,7 +680,7 @@ const BIY = {
   // Geri: dosyadan çık. Bağlı cihaz varsa onay iste; çıkışta odayı kapat (cihazlar ayrılsın).
   geriDon(){
     if (state.odaId && (state.takimListe || []).some(t => t.bagli)){
-      BIY._onay("هَلْ تَخْرُجُ؟", "هُنَاكَ أَجْهِزَةٌ مُتَّصِلَةٌ — إِذَا خَرَجْتَ سَيَنْقَطِعُ اتِّصَالُهَا.", "نَعَمْ، اخْرُجْ", function(){ BIY._geriCik(); });
+      BIY._onay("هَلْ تَخْرُجُ؟", "هُناك أَجْهِزَة مُتَّصِلَة — إِذا خَرَجْتَ سَيَنْقَطِع اتِّصالُها.", "نَعَمْ، اخْرُجْ", function(){ BIY._geriCik(); });
       return;
     }
     BIY._geriCik();
@@ -609,7 +699,37 @@ const BIY = {
   /* ---------- Konu seçimi ---------- */
   _aktifKonu(){ return state.konuId ? (KONULAR.find(k => k.id === state.konuId) || null) : null; },
   _aktifSorular(){ const k = BIY._aktifKonu(); return (k && k.sorular) || []; },
-  _konuVurgu(){ const sel = $("konuSecim"); if (sel) sel.classList.toggle("secili", !!state.konuId); },
+  _konuVurgu(){
+    const sel = $("konuSecim"); if (sel){ sel.classList.toggle("secili", !!state.konuId); sel.value = state.konuId || ""; }
+    const k = BIY._aktifKonu();
+    const ad = $("konuSeciciAd"); if (ad) ad.textContent = k ? k.ad : "اخْتَر الدَّرْس\u2026";
+    const btn = $("konuSeciciBtn"); if (btn) btn.classList.toggle("secili", !!state.konuId);
+    document.querySelectorAll("#konuSeciciListe .biy-ds-oge").forEach(o => {
+      const s = o.getAttribute("data-konu") === state.konuId;
+      o.classList.toggle("secili", s); o.setAttribute("aria-selected", s ? "true" : "false");
+    });
+  },
+  /* ---- ders secimi: sistemin listesi degil, kendi acilir panelimiz ---- */
+  konuListeAc(){
+    const btn = $("konuSeciciBtn"), l = $("konuSeciciListe");
+    if (!btn || !l || btn.disabled) return;
+    if (!l.hidden){ BIY.konuListeKapat(); return; }
+    l.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+    btn.classList.add("biy-ds-acik");
+    document.addEventListener("mousedown", BIY._konuListeDis);
+    document.addEventListener("keydown", BIY._konuListeTus);
+    const s = l.querySelector(".biy-ds-oge.secili"); if (s) s.scrollIntoView({ block: "nearest" });
+  },
+  konuListeKapat(){
+    const btn = $("konuSeciciBtn"), l = $("konuSeciciListe");
+    if (l) l.hidden = true;
+    if (btn){ btn.setAttribute("aria-expanded", "false"); btn.classList.remove("biy-ds-acik"); }
+    document.removeEventListener("mousedown", BIY._konuListeDis);
+    document.removeEventListener("keydown", BIY._konuListeTus);
+  },
+  _konuListeDis(e){ if (!e.target.closest || !e.target.closest("#konuSecici")) BIY.konuListeKapat(); },
+  _konuListeTus(e){ if (e.key === "Escape" || e.key === "Esc") BIY.konuListeKapat(); },
   // tüm konulardaki soruların havuzu (elle seçim için)
   _soruHavuzu(){
     const havuz = [];
@@ -618,9 +738,32 @@ const BIY = {
   },
   _konulariHazirla(){
     const sel = $("konuSecim"); if (!sel) return;
-    sel.innerHTML = '<option value=""'+(state.konuId?'':' selected')+' disabled hidden>اخْتَرِ الدَّرْسَ…</option>' +
-      KONULAR.map(k => '<option value="'+k.id+'"'+(k.pasif?' disabled':'')+(k.id===state.konuId?' selected':'')+'>'+kacis(k.ad)+(k.pasif?' · قَرِيبًا':'')+'</option>').join("");
+    sel.innerHTML = '<option value=""'+(state.konuId?'':' selected')+' disabled hidden>اخْتَر الدَّرْس…</option>' +
+      KONULAR.map(k => '<option value="'+k.id+'"'+(k.pasif?' disabled':'')+(k.id===state.konuId?' selected':'')+'>'+kacis(k.ad)+(k.pasif?' · قَريبًا':'')+'</option>').join("");
     if (!state.konuId) sel.value = "";
+    const liste = $("konuSeciciListe");
+    if (liste){
+      liste.innerHTML = KONULAR.map((k, i) =>
+        '<button type="button" role="option" style="--i:' + i + '" data-konu="' + kacis(k.id) + '"'
+        + (k.pasif ? ' disabled aria-disabled="true"' : '')
+        + ' class="biy-ds-oge' + (k.pasif ? ' biy-ds-pasif' : '') + '">'
+        + '<span class="biy-ds-nokta" aria-hidden="true"></span>'
+        + '<span class="biy-ds-ad2">' + kacis(k.ad) + '</span>'
+        + (k.pasif ? '<span class="biy-ds-yakinda">قَريبًا</span>'
+                   : '<svg class="biy-ds-tik" viewBox="0 0 24 24" aria-hidden="true" fill="none"'
+                     + ' stroke="currentColor" stroke-width="3.4" stroke-linecap="round"'
+                     + ' stroke-linejoin="round"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>')
+        + '</button>').join("");
+      if (!liste.dataset.baglandi){
+        liste.dataset.baglandi = "1";
+        liste.addEventListener("click", (e) => {
+          const o = e.target.closest(".biy-ds-oge");
+          if (!o || o.disabled) return;
+          BIY.konuSec(o.getAttribute("data-konu"));
+          BIY.konuListeKapat();
+        });
+      }
+    }
     BIY._konuVurgu();
     BIY._pdfOnizleGuncelle();
   },
@@ -640,7 +783,8 @@ const BIY = {
     const n = BIY._secSet().size;
     // havuzdan soru seçildiyse konu seçimi kalkar (tek kaynak: havuz ya da konu)
     if (n > 0 && state.konuId){ state.konuId = null; const sel = $("konuSecim"); if (sel) sel.value = ""; BIY._konuVurgu(); }
-    const b = $("soruSecSayi"); if (b) b.textContent = "(" + n + ")";
+    const b = $("soruSecSayi");
+    if (b){ b.textContent = n; b.hidden = (n === 0); }   // sifirken rozet hic cikmasin
     const btn = $("soruSecBtn"); if (btn) btn.classList.toggle("biy-secili-var", n > 0);
     BIY._pdfOnizleGuncelle();
     BIY._soruSayiSinir();
@@ -650,17 +794,20 @@ const BIY = {
     if ($("soruSecBtn") && $("soruSecBtn").disabled) return;
     const eski = $("biySoruSec"); if (eski) eski.remove();
     state.soruSecArama = "";
+    // Panelin ustundeki havuz SVG'sini basliga kucultulmus olarak klonla
+    const hvIkon = (function(){ const e = document.querySelector(".biy-svg-havuz");
+                                return e ? e.outerHTML : "\u{1F3AF}"; })();
     const ov = document.createElement("div"); ov.id = "biySoruSec"; ov.className = "biy-onay-ov biy-soru-sec-ov";
     ov.innerHTML =
       '<div class="biy-soru-sec-kutu">' +
         '<div class="biy-soru-sec-bas">' +
-          '<h3>🎯 مَخْزُونُ الأَسْئِلَةِ</h3>' +
+          '<h3><span class="biy-hs-bas-ikon biy-anim">' + hvIkon + '</span> مَخْزون الأَسْئِلَة</h3>' +
           '<span class="biy-soru-sec-say" id="soruSecSecili"></span>' +
           '<button class="biy-soru-sec-kapat" onclick="BIY.soruSecKapat()">✕</button>' +
         '</div>' +
         '<div class="biy-soru-sec-liste" id="soruSecListe"></div>' +
         '<div class="biy-soru-sec-alt">' +
-          '<button class="biy-btn biy-onay-hayir" onclick="BIY.soruSecTemizle()">مَسْحُ الكُلِّ</button>' +
+          '<button class="biy-btn biy-onay-hayir" onclick="BIY.soruSecTemizle()">مَسْح الكُلّ</button>' +
           '<button class="biy-btn biy-btn-yesil" onclick="BIY.soruSecKapat()">تَمَّ</button>' +
         '</div>' +
       '</div>';
@@ -673,7 +820,7 @@ const BIY = {
     const kap = $("soruSecListe"); if (!kap) return;
     const set = BIY._secSet();
     const ara = state.soruSecArama;
-    const zorAd = { 1:"سَهْلٌ", 2:"مُتَوَسِّطٌ", 3:"صَعْبٌ" };
+    const zorAd = { 1:"سَهْل", 2:"مُتَوَسِّط", 3:"صَعْب" };
     let html = "";
     KONULAR.forEach(k => {
       if (!Array.isArray(k.sorular) || !k.sorular.length) return;
@@ -685,7 +832,7 @@ const BIY = {
         '<div class="biy-hs-baslik" onclick="BIY.soruSecAkordiyon(\''+k.id+'\')">' +
         '<span class="biy-hs-ok">▸</span>' +
         '<b>'+kacis(k.ad)+'</b> <span class="biy-hs-say">('+seciliSay+'/'+k.sorular.length+')</span>' +
-        '<button class="biy-hs-tumu" onclick="event.stopPropagation();BIY.soruSecTumu(\''+k.id+'\')">تَحْدِيدُ الكُلِّ</button></div>' +
+        '<button class="biy-hs-tumu" onclick="event.stopPropagation();BIY.soruSecTumu(\''+k.id+'\')">تَحْديد الكُلّ</button></div>' +
         '<div class="biy-hs-govde">';
       sorular.forEach(q => {
         const key = k.id + "#" + q.id; const sec = set.has(key);
@@ -698,7 +845,7 @@ const BIY = {
       });
       html += '</div></div>';
     });
-    kap.innerHTML = html || '<p class="biy-alt" style="text-align:center">لَا نَتِيجَةَ.</p>';
+    kap.innerHTML = html || '<p class="biy-alt" style="text-align:center">لا نَتيجَة.</p>';
     BIY._soruSecSayilar();
   },
   // sayaçları (grup başlıkları + toplam + buton) satırları yeniden çizmeden güncelle
@@ -709,7 +856,7 @@ const BIY = {
       const sec = k.sorular.filter(q => set.has(k.id + "#" + q.id)).length;
       const sp = g.querySelector(".biy-hs-say"); if (sp) sp.textContent = "(" + sec + "/" + k.sorular.length + ")";
     });
-    const say = $("soruSecSecili"); if (say) say.textContent = "المُحَدَّدُ: " + set.size;
+    const say = $("soruSecSecili"); if (say) say.textContent = "المُحَدَّد: " + set.size;
     BIY._soruSecSayiGuncelle();
   },
   // tek satır: yeniden çizmeden aç/kapa (kaydırma korunur)
@@ -752,7 +899,8 @@ const BIY = {
       state.soruSayiHavuzdan = true;   // bu sayı havuzdan geldi → havuz bırakılınca sıfırlanacak
       document.querySelectorAll(".biy-sayi-btn").forEach(b => { b.disabled = true; b.classList.add("biy-pasif"); b.classList.remove("secili"); });
       if (inp){ inp.disabled = false; inp.readOnly = true; inp.max = havuz; inp.min = 1; inp.value = havuz; inp.classList.add("biy-secili"); }
-      if (lbl) lbl.textContent = "عَدَدُ الأَسْئِلَةِ (مِنَ المَخْزُونِ " + havuz + "):";
+      BIY._sayiDonDur();
+      if (lbl) BIY._sayiEtiket(havuz, "havuz");
       return;
     }
     // havuz modundan çıkıldıysa havuz kaynaklı soru sayısını sıfırla (öğretmen yeniden seçsin)
@@ -768,14 +916,85 @@ const BIY = {
       b.disabled = dis; b.classList.toggle("biy-pasif", dis);
     });
     if (inp){ inp.disabled = false; inp.readOnly = false; inp.classList.remove("biy-secili"); inp.max = max; inp.min = 1; inp.placeholder = "≤ " + max; }
-    if (lbl) lbl.textContent = "عَدَدُ الأَسْئِلَةِ (بِحَدٍّ أَقْصَى " + max + "):";
+    if (state.soruSayisi == null){ if (lbl) BIY._sayiEtiket(max, "sinir"); BIY._sayiDon(); }
     if (state.soruSayisi != null){ if (state.soruSayisi > max) BIY.setSoruSayisi(max); else BIY.setSoruSayisi(state.soruSayisi); }
     else { document.querySelectorAll(".biy-sayi-btn").forEach(b => b.classList.remove("secili")); if (inp) inp.value = ""; }
+  },
+  // soru sayisi etiketi: yazi yerine SVG rozeti — rakam sayarak degisir
+  // kip: "sinir" (ust sinir) | "secili" (ogretmenin sectigi sayi) | "havuz"
+  _sayiEtiket(n, kip){
+    const kap = $("soruSayiEtiket"); if (!kap) return;
+    const svg = kap.querySelector("svg");
+    if (svg){
+      svg.classList.toggle("biy-ss-havuz",  kip === "havuz");
+      svg.classList.toggle("biy-ss-secili", kip === "secili");
+      const metin = kip === "havuz"  ? "عَدَد الأَسْئِلَة (مِن المَخْزون " + n + ")"
+                  : kip === "secili" ? "عَدَد الأَسْئِلَة: " + n
+                                     : "عَدَد الأَسْئِلَة (بِحَدّ أَقْصى " + n + ")";
+      const bas = svg.querySelector("title"); if (bas) bas.textContent = metin;
+      svg.setAttribute("aria-label", metin);
+    }
+    BIY._sayiAnim(n);
+  },
+  // bosta: rakam yarim saniyede bir 10 / 20 / 25 / 50 arasinda karisik degisir
+  _sayiDon(){
+    if (state.sayiDonZmn) return;                 // zaten donuyor
+    state.sayiDonZmn = setInterval(() => {
+      if (state.soruSayisi != null){ BIY._sayiDonDur(); return; }
+      const max = state.soruSayiMax || 50;
+      const liste = SORU_SAYI_SECENEK.filter(v => v <= max);
+      if (liste.length < 2) return;               // tek secenek kaldiysa donmeye gerek yok
+      const t = $("soruSayiRakam"); if (!t) return;
+      const simdi = parseInt(t.textContent, 10);
+      const kalan = liste.filter(v => v !== simdi);
+      const n = kalan[Math.floor(Math.random() * kalan.length)];
+      BIY._sayiAnim(n, true);
+    }, 500);
+  },
+  _sayiDonDur(){
+    if (state.sayiDonZmn){ clearInterval(state.sayiDonZmn); state.sayiDonZmn = null; }
+  },
+  // rakami eski degerden yeni degere sayarak getir + rozeti sictir
+  _sayiAnim(hedef, ani){
+    const t = $("soruSayiRakam"); if (!t) return;
+    hedef = Math.max(0, parseInt(hedef, 10) || 0);
+    const bas = parseInt(t.textContent, 10);
+    const svg = t.closest("svg");
+    if (ani){
+      // bosta donerken: sadece rakam cevrilsin, rozet nefes almaya devam etsin
+      t.classList.remove("biy-ss-cevir");
+      void t.getBoundingClientRect();            // sinifi yeniden tetiklemek icin
+      t.classList.add("biy-ss-cevir");
+      clearTimeout(state.sayiCevirZmn);
+      state.sayiCevirZmn = setTimeout(() => t.classList.remove("biy-ss-cevir"), 430);
+    } else if (svg){
+      svg.classList.remove("biy-ss-atar");
+      void svg.getBoundingClientRect();
+      svg.classList.add("biy-ss-atar");
+      clearTimeout(state.sayiAtarZmn);
+      state.sayiAtarZmn = setTimeout(() => svg.classList.remove("biy-ss-atar"), 560);
+    }
+    // ani: rakam bir anda degissin (bostaki donme icin — yarim saniye okunakli kalir)
+    if (isNaN(bas) || ani){
+      if (state.sayiRaf){ cancelAnimationFrame(state.sayiRaf); state.sayiRaf = null; }
+      t.textContent = hedef; return;
+    }
+    if (bas === hedef) return;
+    if (state.sayiRaf) cancelAnimationFrame(state.sayiRaf);
+    const sure = 450, t0 = (performance && performance.now) ? performance.now() : 0;
+    const adim = (z) => {
+      const p = Math.min(1, (z - t0) / sure);
+      const e = 1 - Math.pow(1 - p, 3);          // yumusak yavaslama
+      t.textContent = Math.round(bas + (hedef - bas) * e);
+      if (p < 1) state.sayiRaf = requestAnimationFrame(adim);
+      else { t.textContent = hedef; state.sayiRaf = null; }
+    };
+    state.sayiRaf = requestAnimationFrame(adim);
   },
   _pdfOnizleGuncelle(){
     const havuz = BIY._secSet().size;
     const k = BIY._aktifKonu();
-    const baslik = $("pdfBaslik"); if (baslik) baslik.textContent = havuz > 0 ? "مُخْتَلِطٌ" : (k ? (k.ad || "") : "");
+    const baslik = $("pdfBaslik"); if (baslik) baslik.textContent = havuz > 0 ? "مُخْتَلِط" : (k ? (k.ad || "") : "");
     const kart = $("pdfKart"), indir = $("pdfIndir");
     // PDF'ler henüz hazır değil → tüm önizleme bloğunu gizle (PDF_AKTIF=true olunca geri gelir)
     const blok = kart && kart.closest(".biy-pdf-onizleme");
@@ -801,7 +1020,7 @@ const BIY = {
     document.querySelectorAll(".biy-sekme").forEach(b => b.classList.toggle("secili", +b.getAttribute("data-z") === z));
     const liste = $("sorularListe"); liste.innerHTML = "";
     const list = BIY._aktifSorular().filter(s => s.zorluk === z);
-    if (!list.length){ liste.innerHTML = '<p class="biy-alt" style="text-align:center">لَا أَمْثِلَةَ فِي هَذَا المُسْتَوَى بَعْدُ.</p>'; return; }
+    if (!list.length){ liste.innerHTML = '<p class="biy-alt" style="text-align:center">لا أَمْثِلَة في هَذا المُسْتَوى بَعْد.</p>'; return; }
     // her soru tipinden yalnızca bir örnek göster (tüm sorular değil)
     const gorulen = new Set(); const ornekler = [];
     list.forEach(s => { if (!gorulen.has(s.tip)){ gorulen.add(s.tip); ornekler.push(s); } });
@@ -842,7 +1061,7 @@ const BIY = {
       const bu = aktifOda && modAl() === m;
       el.classList.toggle("biy-bagli-var", bu);
       const r = el.querySelector(".biy-bagli-rozet");
-      if (r){ r.textContent = "● " + bagli + " جِهَازًا مُتَّصِلًا"; r.classList.toggle("gizli", !bu); }
+      if (r){ r.textContent = "● " + bagli + " جِهازًا مُتَّصِلًا"; r.classList.toggle("gizli", !bu); }
     });
   },
 
@@ -852,9 +1071,9 @@ const BIY = {
     if (!MOD_BILGI[mod]) mod = "takim";
     // başka modda açık bir oda varsa önce onay iste
     if (state.odaId && state.oyunModu !== mod){
-      const eskiAd = (MOD_BILGI[state.oyunModu] || {}).ad || "المُسَابَقَةِ";
-      BIY._onay("هَلْ تُغَيِّرُ النِّظَامَ؟",
-        "هُنَاكَ غُرْفَةٌ مَفْتُوحَةٌ مِنْ " + eskiAd + ". إِذَا غَيَّرْتَ النِّظَامَ سَتُتْرَكُ تِلْكَ الغُرْفَةُ وَأَجْهِزَتُهَا.",
+      const eskiAd = (MOD_BILGI[state.oyunModu] || {}).ad || "المُسابَقَة";
+      BIY._onay("هَلْ تُغَيِّر النِّظام؟",
+        "هُناك غُرْفَة مَفْتوحَة مِنْ " + eskiAd + ". إِذا غَيَّرْت النِّظام سَتُتْرَكُ تِلْك الغُرْفَة وَأَجْهِزَتُها.",
         "نَعَمْ، غَيِّرْ", () => BIY._lobiAc(mod));
       return;
     }
@@ -878,7 +1097,7 @@ const BIY = {
     // birey/okul: oda hemen kurulur ki ortak karekod ekranda dursun
     if (tekKarekod()){
       try { await BIY._odayiHazirla(); BIY._odaKarekodCiz(); }
-      catch(e){ console.error(e); $("baslatNot").textContent = "تَعَذَّرَ إِنْشَاءُ الغُرْفَةِ: " + (e.code || e.message); }
+      catch(e){ console.error(e); $("baslatNot").textContent = "تَعَذَّرَ إِنْشاء الغُرْفَة: " + (e.code || e.message); }
     }
   },
   // odayı bırak (silmez): abonelikleri kapat, ekranı temizle
@@ -904,9 +1123,9 @@ const BIY = {
     if (grid) grid.className = (m === "birey") ? "biy-kat-liste" : "biy-takimlar-grid";
     // ekleme alanının yazıları moda göre (takım adı / sınıf adı)
     const inp = $("takimAdiInput");
-    if (inp) inp.placeholder = (m === "okul") ? "اسْمُ الصَّفِّ (٧/أ)" : "اسْمُ الفَرِيقِ";
+    if (inp) inp.placeholder = (m === "okul") ? "اسْم الصَّفّ (٧/أ)" : "اسْم الفَريق";
     const ekleBtn = $("takimEkleBtn");
-    if (ekleBtn) ekleBtn.textContent = (m === "okul") ? "+ أَضِفْ صَفًّا" : "+ أَضِفْ فَرِيقًا";
+    if (ekleBtn) ekleBtn.textContent = (m === "okul") ? "+ أَضِفْ صَفًّا" : "+ أَضِفْ فَريقًا";
   },
   // --- Kalıcılık (sayfa yenilense de oyun kaybolmasın) ---
   _kaydet(){
@@ -940,7 +1159,7 @@ const BIY = {
     const eski = $("biyOnay"); if (eski) eski.remove();
     const ov = document.createElement("div"); ov.id = "biyOnay"; ov.className = "biy-onay-ov";
     ov.innerHTML = '<div class="biy-onay-kutu"><h3>'+kacis(baslik)+'</h3><p>'+kacis(metin)+'</p>' +
-      '<div class="biy-onay-btnlar"><button class="biy-onay-hayir">إِلْغَاءٌ</button><button class="biy-onay-evet">'+kacis(evetMetin)+'</button></div></div>';
+      '<div class="biy-onay-btnlar"><button class="biy-onay-hayir">إِلْغاء</button><button class="biy-onay-evet">'+kacis(evetMetin)+'</button></div></div>';
     document.body.appendChild(ov);
     const kapat = () => { if (ov.parentNode) ov.remove(); };
     ov.querySelector(".biy-onay-hayir").onclick = kapat;
@@ -949,8 +1168,8 @@ const BIY = {
   },
   // canlı yarışmadan çıkış → lobiye dön (takım bağlantıları KORUNUR)
   yaristanCik(){
-    BIY._onay("هَلْ تَعُودُ إِلَى الانْتِظَارِ؟",
-      "سَتَتَوَقَّفُ المُسَابَقَةُ وَتَعُودُ إِلَى الانْتِظَارِ. تَبْقَى الأَجْهِزَةُ مُتَّصِلَةً — يُمْكِنُكَ تَغْيِيرُ الدَّرْسِ أَوْ عَدَدِ الأَسْئِلَةِ ثُمَّ البَدْءُ مِنْ جَدِيدٍ.",
+    BIY._onay("هَلْ تَعودُ إِلى الانْتِظار؟",
+      "سَتَتَوَقَّف المُسابَقَة وَتَعودُ إِلى الانْتِظار. تَبْقى الأَجْهِزَة مُتَّصِلَةً — يُمْكِنُكَ تَغْيير الدَّرْس أَو عَدَد الأَسْئِلَة ثُمّ البَدْء مِنْ جَديد.",
       "نَعَمْ، عُدْ", function(){ BIY.lobiyeDon(); });
   },
   // oyunu durdurup lobiye döner; oda + takım karekod bağlantıları kopmaz
@@ -1007,7 +1226,7 @@ const BIY = {
   // takım silinince/yarış bitince kilitli tüm ayar kontrollerini yeniden aç
   _kontrolleriAc(){
     document.querySelectorAll(".biy-seviye-btn, .biy-sayi-btn").forEach(b => { b.disabled = false; b.classList.remove("biy-pasif"); });
-    ["soruSayiInput", "soruSecBtn", "konuSecim"].forEach(id => { const el = $(id); if (el){ el.disabled = false; el.classList.remove("biy-pasif"); } });
+    ["soruSayiInput", "soruSecBtn", "konuSecim", "konuSeciciBtn"].forEach(id => { const el = $(id); if (el){ el.disabled = false; el.classList.remove("biy-pasif"); } });
     document.querySelectorAll(".biy-seviye-label").forEach(l => l.classList.remove("biy-pasif"));
   },
 
@@ -1040,13 +1259,13 @@ const BIY = {
       await db.collection(KOLEKSIYON).doc(oda).collection("takimlar").doc(takimId).set({
         ad: ad, bagli: false, puan: 0, olusturmaZamani: firebase.firestore.FieldValue.serverTimestamp()
       });
-    } catch(e){ console.error(e); $("baslatNot").textContent = (modAl()==="okul"?"صَفٌّ":"فَرِيقٌ") + " لَمْ يُضَفْ: " + (e.code || e.message); }
+    } catch(e){ console.error(e); $("baslatNot").textContent = (modAl()==="okul"?"صَفّ":"فَريق") + " لَمْ يُضَفْ: " + (e.code || e.message); }
   },
   _takimlariCiz(snap){
     state.takimListe = []; state.bekleyenListe = [];
     snap.forEach(doc => {
       const t = doc.data();
-      const k = { id: doc.id, ad: t.ad, bagli: !!t.bagli, puan: t.puan || 0 };
+      const k = { id: doc.id, ad: t.ad, bagli: !!t.bagli, puan: t.puan || 0, krk: t.krk || "" };
       if (t.atildi || t.red) return;                 // çıkarılan / reddedilen listede yok
       if (t.onay === false) state.bekleyenListe.push(k);   // onay bekliyor
       else state.takimListe.push(k);                        // takım modunda onay alanı hiç yoktur
@@ -1061,6 +1280,8 @@ const BIY = {
     const sInp = $("soruSayiInput"); if (sInp){ sInp.disabled = kilit; sInp.classList.toggle("biy-pasif", kilit); }
     const ssBtn = $("soruSecBtn"); if (ssBtn){ ssBtn.disabled = kilit; ssBtn.classList.toggle("biy-pasif", kilit); }
     const kSel = $("konuSecim"); if (kSel){ kSel.disabled = kilit; kSel.classList.toggle("biy-pasif", kilit); }
+    const kBtn = $("konuSeciciBtn");
+    if (kBtn){ kBtn.disabled = kilit; kBtn.classList.toggle("biy-pasif", kilit); if (kilit) BIY.konuListeKapat(); }
     const sLbl = document.querySelector(".biy-sorusayi-secim .biy-seviye-label");
     const zLbl = document.querySelector(".biy-seviye-secim .biy-seviye-label");
     if (zLbl) zLbl.classList.toggle("biy-pasif", kilit);
@@ -1087,7 +1308,7 @@ const BIY = {
   kopyala(btn){
     const inp = btn.parentElement.querySelector("input");
     inp.select(); inp.setSelectionRange(0, 99999);
-    try { navigator.clipboard.writeText(inp.value); btn.textContent = "✓"; setTimeout(()=>btn.textContent="نَسْخٌ", 1200); } catch(e){ document.execCommand("copy"); }
+    try { navigator.clipboard.writeText(inp.value); btn.textContent = "✓"; setTimeout(()=>btn.textContent="نَسْخ", 1200); } catch(e){ document.execCommand("copy"); }
   },
 
   /* ---------- YARIŞMAYI BAŞLAT (oyun döngüsü) ---------- */
@@ -1099,6 +1320,8 @@ const BIY = {
     const hazir = SORU_SAYI_SECENEK.indexOf(n) >= 0;
     document.querySelectorAll(".biy-sayi-btn").forEach(b => b.classList.toggle("secili", +b.getAttribute("data-sayi") === n));
     const inp = $("soruSayiInput"); if (inp){ inp.value = hazir ? "" : n; }
+    BIY._sayiDonDur();
+    BIY._sayiEtiket(n, "secili");
     BIY._menuDurum();
   },
   setSoruSayisiManuel(v){
@@ -1111,6 +1334,8 @@ const BIY = {
     // manuel giriş yapıldı → hazır rakamlardaki yeşil vurgu kalksın
     document.querySelectorAll(".biy-sayi-btn").forEach(b => b.classList.remove("secili"));
     const inp = $("soruSayiInput"); if (inp) inp.value = n;
+    BIY._sayiDonDur();
+    BIY._sayiEtiket(n, "secili");
     BIY._menuDurum();
   },
 
@@ -1129,7 +1354,7 @@ const BIY = {
       yedek = [];   // görülmemiş yedek sorulmaz
     } else {
       const tumu = BIY._aktifSorular().slice();   // konunun tüm soruları (zorluk fark etmez)
-      if (!tumu.length){ $("baslatNot").textContent = "«" + (BIY._aktifKonu() ? BIY._aktifKonu().ad : "") + "» لَا تَحْتَوِي عَلَى أَسْئِلَةٍ بَعْدُ."; return; }
+      if (!tumu.length){ $("baslatNot").textContent = "«" + (BIY._aktifKonu() ? BIY._aktifKonu().ad : "") + "» لا تَحْتَوي عَلى أَسْئِلَة بَعْد."; return; }
       for (let i = tumu.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); const g = tumu[i]; tumu[i] = tumu[j]; tumu[j] = g; }
       const hedefSayi = Math.max(1, Math.min(50, state.soruSayisi || TUR_SORU_SAYISI));
       secilen = tumu.slice(0, Math.min(hedefSayi, tumu.length)).map(soruHazirla);
@@ -1151,7 +1376,7 @@ const BIY = {
       });
       BIY._kaydet();
       BIY._adminOyunaGec();
-    } catch(e){ console.error(e); $("baslatNot").textContent = "تَعَذَّرَ البَدْءُ: " + (e.code || e.message); }
+    } catch(e){ console.error(e); $("baslatNot").textContent = "تَعَذَّر البَدْء: " + (e.code || e.message); }
   },
 
   _adminOyunaGec(){
@@ -1181,7 +1406,7 @@ const BIY = {
     const ber = (o.durum === "beraberlik");
     const idx = o.aktifIndex || 0;
     const soru = BIY._soruByIndex(idx);
-    if (!soru){ kap.innerHTML = '<div class="biy-oyun-orta"><p class="biy-alt">أَسْئِلَةُ هَذِهِ الجَوْلَةِ غَيْرُ مَوْجُودَةٍ (رُبَّمَا حُدِّثَتِ الصَّفْحَةُ). ابْدَإِ المُسَابَقَةَ مِنْ جَدِيدٍ.</p><button class="biy-btn biy-btn-mavi" onclick="BIY.anasayfa()">القَائِمَةُ الرَّئِيسَةُ</button></div>'; return; }
+    if (!soru){ kap.innerHTML = '<div class="biy-oyun-orta"><p class="biy-alt">أَسْئِلَة هَذِه الجَوْلَة غَيْر مَوْجودَة (رُبَّما حُدِّثَت الصَّفْحَة). ابْدَأ المُسابَقَة مِنْ جَديد.</p><button class="biy-btn biy-btn-mavi" onclick="BIY.anasayfa()">القائِمَة الرَّئيسَة</button></div>'; return; }
     const sonuc = (o.faz === "sonuc");
     const t = TIP_BILGI[soru.tip] || { ad: soru.tip, emoji: "❓" };
     // SONUÇ EKRANI — soru ekranından tamamen ayrı (adım adım animasyonlu)
@@ -1212,7 +1437,7 @@ const BIY = {
     const gozSvg = state.soruGizli
       ? '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>'
       : '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
-    const gozBtn = '<button class="biy-gizle-svg" title="'+(state.soruGizli?'أَظْهِرِ السُّؤَالَ':'أَخْفِ السُّؤَالَ')+'" onclick="BIY.soruGizleToggle()">'+gozSvg+'</button>';
+    const gozBtn = '<button class="biy-gizle-svg" title="'+(state.soruGizli?'أَظْهِر السُّؤال':'أَخْفِ السُّؤال')+'" onclick="BIY.soruGizleToggle()">'+gozSvg+'</button>';
 
     const cips = BIY._ciplerHtml(katilan, buCevaplar);
     const hepsi = katilan.length > 0 && cevapSayisi >= katilan.length;
@@ -1220,8 +1445,8 @@ const BIY = {
     const sayacHtml = '<div class="biy-sayac"><span id="sayacNum">'+kalan+'</span><small>ث</small></div>';
     const barHtml = '<div class="biy-sayac-bar"><i style="width:'+yuzde+'%"></i></div>';
     const siraMetin = ber
-      ? '⚔️ '+(o.berHedef===1?'المَرْكَزُ الأَوَّلُ':'المَرْكَزُ الثَّانِي')+' · سُؤَالُ التَّعَادُلِ '+o.berNo
-      : 'سُؤَالُ '+(idx+1)+' / '+(o.toplamSoru||state.oyunSorulari.length);
+      ? '⚔️ '+(o.berHedef===1?'المَرْكَز الأَوَّل':'المَرْكَز الثَّاني')+' · سُؤال التَّعادُل '+o.berNo
+      : 'سُؤال '+(idx+1)+' / '+(o.toplamSoru||state.oyunSorulari.length);
 
     let govde =
       '<div class="biy-oyun-ust">' +
@@ -1240,7 +1465,7 @@ const BIY = {
     }
     // sınıfların durumu (gizliyken çok daha büyük)
     const kaydir = (modAl() === "birey" && katilan.length > 10) ? " biy-kaydir" : "";
-    govde += '<div class="biy-cevap-durum'+(gizli?' biy-dev':'')+'">'+cevapSayisi+' / '+katilan.length+' أَجَابُوا'+(hepsi?' — تَظْهَرُ النَّتِيجَةُ…':'')+'</div>' +
+    govde += '<div class="biy-cevap-durum'+(gizli?' biy-dev':'')+'">'+cevapSayisi+' / '+katilan.length+' أَجابوا'+(hepsi?' — تَظْهَر النَّتيجَة…':'')+'</div>' +
              '<div class="biy-cipler'+(gizli?' biy-dev':'')+kaydir+'">'+cips+'</div>';
     // gizliyken geri sayım AŞAĞIDA ve devasa
     if (gizli){
@@ -1307,8 +1532,8 @@ const BIY = {
     const satir = cevapTakimlari.map((tk,ri) => {
       const c = buCevaplar[tk.id]; const dogruMu = !!(c && cevapDogruMu(soru, c.secilen));
       const secim = c ? secimHtml(soru, c.secilen) : '<span class="biy-rev-yok">—</span>';
-      const durum = c ? (dogruMu ? '✅ صَحِيحٌ' : '❌ خَطَأٌ') : '⏳ بِلَا إِجَابَةٍ';
-      return '<tr class="'+(c?(dogruMu?'dogru':'yanlis'):'yok')+'" style="--r:'+ri+'"><td>'+kacis(tk.ad)+'</td><td class="biy-rev-sik">'+secim+'</td><td>'+durum+'</td></tr>';
+      const durum = c ? (dogruMu ? '✅ صَحيح' : '❌ خَطَأ') : '⏳ بِلا إِجابَة';
+      return '<tr class="'+(c?(dogruMu?'dogru':'yanlis'):'yok')+'" style="--r:'+ri+'"><td>'+krkSvg(tk.krk, "biy-krk-mini")+kacis(tk.ad)+'</td><td class="biy-rev-sik">'+secim+'</td><td>'+durum+'</td></tr>';
     }).join("");
     // puan durumu (yedekler dahil) + sıra değişimi
     const ids = state.takimListe.map(t => t.id);
@@ -1324,22 +1549,23 @@ const BIY = {
     const rankMap = arr => { const m = {}; arr.forEach((id,i) => m[id] = i+1); return m; };
     const newR = ber ? rankMap(newOrder) : BIY._rank(newP, ids);
     const prevR = ber ? rankMap(prevOrder) : BIY._rank(prevP, ids);
-    const adOf = id => { const t = state.takimListe.find(x => x.id === id) || {}; return t.ad || ""; };
+    const adOf  = id => { const t = state.takimListe.find(x => x.id === id) || {}; return t.ad || ""; };
+    const krkOf = id => { const t = state.takimListe.find(x => x.id === id) || {}; return t.krk || ""; };
     // sonuç tablosunun ilk sütun başlığı moda göre
-    const basSutun = modAl() === "birey" ? "مُشَارِكٌ" : (modAl() === "okul" ? "صَفٌّ" : "فَرِيقٌ");
+    const basSutun = modAl() === "birey" ? "مُشارِك" : (modAl() === "okul" ? "صَفّ" : "فَريق");
     const lider = newOrder.map(id => {
       const ns = newR[id] || ids.length, ps = prevR[id] || ids.length, delta = ps - ns;
       const ok = delta > 0 ? '<span class="biy-ok biy-ok-yukari">▲</span>' : (delta < 0 ? '<span class="biy-ok biy-ok-asagi">▼</span>' : '<span class="biy-ok biy-ok-sabit"></span>');
       const cls = delta > 0 ? ' biy-lider-yukari' : (delta < 0 ? ' biy-lider-asagi' : '');
-      return '<li class="biy-lider-satir'+cls+'"><span class="biy-lider-sira">'+ns+'</span>'+ok+'<span class="biy-lider-ad">'+kacis(adOf(id))+'</span><b>'+(newP[id]||0)+'</b></li>';
+      return '<li class="biy-lider-satir'+cls+'"><span class="biy-lider-sira">'+ns+'</span>'+ok+'<span class="biy-lider-ad">'+krkSvg(krkOf(id), "biy-krk-mini")+kacis(adOf(id))+'</span><b>'+(newP[id]||0)+'</b></li>';
     }).join("");
     const degisti = ids.some(id => (prevR[id]||ids.length) !== (newR[id]||ids.length));
     const son = ber ? true : (idx + 1 >= toplam);
     const step = taze ? 0 : 2;   // yenileme olursa doğrudan son sahne (liderlik)
     const t = TIP_BILGI[soru.tip] || { ad: soru.tip, emoji: "❓" };
     const baslik = ber
-      ? '⚔️ '+(o.berHedef===1?'المَرْكَزُ الأَوَّلُ':'المَرْكَزُ الثَّانِي')+' · تَعَادُلٌ · سُؤَالُ '+o.berNo
-      : '📊 النَّتِيجَةُ · سُؤَالُ '+(idx+1)+' / '+toplam;
+      ? '⚔️ '+(o.berHedef===1?'المَرْكَز الأَوَّل':'المَرْكَز الثَّاني')+' · تَعادُل · سُؤال '+o.berNo
+      : '📊 النَّتيجَة · سُؤال '+(idx+1)+' / '+toplam;
     return '<div class="biy-oyun-orta biy-sonuc-ekran" data-degisti="'+(degisti?1:0)+'" data-step="'+step+'">' +
       '<div class="biy-sonuc-baslik'+(ber?' biy-ber':'')+'">'+baslik+'</div>' +
       '<div class="biy-sonuc-sahne">' +
@@ -1351,22 +1577,22 @@ const BIY = {
         '</div>' +
         // SAHNE 2: sınıfların verdiği cevaplar (devasa)
         '<div class="biy-sahne-oge oge-reveal">' +
-          '<div class="biy-reveal'+(cevapTakimlari.length > 8 && modAl() === "birey" ? ' biy-kaydir' : '')+'"><table class="biy-reveal-tablo"><thead><tr><th>'+basSutun+'</th><th>الإِجَابَةُ</th><th>الحَالَةُ</th></tr></thead><tbody>'+satir+'</tbody></table></div>' +
+          '<div class="biy-reveal'+(cevapTakimlari.length > 8 && modAl() === "birey" ? ' biy-kaydir' : '')+'"><table class="biy-reveal-tablo"><thead><tr><th>'+basSutun+'</th><th>الإِجابَة</th><th>الحالَة</th></tr></thead><tbody>'+satir+'</tbody></table></div>' +
         '</div>' +
         // SAHNE 3: güncel puan durumu (devasa)
         '<div class="biy-sahne-oge oge-lider">' +
-          '<div class="biy-sonuc-lider"><h4>🏆 النَّتَائِجُ</h4><ol class="biy-lider-ol'+(newOrder.length>10?' biy-kaydir':'')+'">'+lider+'</ol></div>' +
+          '<div class="biy-sonuc-lider"><h4>🏆 النَّتائِج</h4><ol class="biy-lider-ol'+(newOrder.length>10?' biy-kaydir':'')+'">'+lider+'</ol></div>' +
         '</div>' +
       '</div>' +
       // aşağıda üç ilerleme çizgisi — tıklayınca ilgili sayfaya geçer
       '<div class="biy-sonuc-nokta">' +
-        '<button class="biy-nokta" data-adim="0" onclick="BIY.sonucAdim(0)" title="السُّؤَالُ وَالإِجَابَةُ الصَّحِيحَةُ"></button>' +
-        '<button class="biy-nokta" data-adim="1" onclick="BIY.sonucAdim(1)" title="إِجَابَاتُ المُشَارِكِينَ"></button>' +
-        '<button class="biy-nokta" data-adim="2" onclick="BIY.sonucAdim(2)" title="النَّتَائِجُ"></button>' +
+        '<button class="biy-nokta" data-adim="0" onclick="BIY.sonucAdim(0)" title="السُّؤال وَالإِجابَة الصَّحيحَة"><span class="biy-nk-ikon"><svg viewBox="0 0 24 24" class="biy-nk-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 4h14.4a1.8 1.8 0 0 1 1.8 1.8v9a1.8 1.8 0 0 1-1.8 1.8H9.6L4.6 21V5.8A1.8 1.8 0 0 1 4.8 4z"/><path d="M8.6 10.4l2.5 2.5 4.5-5"/></svg></span><i class="biy-nk-cizgi"></i></button>' +
+        '<button class="biy-nokta" data-adim="1" onclick="BIY.sonucAdim(1)" title="إِجابات المُشارِكين"><span class="biy-nk-ikon"><svg viewBox="0 0 24 24" class="biy-nk-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.6" cy="6.4" r="2.3"/><path d="M11.4 6.4h8.6"/><circle cx="6.6" cy="12.4" r="2.3"/><path d="M11.4 12.4h8.6"/><circle cx="6.6" cy="18.4" r="2.3"/><path d="M11.4 18.4h8.6"/></svg></span><i class="biy-nk-cizgi"></i></button>' +
+        '<button class="biy-nokta" data-adim="2" onclick="BIY.sonucAdim(2)" title="النَّتائِج"><span class="biy-nk-ikon"><svg viewBox="0 0 24 24" class="biy-nk-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.4 20.6h17.2"/><rect x="3.9" y="14.2" width="4.6" height="6.4" rx="1.2"/><rect x="9.7" y="10.6" width="4.6" height="10" rx="1.2"/><rect x="15.5" y="16" width="4.6" height="4.6" rx="1.2"/><path d="M12 2.4l1.15 2.33 2.57.38-1.86 1.81.44 2.56L12 8.27 9.7 9.48l.44-2.56L8.28 5.12l2.57-.38z"/></svg></span><i class="biy-nk-cizgi"></i></button>' +
       '</div>' +
       '<div class="biy-oyun-kontrol"><button class="biy-btn biy-btn-buyuk" onclick="BIY.sonrakiSoru()">'+
-        (ber ? ((BIY._beraberlikCozuldu() || state.berNo >= state.yedekSorular.length) ? '🏁 اعْتِمَادُ التَّرْتِيبِ' : 'سُؤَالُ التَّعَادُلِ التَّالِي ›')
-             : (son ? '🏁 إِنْهَاءُ المُسَابَقَةِ' : 'السُّؤَالُ التَّالِي ›')) +
+        (ber ? ((BIY._beraberlikCozuldu() || state.berNo >= state.yedekSorular.length) ? '🏁 اعْتِماد التَّرْتيب' : 'سُؤال التَّعادُل التَّالي ›')
+             : (son ? '🏁 إِنْهاء المُسابَقَة' : 'السُّؤال التَّالي ›')) +
       '</button></div>' +
     '</div>';
   },
@@ -1391,7 +1617,7 @@ const BIY = {
     return state.takimListe.slice().sort((a,b) => (b.puan||0) - (a.puan||0));
   },
   _miniLiderHtml(){
-    return '<h4>النَّتَائِجُ</h4><ol class="biy-lider-ol">' +
+    return '<h4>النَّتائِج</h4><ol class="biy-lider-ol">' +
       BIY._siraliTakimlar().map(t => '<li><span>'+kacis(t.ad)+'</span><b>'+(t.puan||0)+'</b></li>').join("") + '</ol>';
   },
   _leaderboardHtml(final){
@@ -1407,13 +1633,13 @@ const BIY = {
     }
     const madalya = ["🥇","🥈","🥉"];
     return '<div class="biy-oyun-orta biy-final">' +
-      '<div class="biy-logo">'+simge("🏆")+'</div><h1>انْتَهَتِ المُسَابَقَةُ!</h1>' +
+      '<div class="biy-logo">'+simge("🏆")+'</div><h1>انْتَهَت المُسابَقَة!</h1>' +
       '<ol class="biy-final-ol'+(sirali.length>10?' biy-kaydir':'')+'">' +
         sirali.map((t,i) => '<li class="'+(i<3?'podyum':'')+(i===0?' birinci':'')+'" style="--i:'+i+'"><span class="biy-final-sira">'+(madalya[i]||(i+1))+'</span><span class="biy-final-ad">'+kacis(t.ad)+'</span><b>'+puanOf(t)+'</b></li>').join("") +
       '</ol>' +
       '<div class="biy-final-butonlar">' +
-        '<button class="biy-btn biy-btn-yesil" onclick="BIY.lobiyeDon()">🔄 العَوْدَةُ إِلَى الانْتِظَارِ (' + cogSozu() + ' يَبْقَوْنَ مُتَّصِلِينَ)</button>' +
-        '<button class="biy-btn biy-btn-mavi" onclick="BIY.oyunuBitir()">إِنْهَاءٌ &amp; القَائِمَةُ</button>' +
+        '<button class="biy-btn biy-btn-yesil" onclick="BIY.lobiyeDon()">🔄 العَوْدَة إِلى الانْتِظار (' + cogSozu() + ' يَبْقَوْنَ مُتَّصِلين)</button>' +
+        '<button class="biy-btn biy-btn-mavi" onclick="BIY.oyunuBitir()">إِنْهاء &amp; القائِمَة</button>' +
       '</div>' +
     '</div>';
   },
@@ -1571,8 +1797,10 @@ const BIY = {
     const takimRef = db.collection(KOLEKSIYON).doc(oda).collection("takimlar").doc(takim);
     try {
       const snap = await takimRef.get();
-      if (!snap.exists){ BIY._takimIcerik('❌','لَمْ يُوجَدِ الفَرِيقُ','الرَّابِطُ غَيْرُ صَالِحٍ أَوْ حُذِفَ الفَرِيقُ.'); return; }
-      state.takimAd = snap.data().ad || "فَرِيقٌ";
+      if (!snap.exists){ BIY._takimIcerik('❌','لَمْ يوجَد الفَريق','الرَّابِط غَيْر صالِح أَو حُذِف الفَريق.'); return; }
+      state.takimAd = snap.data().ad || "فَريق";
+      state.takimKrk = snap.data().krk || "";
+      BIY._krkIzle(oda);                     // alinan avatarlari canli izle
       // yenileme sonrası: bu soruyu zaten cevapladıysa hatırla
       try { const kc = JSON.parse(localStorage.getItem('biy_cevap') || 'null'); if (kc && kc.oda === oda && kc.takim === takim) state.sonCevapIndex = kc.index; } catch(e){}
       await takimRef.update({ bagli: true, sonGorulme: firebase.firestore.FieldValue.serverTimestamp() });
@@ -1582,7 +1810,101 @@ const BIY = {
 
       if (state.odaAbone) state.odaAbone();
       state.odaAbone = db.collection(KOLEKSIYON).doc(oda).onSnapshot(d => { state.oda = d.data() || null; BIY._renderTakim(); });
-    } catch(e){ console.error(e); BIY._takimIcerik('⚠️','تَعَذَّرَ الاتِّصَالُ','تَحَقَّقْ مِنَ الإِنْتَرْنِتِ وَالرَّابِطِ.'); }
+    } catch(e){ console.error(e); BIY._takimIcerik('⚠️','تَعَذَّر الاتِّصال','تَحَقَّقْ مِن الإِنْتَرْنِت وَالرَّابِط.'); }
+  },
+  /* =================================================================
+     KARAKTER SECIMI — herkes bir avatar alir, ikincisi ayni avatari
+     alamaz. Kilit Firestore'da odalar/{oda}/karakterler/{avatar}
+     belgesiyle tutulur; yazim islem (transaction) icinde yapildigi icin
+     iki cihaz ayni anda bassa bile yalnizca biri kazanir.
+     ================================================================= */
+  _krkIzle(oda){
+    if (state.krkAbone){ state.krkAbone(); state.krkAbone = null; }
+    state.krkAbone = db.collection(KOLEKSIYON).doc(oda).collection("karakterler")
+      .onSnapshot(s => {
+        const m = {}; s.forEach(d => { m[d.id] = (d.data() || {}).takim || ""; });
+        state.krkKapali = m;
+        BIY._krkTazele();
+      }, e => console.warn("karakter dinleme:", e));
+  },
+  _krkBenim(){ return (state.odaTakim && state.odaTakim.takim) || state.katilimId || ""; },
+  _krkModu(){
+    return (state.oda && state.oda.mod) || state.oyunModu ||
+           (state.odaTakim && state.odaTakim.mod) || "birey";
+  },
+  _krkIzgaraHtml(){
+    const mod = BIY._krkModu(), benim = BIY._krkBenim(), kapali = state.krkKapali || {};
+    return '<div class="biy-krk-izgara">' + krkSeti(mod).map(k => {
+      const sahip = kapali[k.i];
+      const kilit = !!sahip && sahip !== benim;
+      const secili = state.krkSecili === k.i;
+      return '<button type="button" class="biy-krk-btn' + (kilit ? ' kapali' : '') +
+        (secili ? ' secili' : '') + '"' + (kilit ? ' disabled aria-disabled="true"' : '') +
+        ' title="' + k.a + '" onclick="BIY.krkSec(&quot;' + k.i + '&quot;)">' +
+        '<span class="biy-krk-resim">' + k.s + '</span>' +
+        '<span class="biy-krk-ad">' + k.a + '</span>' +
+        (kilit ? '<span class="biy-krk-kilit" aria-hidden="true">✕</span>' : '') +
+        (secili ? '<span class="biy-krk-tik" aria-hidden="true">✓</span>' : '') +
+      '</button>';
+    }).join("") + '</div>';
+  },
+  _krkTazele(){
+    const a = $("katilKrkAlan"); if (a) a.innerHTML = BIY._krkIzgaraHtml();
+    const b = $("takimKrkAlan");
+    if (b){
+      b.innerHTML = BIY._krkIzgaraHtml();
+      const btn = $("takimKrkBtn"); if (btn) btn.disabled = !state.krkSecili;
+    }
+  },
+  krkSec(id){
+    const kapali = state.krkKapali || {};
+    const sahip = kapali[id];
+    if (sahip && sahip !== BIY._krkBenim()) return;   // baskasi kapmis
+    state.krkSecili = (state.krkSecili === id) ? "" : id;
+    BIY._krkTazele();
+  },
+  // avatari kilitle — baskasinin adina yazilmissa hata firlatir
+  async _krkKap(oda, takimId, krk){
+    const ref = db.collection(KOLEKSIYON).doc(oda).collection("karakterler").doc(krk);
+    await db.runTransaction(async tx => {
+      const d = await tx.get(ref);
+      if (d.exists && (d.data() || {}).takim !== takimId) throw new Error("KAPILDI");
+      tx.set(ref, { takim: takimId, zaman: firebase.firestore.FieldValue.serverTimestamp() });
+    });
+  },
+  // takim/okul cihazi: lobide arma secme ekrani
+  _krkSecEkrani(){
+    if ($("takimKrkAlan")){ BIY._krkTazele(); return; }   // acik ekrani bozma
+    const mod = BIY._krkModu();
+    const baslik = mod === "okul" ? "اخْتَرْ شِعار صَفِّك" : "اخْتَرْ شِعار فَريقِك";
+    $("takimIcerik").className = "biy-orta";
+    $("takimIcerik").innerHTML =
+      '<div class="biy-kart biy-krk-kart">' +
+        '<h1>' + baslik + '</h1>' +
+        '<p class="biy-alt">' + kacis(state.takimAd || "") + '</p>' +
+        '<div id="takimKrkAlan"></div>' +
+        '<p id="takimKrkNot" class="biy-not"></p>' +
+        '<button id="takimKrkBtn" class="biy-btn biy-btn-yesil" disabled onclick="BIY.krkOnayla()">تَأْكيد</button>' +
+      '</div>';
+    BIY._krkTazele();
+  },
+  async krkOnayla(){
+    const oda = state.odaTakim && state.odaTakim.oda;
+    const takim = state.odaTakim && state.odaTakim.takim;
+    if (!oda || !takim || !state.krkSecili) return;
+    const btn = $("takimKrkBtn"); if (btn) btn.disabled = true;
+    const not = $("takimKrkNot");
+    if (not){ not.classList.remove("biy-not-hata"); not.textContent = "جار الحَجْز…"; }
+    try {
+      await BIY._krkKap(oda, takim, state.krkSecili);
+      await db.collection(KOLEKSIYON).doc(oda).collection("takimlar").doc(takim)
+              .update({ krk: state.krkSecili });
+      state.takimKrk = state.krkSecili;
+      BIY._renderTakim();
+    } catch(e){
+      state.krkSecili = ""; BIY._krkTazele();
+      if (not){ not.classList.add("biy-not-hata"); not.textContent = "هَذا الشِّعار مَحْجوز. اخْتَرْ غَيْرَه."; }
+    }
   },
   _takimIcerik(emoji, baslik, metin, ekstra){
     $("takimIcerik").className = "biy-orta";
@@ -1601,7 +1923,10 @@ const BIY = {
     if (o.durum === "lobi" || o.aktifIndex === -1){
       // yeni tura hazırlık: önceki turun cevap takibini sıfırla (oda yeniden kullanılıyor olabilir)
       state.sonCevapIndex = -1; try { localStorage.removeItem('biy_cevap'); } catch(e){}
-      BIY._takimIcerik('✅', state.takimAd, 'تَمَّ الاتِّصَالُ! فِي انْتِظَارِ بَدْءِ المُعَلِّمِ.',
+      // avatar secilmediyse once o: herkes bir karakter alir, ikincisi alamaz
+      if (!state.takimKrk){ BIY._krkSecEkrani(); sayacDurdur(); return; }
+      BIY._takimIcerik('✅', state.takimAd, 'تَمّ الاتِّصال! في انْتِظار بَدْء المُعَلِّم.',
+        '<div class="biy-krk-benim">'+krkSvg(state.takimKrk, "biy-krk-buyuk")+'<span>'+kacis(krkAd(state.takimKrk))+'</span></div>' +
         '<div class="biy-bekle-nokta"><span></span><span></span><span></span></div>');
       sayacDurdur(); return;
     }
@@ -1610,11 +1935,11 @@ const BIY = {
       const ss = Array.isArray(o.sonSira) ? o.sonSira : null;
       if (ss){
         const r = ss.indexOf(state.odaTakim.takim) + 1;
-        if (r === 1) BIY._takimIcerik('🎉','أَحْسَنْتَ!', 'المَرْكَزُ الأَوَّلُ! 🥇');
-        else if (r > 0) BIY._takimIcerik('🏅', 'المَرْكَزُ ' + r, 'أَنْهَيْتَ المُسَابَقَةَ فِي المَرْكَزِ ' + r + '.');
-        else BIY._takimIcerik('🏁','انْتَهَتِ المُسَابَقَةُ!', 'التَّرْتِيبُ عَلَى الشَّاشَةِ.');
+        if (r === 1) BIY._takimIcerik('🎉','أَحْسَنْتَ!', 'المَرْكَز الأَوَّل! 🥇');
+        else if (r > 0) BIY._takimIcerik('🏅', 'المَرْكَز ' + r, 'أَنْهَيْت المُسابَقَة في المَرْكَز ' + r + '.');
+        else BIY._takimIcerik('🏁','انْتَهَت المُسابَقَة!', 'التَّرْتيب عَلى الشَّاشَة.');
       } else {
-        BIY._takimIcerik('🏁','انْتَهَتِ المُسَابَقَةُ!', 'التَّرْتِيبُ عَلَى شَاشَةِ المُعَلِّمِ.');
+        BIY._takimIcerik('🏁','انْتَهَت المُسابَقَة!', 'التَّرْتيب عَلى شاشَة المُعَلِّم.');
       }
       sayacDurdur(); return;
     }
@@ -1622,19 +1947,19 @@ const BIY = {
       const amTied = (o.berTakimlar||[]).indexOf(state.odaTakim.takim) >= 0;
       if (!amTied){
         const rank = (o.berSabit||{})[state.odaTakim.takim];
-        if (rank === 1) BIY._takimIcerik('🎉','أَحْسَنْتَ!', 'المَرْكَزُ الأَوَّلُ! 🥇');
-        else if (rank) BIY._takimIcerik('🏅', 'المَرْكَزُ ' + rank, 'أَنْهَيْتَ المُسَابَقَةَ فِي المَرْكَزِ ' + rank + '.');
-        else BIY._takimIcerik('⏳','تَعَادُلٌ!', 'الآخَرُونَ فِي سُؤَالِ التَّعَادُلِ…');
+        if (rank === 1) BIY._takimIcerik('🎉','أَحْسَنْتَ!', 'المَرْكَز الأَوَّل! 🥇');
+        else if (rank) BIY._takimIcerik('🏅', 'المَرْكَز ' + rank, 'أَنْهَيْت المُسابَقَة في المَرْكَز ' + rank + '.');
+        else BIY._takimIcerik('⏳','تَعادُل!', 'الآخَرون في سُؤال التَّعادُل…');
         sayacDurdur(); return;
       }
-      if (o.faz === "sonuc"){ BIY._takimIcerik('📺','الإِجَابَاتُ عَلَى الشَّاشَةِ!', 'فِي انْتِظَارِ سُؤَالِ التَّعَادُلِ التَّالِي…'); sayacDurdur(); return; }
+      if (o.faz === "sonuc"){ BIY._takimIcerik('📺','الإِجابات عَلى الشَّاشَة!', 'في انْتِظار سُؤال التَّعادُل التَّالي…'); sayacDurdur(); return; }
       // beraberlikte olan takım → aşağıdaki cevap akışıyla yedek soruyu cevaplar
     }
     // oyun
     const idx = o.aktifIndex, s = o.aktifSoru;
-    if (!s){ BIY._takimIcerik('⏳','جَارٍ التَّحْضِيرُ…',''); return; }
+    if (!s){ BIY._takimIcerik('⏳','جار التَّحْضير…',''); return; }
     if (o.faz === "sonuc"){
-      BIY._takimIcerik('📺','الإِجَابَاتُ عَلَى الشَّاشَةِ!', 'فِي انْتِظَارِ السُّؤَالِ التَّالِي…');
+      BIY._takimIcerik('📺','الإِجابات عَلى الشَّاشَة!', 'في انْتِظار السُّؤال التَّالي…');
       sayacDurdur(); return;
     }
     // cevap fazı
@@ -1646,12 +1971,12 @@ const BIY = {
     const kilit = cevapVerildi || kalan <= 0;
     BIY._calismaHazirla(idx, s);
     const alt = cevapVerildi
-      ? '<div class="biy-t-alindi">✅ وَصَلَتْ إِجَابَتُكَ</div>'
-      : (kalan<=0 ? '<div class="biy-t-alindi biy-gec">⌛ انْتَهَى الوَقْتُ</div>'
+      ? '<div class="biy-t-alindi">✅ وَصَلَتْ إِجابَتُك</div>'
+      : (kalan<=0 ? '<div class="biy-t-alindi biy-gec">⌛ انْتَهى الوَقْت</div>'
                   : '<div class="biy-t-ipucu">'+BIY._ipucuMetni(s)+'</div>');
     $("takimIcerik").className = "biy-oyun-orta";
     $("takimIcerik").innerHTML =
-      '<div class="biy-t-kimlik"><span class="biy-t-kimlik-nokta"></span><span class="biy-t-kimlik-ad">'+kacis(state.takimAd)+'</span></div>' +
+      '<div class="biy-t-kimlik">'+(state.takimKrk ? krkSvg(state.takimKrk, "biy-krk-mini") : '<span class="biy-t-kimlik-nokta"></span>')+'<span class="biy-t-kimlik-ad">'+kacis(state.takimAd)+'</span></div>' +
       '<div class="biy-t-ust"><span class="biy-soru-tip">'+t.emoji+' '+t.ad+'</span>' +
         '<span class="biy-bicim-rozet">'+bb.emoji+' '+bb.ad+'</span>' +
         '<span class="biy-t-sayac" id="sayacNum">'+kalan+'</span></div>' +
@@ -1666,7 +1991,7 @@ const BIY = {
           .forEach(b => b.setAttribute("disabled",""));
         const kap = $("biyCalisma"); if (kap) kap.classList.add("kilitli");
         const ip = document.querySelector(".biy-t-ipucu");
-        if (ip){ ip.className = "biy-t-alindi biy-gec"; ip.textContent = "⌛ انْتَهَى الوَقْتُ"; }
+        if (ip){ ip.className = "biy-t-alindi biy-gec"; ip.textContent = "⌛ انْتَهى الوَقْت"; }
       }
     });
   },
@@ -1692,15 +2017,15 @@ const BIY = {
   },
   _ipucuMetni(s){
     const b = bicimAl(s);
-    if (b === "surukle")  return "رَتِّبِ القِطَعَ بِالسَّحْبِ أَوِ اللَّمْسِ";
-    if (b === "eslestir") return "انْقُلِ البِطَاقَاتِ إِلَى السَّطْرِ الصَّحِيحِ";
-    if (b === "yazma")    return "اكْتُبِ الكَلِمَةَ بِالحُرُوفِ";
-    return "اخْتَرْ إِجَابَةً";
+    if (b === "surukle")  return "رَتِّب القِطَع بِالسَّحْب أَو اللَّمْس";
+    if (b === "eslestir") return "انْقُل البِطاقات إِلى السَّطْر الصَّحيح";
+    if (b === "yazma")    return "اكْتُب الكَلِمَة بِالحُروف";
+    return "اخْتَرْ إِجابَةً";
   },
   _gonderHtml(kilit, tam){
     return '<div class="biy-t-gonder-sar"><button class="biy-t-gonder" ' +
            ((kilit || !tam) ? 'disabled' : '') +
-           ' onclick="BIY.cevapGonder()">إِرْسَالٌ ✔</button></div>';
+           ' onclick="BIY.cevapGonder()">إِرْسال ✔</button></div>';
   },
 
   /* ---------- takım tarafı: biçime göre cevap alanı ---------- */
@@ -1715,7 +2040,10 @@ const BIY = {
         return '<div class="biy-t-slot'+(dolu?' dolu':'')+(dolu&&arMi(p[v])?' ar':'')+'" data-drop="slot:'+k+'"' +
                (dolu ? ' data-drag="slot:'+k+'"' : '') +
                ' onclick="BIY.slotTikla('+k+')">' +
-               (dolu ? kacis(p[v]) : '<span class="biy-t-slot-no">'+(k+1)+'</span>') + '</div>';
+               // Numara yuva dolunca da kalir: mobilde yuvalar alt alta dizilir,
+               // sira ancak bu rozetle okunur.
+               '<span class="biy-t-slot-no'+(dolu?' dolu':'')+'">'+(k+1)+'</span>' +
+               (dolu ? '<span class="biy-t-slot-metin">'+kacis(p[v])+'</span>' : '') + '</div>';
       }).join("");
       const havuz = p.map((x, i) => c.yerlesim.indexOf(i) >= 0 ? '' :
         '<div class="biy-t-parca'+(c.secili===i?' secili':'')+(arMi(x)?' ar':'')+'" data-drag="havuz:'+i+'" onclick="BIY.parcaTikla('+i+')">'+kacis(x)+'</div>'
@@ -1724,7 +2052,7 @@ const BIY = {
       return '<div class="biy-t-calisma" id="biyCalisma">' +
                '<div class="biy-t-slotlar" dir="rtl">'+slot+'</div>' +
                '<div class="biy-t-havuz" data-drop="havuz" dir="rtl">' +
-                 (havuz || '<span class="biy-t-bos">تَمَّ تَرْتِيبُ الكُلِّ ✔</span>') +
+                 (havuz || '<span class="biy-t-bos">تَمَّ تَرْتيب الكُلّ ✔</span>') +
                '</div>' +
              '</div>' + BIY._gonderHtml(kilit, tam);
     }
@@ -1749,7 +2077,7 @@ const BIY = {
       return '<div class="biy-t-calisma" id="biyCalisma">' +
                '<div class="biy-t-ciftler">'+satir+'</div>' +
                '<div class="biy-t-havuz" data-drop="havuz">' +
-                 (havuz || '<span class="biy-t-bos">تَمَّ وَضْعُ الكُلِّ ✔</span>') +
+                 (havuz || '<span class="biy-t-bos">تَمَّ وَضْع الكُلّ ✔</span>') +
                '</div>' +
              '</div>' + BIY._gonderHtml(kilit, tam);
     }
@@ -1771,7 +2099,7 @@ const BIY = {
 
     // varsayılan: klasik test
     const opt = (s.secenekler || []).map((sec, i) =>
-      '<button class="biy-t-opt'+(s.arSecenek?' ar':'')+'" style="--c:'+SIK_RENK[i % SIK_RENK.length]+'" ' +
+      '<button class="biy-t-opt'+(arMi(sec)?' ar':' biy-ltr')+'" style="--c:'+SIK_RENK[i % SIK_RENK.length]+'" ' +
       (kilit?'disabled':'')+' onclick="BIY.cevapla('+i+')">' +
       '<span class="biy-a-harf">'+String.fromCharCode(65+i)+'</span><span>'+kacis(sec)+'</span></button>'
     ).join("");
@@ -1967,17 +2295,17 @@ const BIY = {
     const sayi  = state.takimListe.length;
     const bagli = state.takimListe.filter(t => t.bagli).length;
     const bek   = state.bekleyenListe.length;
-    const bekNot = bek ? " · " + bek + " فِي انْتِظَارِ المُوَافَقَةِ" : "";
+    const bekNot = bek ? " · " + bek + " في انْتِظار المُوافَقَة" : "";
     // Takım ve Okul: her ada bir karekod → hepsi bağlanınca başlar (aynı mantık)
     if (m !== "birey"){
       const c = cogSozu();                        // "فِرَق" | "صُفوف"
       if (sayi === 0) return { olur:false, not:"" };
-      if (sayi < 2)   return { olur:false, not: c + ": " + sayi + " · يَلْزَمُ اثْنَانِ عَلَى الأَقَلِّ" };
+      if (sayi < 2)   return { olur:false, not: c + ": " + sayi + " · يَلْزَم اثْنان عَلى الأَقَلّ" };
       if (bagli < sayi) return { olur:false, not: c + ": " + sayi + " · اتَّصَلَ " + bagli + " · نَنْتَظِرُ " + (sayi-bagli) };
-      return { olur:true, not: "✓ " + c + ": " + sayi + " · يُمْكِنُكَ البَدْءُ" };
+      return { olur:true, not: "✓ " + c + ": " + sayi + " · يُمْكِنُك البَدْء" };
     }
-    if (sayi < 2) return { olur:false, not: "مُشَارِكُونَ: " + sayi + " · يَلْزَمُ اثْنَانِ عَلَى الأَقَلِّ" + bekNot };
-    return { olur:true, not: "✓ مُشَارِكُونَ: " + sayi + " · يُمْكِنُكَ البَدْءُ" + bekNot };
+    if (sayi < 2) return { olur:false, not: "مُشارِكون: " + sayi + " · يَلْزَم اثْنان عَلى الأَقَلّ" + bekNot };
+    return { olur:true, not: "✓ مُشارِكون: " + sayi + " · يُمْكِنُك البَدْء" + bekNot };
   },
 
   /* ---------- TAKIM & OKUL lobisi: her takıma/sınıfa ayrı karekod ---------- */
@@ -1989,11 +2317,11 @@ const BIY = {
       const kart = document.createElement("div");
       kart.className = "biy-takim-kart " + (t.bagli ? "biy-kart-bagli" : "biy-kart-bekliyor");
       kart.innerHTML =
-        '<button class="biy-sil" title="حَذْفٌ" onclick="BIY.takimSil(&quot;'+t.id+'&quot;)">✕</button>' +
-        '<h3>'+ kacis(t.ad) +'</h3>' +
-        '<div class="biy-takim-durum '+(t.bagli?"biy-bagli":"biy-bekliyor")+'">'+(t.bagli?"● مُتَّصِلٌ":"○ فِي الانْتِظَارِ")+'</div>' +
+        '<button class="biy-sil" title="حَذْف" onclick="BIY.takimSil(&quot;'+t.id+'&quot;)">✕</button>' +
+        '<h3>'+ krkSvg(t.krk, "biy-krk-kart-ikon") + kacis(t.ad) +'</h3>' +
+        '<div class="biy-takim-durum '+(t.bagli?"biy-bagli":"biy-bekliyor")+'">'+(t.bagli?"● مُتَّصِل":"○ في الانْتِظار")+'</div>' +
         '<div class="biy-qr" id="'+qrId+'"></div>' +
-        '<div class="biy-takim-link"><input readonly value="'+ kacis(link) +'"><button class="biy-kopya" onclick="BIY.kopyala(this)">نَسْخٌ</button></div>';
+        '<div class="biy-takim-link"><input readonly value="'+ kacis(link) +'"><button class="biy-kopya" onclick="BIY.kopyala(this)">نَسْخ</button></div>';
       grid.appendChild(kart);
       try { const box = $(qrId); if (box && window.QRCode){ box.innerHTML=""; new QRCode(box, { text: link, width: 170, height: 170, correctLevel: QRCode.CorrectLevel.M }); } }
       catch(err){ console.warn("QR:", err); }
@@ -2004,13 +2332,13 @@ const BIY = {
   _odaKarekodCiz(){
     const kap = $("lobiOdaAlan"); if (!kap || !state.odaId) return;
     const link = odaLinki(state.odaId);
-    const ipucu = "يَمْسَحُ الجَمِيعُ هَذَا الرَّمْزَ وَيَكْتُبُ كُلٌّ اسْمَهُ. يَدْخُلُونَ القَائِمَةَ بَعْدَ مُوَافَقَتِكَ.";
+    const ipucu = "يَمْسَح الجَميع هَذا الرَّمْز وَيَكْتُبُ كُلّ اسْمَه. يَدْخُلون القائِمَة بَعْد مُوافَقَتِك.";
     kap.innerHTML =
       '<div class="biy-oda-kart">' +
         '<div class="biy-oda-sol">' +
-          '<span class="biy-oda-etiket">رَمْزُ الغُرْفَةِ</span>' +
+          '<span class="biy-oda-etiket">رَمْز الغُرْفَة</span>' +
           '<span class="biy-oda-kod">'+ kacis(state.odaId) +'</span>' +
-          '<div class="biy-takim-link"><input readonly value="'+ kacis(link) +'"><button class="biy-kopya" onclick="BIY.kopyala(this)">نَسْخٌ</button></div>' +
+          '<div class="biy-takim-link"><input readonly value="'+ kacis(link) +'"><button class="biy-kopya" onclick="BIY.kopyala(this)">نَسْخ</button></div>' +
           '<p class="biy-oda-ipucu">'+ ipucu +'</p>' +
         '</div>' +
         '<div class="biy-qr biy-oda-qr" id="odaQrKutu"></div>' +
@@ -2027,16 +2355,16 @@ const BIY = {
     if (bek){
       const b = state.bekleyenListe;
       bek.innerHTML = !b.length
-        ? '<div class="biy-bek-bos">⏳ لَا أَحَدَ يَنْتَظِرُ — مَنْ يَمْسَحُ الرَّمْزَ يَظْهَرُ هُنَا.</div>'
-        : '<div class="biy-bek-ust"><h3>⏳ فِي انْتِظَارِ المُوَافَقَةِ ('+b.length+')</h3>' +
-            (b.length > 1 ? '<button class="biy-btn biy-btn-yesil biy-btn-mini" onclick="BIY.hepsiniOnayla()">المُوَافَقَةُ عَلَى الكُلِّ</button>' : '') +
+        ? '<div class="biy-bek-bos">⏳ لا أَحَد يَنْتَظِرُ — مَن يَمْسَح الرَّمْز يَظْهَرُ هُنا.</div>'
+        : '<div class="biy-bek-ust"><h3>⏳ في انْتِظار المُوافَقَة ('+b.length+')</h3>' +
+            (b.length > 1 ? '<button class="biy-btn biy-btn-yesil biy-btn-mini" onclick="BIY.hepsiniOnayla()">المُوافَقَة عَلى الكُلّ</button>' : '') +
           '</div>' +
           '<div class="biy-bek-liste">' + b.map(k =>
             '<div class="biy-bek-kart">' +
-              '<button class="biy-bek-ad" title="صَحِّحِ الاسْمَ" onclick="BIY.katilimciAdDegistir(&quot;'+k.id+'&quot;)">'+kacis(k.ad)+'</button>' +
+              '<button class="biy-bek-ad" title="صَحِّح الاسْم" onclick="BIY.katilimciAdDegistir(&quot;'+k.id+'&quot;)">'+krkSvg(k.krk, "biy-krk-mini")+kacis(k.ad)+'</button>' +
               '<span class="biy-bek-btnlar">' +
-                '<button class="biy-onay-ok" title="مُوَافَقَةٌ" onclick="BIY.katilimciOnayla(&quot;'+k.id+'&quot;)">✓</button>' +
-                '<button class="biy-onay-red" title="رَفْضٌ" onclick="BIY.katilimciReddet(&quot;'+k.id+'&quot;)">✕</button>' +
+                '<button class="biy-onay-ok" title="مُوافَقَة" onclick="BIY.katilimciOnayla(&quot;'+k.id+'&quot;)">✓</button>' +
+                '<button class="biy-onay-red" title="رَفْض" onclick="BIY.katilimciReddet(&quot;'+k.id+'&quot;)">✕</button>' +
               '</span>' +
             '</div>').join("") +
           '</div>';
@@ -2045,18 +2373,18 @@ const BIY = {
     const grid = $("takimlarGrid"); if (!grid) return;
     const L = state.takimListe;
     if (!L.length){
-      grid.innerHTML = '<div class="biy-kat-bos">لَا مُشَارِكِينَ بَعْدُ.</div>';
+      grid.innerHTML = '<div class="biy-kat-bos">لا مُشارِكين بَعْد.</div>';
       return;
     }
     grid.innerHTML =
-      '<div class="biy-kat-ust"><span>👥 المُشَارِكُونَ ('+L.length+')</span>' +
-        '<span class="biy-kat-ipucu">الْمِسِ الاسْمَ لِتُصَحِّحَهُ · ✕ لِلْإِخْرَاجِ</span></div>' +
+      '<div class="biy-kat-ust"><span>👥 المُشارِكون ('+L.length+')</span>' +
+        '<span class="biy-kat-ipucu">الْمِس الاسْم لِتُصَحِّحَهُ · ✕ لِلْإِخْراج</span></div>' +
       '<div class="biy-kat-satirlar'+(L.length > 12 ? ' biy-kaydir' : '')+'">' +
         L.map(k =>
           '<div class="biy-kat-satir '+(k.bagli ? 'bagli' : 'kopuk')+'">' +
-            '<span class="biy-kat-nokta" title="'+(k.bagli?'مُتَّصِلٌ':'غَيْرُ مُتَّصِلٍ')+'"></span>' +
-            '<button class="biy-kat-ad" title="صَحِّحِ الاسْمَ" onclick="BIY.katilimciAdDegistir(&quot;'+k.id+'&quot;)">'+kacis(k.ad)+'</button>' +
-            '<button class="biy-kat-at" title="أَخْرِجْ مِنَ المُسَابَقَةِ" onclick="BIY.katilimciAt(&quot;'+k.id+'&quot;)">✕</button>' +
+            '<span class="biy-kat-nokta" title="'+(k.bagli?'مُتَّصِل':'غَيْر مُتَّصِل')+'"></span>' +
+            '<button class="biy-kat-ad" title="صَحِّح الاسْم" onclick="BIY.katilimciAdDegistir(&quot;'+k.id+'&quot;)">'+krkSvg(k.krk, "biy-krk-mini")+kacis(k.ad)+'</button>' +
+            '<button class="biy-kat-at" title="أَخْرِجْ مِن المُسابَقَة" onclick="BIY.katilimciAt(&quot;'+k.id+'&quot;)">✕</button>' +
           '</div>').join("") +
       '</div>';
   },
@@ -2077,18 +2405,18 @@ const BIY = {
   },
   katilimciReddet(id){
     const k = state.bekleyenListe.find(x => x.id === id) || {};
-    BIY._onay("هَلْ تَرْفُضُ المُشَارَكَةَ؟", "«" + (k.ad||"") + "» لَنْ يَدْخُلَ القَائِمَةَ. يُمْكِنُهُ المُحَاوَلَةُ بِاسْمٍ جَدِيدٍ.",
-      "رَفْضٌ", async () => { try { await BIY._katilimciRef(id).update({ red: true }); } catch(e){ console.error(e); } });
+    BIY._onay("هَلْ تَرْفُض المُشارَكَة؟", "«" + (k.ad||"") + "» لَنْ يَدْخُل القائِمَة. يُمْكِنُه المُحاوَلَة بِاسْم جَديد.",
+      "رَفْض", async () => { try { await BIY._katilimciRef(id).update({ red: true }); } catch(e){ console.error(e); } });
   },
   katilimciAt(id){
     const k = state.takimListe.find(x => x.id === id) || {};
-    BIY._onay("هَلْ تُخْرِجُهُ مِنَ المُسَابَقَةِ؟", "«" + (k.ad||"") + "» سَيَخْرُجُ مِنَ القَائِمَةِ وَسَيَظْهَرُ إِشْعَارٌ عَلَى جِهَازِهِ.",
-      "إِخْرَاجٌ", async () => { try { await BIY._katilimciRef(id).update({ atildi: true, bagli: false }); } catch(e){ console.error(e); } });
+    BIY._onay("هَلْ تُخْرِجُهُ مِن المُسابَقَة؟", "«" + (k.ad||"") + "» سَيَخْرُجُ مِن القائِمَة وَسَيَظْهَرُ إِشْعار عَلى جِهازِه.",
+      "إِخْراج", async () => { try { await BIY._katilimciRef(id).update({ atildi: true, bagli: false }); } catch(e){ console.error(e); } });
   },
   katilimciAdDegistir(id){
     const k = state.takimListe.find(x => x.id === id) || state.bekleyenListe.find(x => x.id === id);
     if (!k) return;
-    BIY._metinSor("صَحِّحِ الاسْمَ", k.ad, "حِفْظٌ", async (yeni) => {
+    BIY._metinSor("صَحِّح الاسْم", k.ad, "حِفْظ", async (yeni) => {
       const ad = isimTemizle(yeni);
       if (ad.length < 2) return;
       try { await BIY._katilimciRef(id).update({ ad: ad }); } catch(e){ console.error(e); }
@@ -2100,7 +2428,7 @@ const BIY = {
     const ov = document.createElement("div"); ov.id = "biyOnay"; ov.className = "biy-onay-ov";
     ov.innerHTML = '<div class="biy-onay-kutu"><h3>'+kacis(baslik)+'</h3>' +
       '<input id="biyMetinInput" class="biy-onay-input" type="text" maxlength="18" value="'+kacis(mevcut||"")+'">' +
-      '<div class="biy-onay-btnlar"><button class="biy-onay-hayir">إِلْغَاءٌ</button><button class="biy-onay-evet">'+kacis(evetMetin)+'</button></div></div>';
+      '<div class="biy-onay-btnlar"><button class="biy-onay-hayir">إِلْغاء</button><button class="biy-onay-evet">'+kacis(evetMetin)+'</button></div></div>';
     document.body.appendChild(ov);
     const kapat = () => { if (ov.parentNode) ov.remove(); };
     const inp = ov.querySelector("#biyMetinInput");
@@ -2116,8 +2444,9 @@ const BIY = {
   _ciplerHtml(katilan, buCevaplar){
     return katilan.map(tk => {
       const ok = !!buCevaplar[tk.id];
-      return '<span class="biy-cip '+(ok?'ok':'')+'">' + (ok ? '<span class="biy-cip-tik">✓</span> ' : '') +
-        kacis(tk.ad) + '</span>';
+      // avatar isimden once: soru gizliyken uzaktan bakan bunu tanir
+      return '<span class="biy-cip '+(ok?'ok':'')+'">' + krkSvg(tk.krk, "biy-krk-cip") +
+        (ok ? '<span class="biy-cip-tik">✓</span> ' : '') + kacis(tk.ad) + '</span>';
     }).join("");
   },
 
@@ -2129,9 +2458,10 @@ const BIY = {
     ekranGoster("ekranKatil");
     try {
       const snap = await db.collection(KOLEKSIYON).doc(oda).get();
-      if (!snap.exists){ BIY._katilNot("لَمْ تُوجَدِ الغُرْفَةُ. امْسَحِ الرَّمْزَ مِنْ جَدِيدٍ أَوِ اسْأَلْ مُعَلِّمَكَ.", true); return; }
+      if (!snap.exists){ BIY._katilNot("لَمْ توجَد الغُرْفَة. امْسَح الرَّمْز مِنْ جَديد أَو اسْأَلْ مُعَلِّمَك.", true); return; }
       const o = snap.data() || {};
       state.oyunModu = "birey";   // ortak karekod bağlantısı yalnız birey odalarında üretilir
+      BIY._krkIzle(oda);          // hangi karakterler kapılmış, canlı izlenir
       // daha önce katıldıysa aynı kayda dön
       let kayit = null; try { kayit = JSON.parse(localStorage.getItem("biy_katilim") || "null"); } catch(e){}
       if (kayit && kayit.oda === oda && kayit.takim){
@@ -2142,7 +2472,7 @@ const BIY = {
       BIY._katilFormu();
     } catch(e){
       console.error(e);
-      BIY._katilNot("تَعَذَّرَ الاتِّصَالُ. تَحَقَّقْ مِنَ الإِنْتَرْنِتِ.", true);
+      BIY._katilNot("تَعَذَّر الاتِّصال. تَحَقَّقْ مِن الإِنْتَرْنِت.", true);
     }
   },
   _katilFormu(){
@@ -2151,6 +2481,8 @@ const BIY = {
     const bekle = $("katilBekle"); if (bekle) bekle.classList.add("gizli");
     const not = $("katilNot"); if (not) not.textContent = "";
     const inp = $("katilAdInput"); if (inp){ inp.value = ""; setTimeout(() => inp.focus(), 60); }
+    state.krkSecili = "";
+    BIY._krkTazele();
   },
   _katilNot(metin, hata){
     const not = $("katilNot");
@@ -2161,23 +2493,30 @@ const BIY = {
     const inp = $("katilAdInput"); const ham = inp ? inp.value : "";
     const sorun = isimSorunu(ham);
     if (sorun){ BIY._katilNot(sorun, true); if (inp) inp.focus(); return; }
+    if (!state.krkSecili){ BIY._katilNot("اخْتَرْ شَخْصِيَّتَك أَوَّلًا.", true); return; }
     let ad = isimTemizle(ham);
-    BIY._katilNot("جَارٍ الإِرْسَالُ…", false);
+    BIY._katilNot("جار الإِرْسال…", false);
     try {
       // aynı isim varsa numaralandır
       const hepsi = await db.collection(KOLEKSIYON).doc(oda).collection("takimlar").get();
       const adlar = []; hepsi.forEach(d => { const t = d.data(); if (!t.atildi && !t.red) adlar.push(t.ad); });
       ad = isimBenzersiz(ad, adlar);
       const id = rastgeleKod(5);
+      // once avatari kilitle: kaybedersek kayit hic olusmasin
+      try { await BIY._krkKap(oda, id, state.krkSecili); }
+      catch(err){
+        state.krkSecili = ""; BIY._krkTazele();
+        BIY._katilNot("هَذِه الشَّخْصِيَّة مَحْجوزَة. اخْتَرْ غَيْرَها.", true); return;
+      }
       await db.collection(KOLEKSIYON).doc(oda).collection("takimlar").doc(id).set({
-        ad: ad, onay: false, bagli: true, puan: 0,
+        ad: ad, onay: false, bagli: true, puan: 0, krk: state.krkSecili,
         olusturmaZamani: firebase.firestore.FieldValue.serverTimestamp()
       });
       try { localStorage.setItem("biy_katilim", JSON.stringify({ oda: oda, takim: id })); } catch(e){}
       BIY._katilimIzle(oda, id);
     } catch(e){
       console.error(e);
-      BIY._katilNot("تَعَذَّرَتِ المُشَارَكَةُ: " + (e.code || e.message), true);
+      BIY._katilNot("تَعَذَّرَت المُشارَكَة: " + (e.code || e.message), true);
     }
   },
   // kendi kaydını dinle: onay / ret / çıkarılma
@@ -2188,7 +2527,8 @@ const BIY = {
     state.katilimAbone = ref.onSnapshot(d => {
       if (!d.exists){ try { localStorage.removeItem("biy_katilim"); } catch(e){} BIY._katilFormu(); return; }
       const t = d.data() || {};
-      state.takimAd = t.ad || "مُشَارِكٌ";
+      state.takimAd = t.ad || "مُشارِك";
+      state.takimKrk = t.krk || "";
       if (t.atildi){
         state.atildiMi = true;
         if (state.takimNabiz){ clearInterval(state.takimNabiz); state.takimNabiz = null; }
@@ -2196,17 +2536,17 @@ const BIY = {
         if (state.odaAbone){ state.odaAbone(); state.odaAbone = null; }
         try { localStorage.removeItem("biy_katilim"); } catch(e){}
         sayacDurdur(); ekranGoster("ekranTakim");
-        BIY._takimIcerik("🚪", "تَمَّ إِخْرَاجُكَ مِنَ المُسَابَقَةِ", "أَخْرَجَكَ المُعَلِّمُ مِنَ القَائِمَةِ.");
+        BIY._takimIcerik("🚪", "تَمَّ إِخْراجُك مِن المُسابَقَة", "أَخْرَجَك المُعَلِّم مِن القائِمَة.");
         return;
       }
       if (t.red){
         try { localStorage.removeItem("biy_katilim"); } catch(e){}
-        BIY._katilBeklemeEkrani("✋", "لَمْ يُقْبَلِ الاسْمُ", "حَاوِلْ مَرَّةً أُخْرَى بِاسْمِكَ الحَقِيقِيِّ.",
-          '<button class="biy-btn biy-btn-yesil" onclick="BIY.katilYeniden()">شَارِكْ بِاسْمٍ جَدِيدٍ</button>');
+        BIY._katilBeklemeEkrani("✋", "لَمْ يُقْبَل الاسْم", "حاوِلْ مَرَّةً أُخْرى بِاسْمِك الحَقيقِيّ.",
+          '<button class="biy-btn biy-btn-yesil" onclick="BIY.katilYeniden()">شارِكْ بِاسْم جَديد</button>');
         return;
       }
       if (t.onay !== true){
-        BIY._katilBeklemeEkrani("⏳", kacis(t.ad || ""), "فِي انْتِظَارِ مُوَافَقَةِ المُعَلِّمِ…",
+        BIY._katilBeklemeEkrani("⏳", kacis(t.ad || ""), "في انْتِظار مُوافَقَة المُعَلِّم…",
           '<div class="biy-bekle-nokta"><span></span><span></span><span></span></div>');
         return;
       }
@@ -2215,7 +2555,7 @@ const BIY = {
         state.katilBagli = true;
         BIY.takimBagla(oda, id);
       }
-    }, err => { console.error(err); BIY._katilNot("انْقَطَعَ الاتِّصَالُ: " + (err.code || err.message), true); });
+    }, err => { console.error(err); BIY._katilNot("انْقَطَع الاتِّصال: " + (err.code || err.message), true); });
   },
   _katilBeklemeEkrani(emoji, baslik, metin, ekstra){
     ekranGoster("ekranKatil");
