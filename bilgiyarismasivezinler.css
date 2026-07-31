@@ -1925,3 +1925,18 @@ button.biy-sayi-etiket .biy-svg-sayi { transition: transform .2s ease; }
 .biy-hs-tumu:hover { color: #64748B; }
 .biy-hs-tumu.tam { background: #E9FBF4; color: #16A085; }
 .biy-hs-tumu.tam .biy-ea-ciz { animation: none; stroke-dashoffset: 0; }
+
+/* ===================== v81 — çıkış düğmesi: yazı yok, animasyonlu SVG ===================== */
+.biy-cikis-tus { padding: 10px; line-height: 0; }
+@media (min-width: 900px){ .biy-cikis-tus { padding: 12px; } }
+.biy-cikis-svg { width: 30px; height: 30px; display: block; }
+@media (min-width: 900px){ .biy-cikis-svg { width: 36px; height: 36px; } }
+/* ok kapıdan dışarı süzülür */
+.biy-ck-ok { animation: biyCkOk 1.8s ease-in-out infinite; }
+@keyframes biyCkOk {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  55%      { transform: translateX(2.6px); opacity: .75; }
+}
+/* RTL'de çıkış yönü sola bakar (düğme solda durur) */
+[dir="rtl"] .biy-cikis-svg { transform: scaleX(-1); }
+@media (prefers-reduced-motion: reduce){ .biy-ck-ok { animation: none; } }

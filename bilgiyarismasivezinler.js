@@ -532,6 +532,7 @@ const SES = {
     notalar.forEach(n => this._ton(ac, n.f, now + (n.t || 0), n.d || 0.15, (n.g || kazanc || 0.14)));
   },
   baglandi(){ this._cal([{f:659,t:0,d:0.12},{f:988,t:0.10,d:0.18}], 0.13); },                          // takım bağlandı: yükselen ding
+  cevapGeldi(){ this._cal([{f:880,t:0,d:0.08},{f:1175,t:0.06,d:0.11}], 0.10); },                       // bir cevap geldi: kısa blip
   hepsiCevap(){ this._cal([{f:523,t:0,d:0.11},{f:659,t:0.09,d:0.11},{f:784,t:0.18,d:0.20}], 0.13); },  // tümü cevapladı: do-mi-sol
   sonuc(){ this._cal([{f:392,t:0,d:0.14},{f:587,t:0.12,d:0.24}], 0.15); },                              // sonuç ekranı açıldı
   siraDegisti(){ this._cal([{f:494,t:0,d:0.10},{f:740,t:0.08,d:0.10},{f:988,t:0.16,d:0.20}], 0.12); }   // sıralama değişti: hızlı yükseliş
@@ -1582,6 +1583,14 @@ const BIY = {
 
     kap.innerHTML = '<div class="biy-oyun-orta">'+govde+'</div>';
 
+    // her yeni cevapta kısa ses (kurucunun cihazında); son cevapta
+    // 'tümü cevapladı' melodisi çalacağı için blip atlanır. Sayfa yenilenince
+    // sayaç mevcut cevap sayısıyla başlar → eski cevaplar için çalmaz.
+    if (state.cevapSesIndex !== idx){ state.cevapSesIndex = idx; state.cevapSesSayi = cevapSayisi; }
+    else if (cevapSayisi > state.cevapSesSayi){
+      if (!hepsi) SES.cevapGeldi();
+      state.cevapSesSayi = cevapSayisi;
+    }
     // tüm takımlar cevaplayınca ses (soru başına bir kez)
     if (hepsi && state.hepsiSesIndex !== idx){ state.hepsiSesIndex = idx; SES.hepsiCevap(); }
     // otomatik sonuç: tüm takımlar cevaplayınca
