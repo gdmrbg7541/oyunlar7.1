@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Harmattan:wght@400;700&family=Marhey:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="bilgiyarismasivezinler.css?v=82">
+<link rel="stylesheet" href="bilgiyarismasivezinler.css?v=83">
 
 <!-- Firebase 8.10.1 (compat) — proje: bilgiyarismasi7sinif1unite -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -101,7 +101,7 @@
           <button type="button" class="biy-konu-select biy-ds-btn" id="konuSeciciBtn"
                   aria-haspopup="listbox" aria-expanded="false" aria-label="المَوْضوع"
                   title="المَوْضوع" onclick="BIY.konuListeAc()">
-            <span class="biy-ds-ad" id="konuSeciciAd">اخْتَر الدَّرْس…</span>
+            <span class="biy-ds-ad" id="konuSeciciAd">اِخْتَر الدَّرْس…</span>
             <svg class="biy-ds-ok" viewBox="0 0 24 24" aria-hidden="true" fill="none"
                  stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"/>
@@ -148,11 +148,11 @@
             </g>
           </svg>
         </span>
-        <button class="biy-btn biy-soru-sec-btn" id="soruSecBtn" aria-label="اخْتِيار الأَسْئِلَة"
-                title="اخْتِيار الأَسْئِلَة" onclick="BIY.soruSecAc()">مِن المَخْزون <b id="soruSecSayi" hidden>0</b></button>
+        <button class="biy-btn biy-soru-sec-btn" id="soruSecBtn" aria-label="اِخْتِيار الأَسْئِلَة"
+                title="اِخْتِيار الأَسْئِلَة" onclick="BIY.soruSecAc()">مِن المَخْزون <b id="soruSecSayi" hidden>0</b></button>
       </div>
       <div class="biy-pdf-onizleme">
-        <a class="biy-pdf-a4" id="pdfKart" target="_blank" rel="noopener" title="افْتَح المِلَفّ">
+        <a class="biy-pdf-a4" id="pdfKart" target="_blank" rel="noopener" title="اِفْتَح المِلَفّ">
           <span class="biy-pdf-rozet">PDF</span>
           <span class="biy-pdf-baslik" id="pdfBaslik"></span>
           <span class="biy-pdf-cizgiler"><i></i><i></i><i></i><i></i><i></i><i></i></span>
@@ -273,7 +273,7 @@
         <span class="biy-menu-desc">رَمْز واحِد · يَدْخُلُ كُلّ بِاسْمِه</span>
       </button>
     </div>
-    <p id="menuNot" class="biy-menu-not gizli">اخْتَر المَوْضوع (أَو أَسْئِلَةً مِن المَخْزون) وَعَدَد الأَسْئِلَة لِلْبَدْء.</p>
+    <p id="menuNot" class="biy-menu-not gizli">اِخْتَر المَوْضوع (أَو أَسْئِلَةً مِن المَخْزون) وَعَدَد الأَسْئِلَة لِلْبَدْء.</p>
   </section>
 
   <!-- ADMIN — Sorular önizleme -->
@@ -299,7 +299,7 @@
 
     <!-- TAKIM & OKUL MODU: adları yaz, her takım/sınıf kendi karekodunu okutur -->
     <div id="takimYapAlan" class="biy-takim-yap">
-      <input id="takimAdiInput" type="text" placeholder="اسْم الفَريق" maxlength="24"
+      <input id="takimAdiInput" type="text" placeholder="اِسْم الفَريق" maxlength="24"
              onkeydown="if(event.key==='Enter')BIY.takimEkle()">
       <button id="takimEkleBtn" class="biy-btn biy-btn-yesil" onclick="BIY.takimEkle()">+ أَضِفْ فَريقًا</button>
     </div>
@@ -313,7 +313,7 @@
     <div id="takimlarGrid" class="biy-takimlar-grid"></div>
 
     <div class="biy-baslat-alan">
-      <button id="baslatBtn" class="biy-btn biy-btn-buyuk gizli" onclick="BIY.yarisiBaslat()">🚀 ابْدَأ المُسابَقَة</button>
+      <button id="baslatBtn" class="biy-btn biy-btn-buyuk gizli" onclick="BIY.yarisiBaslat()">🚀 اِبْدَأ المُسابَقَة</button>
       <p id="baslatNot" class="biy-not"></p>
     </div>
   </section>
@@ -341,11 +341,11 @@
         </svg>
       </div>
       <h1>الانْضِمام إِلى المُسابَقَة</h1>
-      <p class="biy-alt">اكْتُب اسْمَك، وَتَبْدَأ المُسابَقَة بَعْد مُوافَقَة المُعَلِّم.</p>
-      <input id="katilAdInput" class="biy-katil-input" type="text" placeholder="اسْمُك الكامِل" maxlength="18"
+      <p class="biy-alt">اُكْتُب اسْمَك، وَتَبْدَأ المُسابَقَة بَعْد مُوافَقَة المُعَلِّم.</p>
+      <input id="katilAdInput" class="biy-katil-input" type="text" placeholder="اِسْمُك الكامِل" maxlength="18"
              autocomplete="off" autocorrect="off" spellcheck="false"
              onkeydown="if(event.key==='Enter')BIY.katilGonder()">
-      <p class="biy-krk-baslik">اخْتَرْ شَخْصِيَّتَك</p>
+      <p class="biy-krk-baslik">اِخْتَرْ شَخْصِيَّتَك</p>
       <div id="katilKrkAlan" class="biy-krk-alan"></div>
       <button class="biy-btn biy-btn-yesil biy-katil-btn" onclick="BIY.katilGonder()">دُخول</button>
       <p id="katilNot" class="biy-not"></p>
@@ -374,7 +374,7 @@
 
 </div>
 
-<script src="bilgiyarismasivezinler.js?v=91"></script>
+<script src="bilgiyarismasivezinler.js?v=92"></script>
 <script id="kidef-koruma">
 /* KAYNAK KORUMA (CAYDIRICI) — sag tik + gelistirici araclari kisayollari.
    Not: Tam guvenlik degildir; asil koruma Firestore kurallarindadir. */
