@@ -879,3 +879,133 @@ h1 { font-size: 2rem; margin: 6px 0 10px; color: #16A085; font-weight: 700; }
   .biy-kat-ust { flex-direction: column; align-items: flex-start; gap: 2px; }
   .biy-kaydir { max-height: 46vh; }
 }
+
+/* ===================================================================== */
+/* ==  ARAPÇA ARAYÜZ — RTL DÜZENİ + ÖZEL SVG ANİMASYONLARI  (v60)      == */
+/* ===================================================================== */
+
+/* ---- 1) Yön çevirmeleri: soldan sağa kurulmuş kuralların RTL karşılığı */
+[dir="rtl"] .biy-soru-sec-secim,
+[dir="rtl"] .biy-pdf-onizleme { padding-left: 0; padding-right: 22px; border-left: none; border-right: 1px solid #EDF2F7; }
+[dir="rtl"] .biy-pdf-a4:before { right: auto; left: 0; border-width: 0 0 16px 16px; border-radius: 0 0 4px 0; }
+[dir="rtl"] .biy-bagli-rozet { right: auto; left: 12px; }
+[dir="rtl"] .biy-zorluk { float: left; }
+[dir="rtl"] .biy-secenek-metin,
+[dir="rtl"] .biy-reveal-tablo td:first-child,
+[dir="rtl"] .biy-final-ad,
+[dir="rtl"] .biy-t-opt,
+[dir="rtl"] .biy-kat-ad,
+[dir="rtl"] .biy-iyi-ad { text-align: right; }
+[dir="rtl"] .biy-sil { right: auto; left: 14px; }
+[dir="rtl"] .biy-cikis-tus { right: auto; left: 16px; }
+@media (min-width: 900px){ [dir="rtl"] .biy-cikis-tus { right: auto; left: 22px; } }
+[dir="rtl"] .biy-soru-sec-say,
+[dir="rtl"] .biy-hs-tumu,
+[dir="rtl"] .biy-sinif-kaynak { margin-left: 0; margin-right: auto; }
+[dir="rtl"] .biy-oyun-ust > .biy-sayac { margin-right: 0; margin-left: 84px; }
+@media (min-width: 900px){ [dir="rtl"] #ekranOyunAdmin .biy-oyun-ust > .biy-sayac { margin-right: 0; margin-left: 124px; } }
+[dir="rtl"] .biy-kaydir { padding-right: 0; padding-left: 6px; }
+[dir="rtl"] .biy-cip-sinif { margin-left: 0; margin-right: 6px; }
+[dir="rtl"] .biy-konu-select { padding: 13px 18px 13px 42px; background-position: left 14px center; }
+/* geri okunu RTL'de sağa çevir */
+[dir="rtl"] .biy-geri-tus svg { transform: scaleX(-1); }
+[dir="rtl"] .biy-sinif-govde { flex-direction: row; }
+
+/* ---- 2) Soldan sağa kalması gereken adacıklar (kod, bağlantı, sayı) --- */
+.biy-oda-kod,
+.biy-takim-link input,
+.biy-katil-input,
+.biy-sayi-input,
+.biy-final-ol b,
+.biy-sayac { direction: ltr; unicode-bidi: isolate; }
+/* Türkçe test içeriği LTR kalır — mevcut kural korunur */
+
+/* ---- 3) Özel SVG simgeleri: ölçü ------------------------------------- */
+.biy-logo .biy-svg, .biy-logo .biy-anim { display: inline-block; }
+.biy-logo .biy-svg { width: 72px; height: 72px; }
+.biy-menu-emoji .biy-svg { width: 62px; height: 62px; display: block; margin: 0 auto; }
+.biy-menu-emoji { line-height: 1; }
+.biy-anim { display: inline-block; line-height: 0; }
+
+/* ---- 4) Animasyonlar ------------------------------------------------- */
+@keyframes biyNefes   { 0%,100%{ transform: scale(1); opacity:.14 } 50%{ transform: scale(1.12); opacity:.28 } }
+@keyframes biySalla   { 0%,100%{ transform: translateY(0) }        50%{ transform: translateY(-3px) } }
+@keyframes biyDon     { to { transform: rotate(360deg) } }
+@keyframes biyDus     { 0%{ transform: translateY(-9px); opacity:0 } 30%{ opacity:1 } 100%{ transform: translateY(9px); opacity:0 } }
+@keyframes biyCiz     { to { stroke-dashoffset: 0 } }
+@keyframes biyPatla   { 0%{ transform: scale(.4); opacity:0 } 60%{ transform: scale(1.15) } 100%{ transform: scale(1); opacity:1 } }
+@keyframes biyIsilda  { 0%,100%{ opacity:.25 } 50%{ opacity:1 } }
+@keyframes biyKay     { 0%{ transform: translateX(-6px) } 100%{ transform: translateX(46px) } }
+@keyframes biyTara    { 0%,100%{ transform: translateY(-13px); opacity:.35 } 50%{ transform: translateY(13px); opacity:1 } }
+@keyframes biyYuksel  { from { transform: translateY(14px); opacity:0 } to { transform: none; opacity:1 } }
+
+.biy-hale { transform-origin: 32px 32px; animation: biyNefes 3.2s ease-in-out infinite; }
+
+/* mod kartları */
+.biy-svg-takim .biy-tk-a   { transform-origin: 20px 34px; animation: biySalla 2.4s ease-in-out infinite; }
+.biy-svg-takim .biy-tk-b   { transform-origin: 44px 34px; animation: biySalla 2.4s ease-in-out infinite .5s; }
+.biy-svg-takim .biy-tk-bag { stroke-dasharray: 34; stroke-dashoffset: 34; animation: biyCiz 1.4s ease-out .3s forwards; }
+.biy-svg-birey .biy-br-el   { transform-origin: 46px 29px; animation: biySalla 1.6s ease-in-out infinite; }
+.biy-svg-birey .biy-br-nokta{ animation: biyIsilda 1.6s ease-in-out infinite; }
+.biy-svg-okul .biy-ok-bayrak { transform-origin: 32px 16px; animation: biySalla 2.8s ease-in-out infinite; }
+.biy-svg-okul .biy-ok-cam rect { animation: biyIsilda 2.6s ease-in-out infinite; }
+.biy-svg-okul .biy-ok-cam rect:last-child { animation-delay: .9s; }
+.biy-svg-okul .biy-ok-kapi { transform-origin: 27px 44px; animation: biySalla 4s ease-in-out infinite; }
+.biy-menu-kart:hover .biy-svg { transform: scale(1.06); transition: transform .2s; }
+
+/* katılım ekranı — karekod taraması */
+.biy-svg-katil .biy-kt-tarama { animation: biyTara 2.2s ease-in-out infinite; }
+.biy-svg-katil .biy-kt-kare path { stroke-dasharray: 20; stroke-dashoffset: 20; animation: biyCiz 1s ease-out forwards; }
+
+/* bekleme / sonuç simgeleri */
+.biy-sv-kum   { transform-origin: 32px 32px; animation: biyDon 4.5s cubic-bezier(.7,0,.3,1) infinite; }
+.biy-sv-tane  { animation: biyDus 1.5s linear infinite; }
+.biy-sv-tik   { stroke-dasharray: 40; stroke-dashoffset: 40; animation: biyCiz .55s ease-out .15s forwards; }
+.biy-sv-halka { transform-origin: 32px 32px; animation: biyPatla .45s ease-out both; }
+.biy-sv-carpi { transform-origin: 32px 32px; animation: biyPatla .4s ease-out both; }
+.biy-sv-uyari { animation: biyIsilda 1.1s ease-in-out infinite; }
+.biy-sv-serpme line { animation: biyIsilda 1.2s ease-in-out infinite; }
+.biy-sv-serpme line:nth-child(2){ animation-delay: .2s } .biy-sv-serpme line:nth-child(3){ animation-delay: .4s } .biy-sv-serpme line:nth-child(4){ animation-delay: .6s }
+.biy-sv-madalya { transform-origin: 32px 42px; animation: biyPatla .5s ease-out both; }
+.biy-sv-kurdele { transform-origin: 32px 10px; animation: biySalla 2.6s ease-in-out infinite; }
+.biy-sv-bayrak  { transform-origin: 18px 22px; animation: biySalla 2s ease-in-out infinite; }
+.biy-sv-parlama { animation: biyKay 2.6s ease-in-out infinite; }
+.biy-sv-el      { transform-origin: 32px 40px; animation: biySalla 1.4s ease-in-out infinite; }
+.biy-sv-kol     { animation: biyIsilda 2s ease-in-out infinite; }
+.biy-sv-kupa    { transform-origin: 32px 34px; animation: biyPatla .55s ease-out both; }
+.biy-sv-parilti circle { animation: biyIsilda 1.5s ease-in-out infinite; }
+.biy-sv-parilti circle:nth-child(2){ animation-delay: .5s } .biy-sv-parilti circle:nth-child(3){ animation-delay: 1s }
+
+/* karekod kartları — canlı çerçeve + nabız noktası */
+.biy-takim-kart .biy-qr { position: relative; }
+.biy-takim-kart .biy-qr:after {
+  content: ""; position: absolute; inset: -9px; border-radius: 14px; pointer-events: none;
+  border: 2px dashed rgba(99,102,241,.45); animation: biyCerceve 2.6s ease-in-out infinite;
+}
+@keyframes biyCerceve { 0%,100%{ opacity:.5 } 50%{ opacity:1 } }
+.biy-takim-kart.biy-kart-bagli .biy-qr:after { border-color: rgba(16,185,129,.6); border-style: solid; animation: none; }
+.biy-takim-durum.biy-bagli { position: relative; }
+.biy-takim-durum.biy-bagli:before {
+  content: ""; position: absolute; inset: -4px; border-radius: 999px;
+  box-shadow: 0 0 0 0 rgba(16,185,129,.5); animation: biyNabiz 1.8s ease-out infinite;
+}
+@keyframes biyNabiz { to { box-shadow: 0 0 0 12px rgba(16,185,129,0); } }
+.biy-takim-kart { animation: biyYuksel .35s ease-out both; }
+
+/* sonuç / sıralama — madalya sallanır, sıra numarası taşmaz */
+.biy-final-ol li.birinci .biy-final-sira { display: inline-block; animation: biySalla 1.8s ease-in-out infinite; }
+.biy-final-sira { flex: 0 0 auto; }
+.biy-final-ol li.birinci .biy-final-sira { width: auto; min-width: 56px; }
+#ekranOyunAdmin .biy-final-ol li.birinci .biy-final-sira { width: auto; min-width: 96px; }
+#ekranOyunAdmin .biy-logo .biy-svg { width: 112px; height: 112px; }
+
+/* ---- 5) Hareket azaltma tercihi -------------------------------------- */
+@media (prefers-reduced-motion: reduce){
+  #biy-app *, #biy-app *:before, #biy-app *:after { animation: none !important; transition: none !important; }
+  .biy-sv-tik, .biy-kt-kare path, .biy-svg-takim .biy-tk-bag { stroke-dashoffset: 0 !important; }
+}
+
+
+/* isim alanlari: yon ilk guclu harften belirlensin — "7-A" tersten yazilmasin */
+.biy-takim-kart h3, .biy-final-ad, .biy-kat-ad, .biy-bek-ad,
+.biy-t-ad, .biy-takim-durum, #takimIcerik h1, #takimIcerik h2 { unicode-bidi: plaintext; }

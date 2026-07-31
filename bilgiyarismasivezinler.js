@@ -46,10 +46,10 @@ const PUAN = { 1: 10, 2: 20, 3: 30 };  // (eski; artık 1000 üzerinden hesaplan
      eslestir → eşleştirme        { ciftler:[["sol","sağ"], ...] }
      yazma    → klavyeyle yaz     { cevapYazi:"بيت", tuslar:[... en fazla 10 ...] }   */
 const BICIM_BILGI = {
-  "test":     { ad: "Test",           emoji: "🔘" },
-  "surukle":  { ad: "Sürükle-Bırak",  emoji: "🧲" },
-  "eslestir": { ad: "Eşleştirme",     emoji: "🔗" },
-  "yazma":    { ad: "Klavyeyle Yaz",  emoji: "⌨️" }
+  "test":     { ad: "اخْتِيَارٌ",           emoji: "🔘" },
+  "surukle":  { ad: "تَرْتِيبٌ",  emoji: "🧲" },
+  "eslestir": { ad: "وَصْلٌ",     emoji: "🔗" },
+  "yazma":    { ad: "كِتَابَةٌ",  emoji: "⌨️" }
 };
 function bicimAl(s){ return (s && s.bicim) || "test"; }
 // Metin Arapça mı? (kutulara doğru yazı tipini vermek için)
@@ -115,129 +115,129 @@ function secimHtml(soru, secilen){
 
 /* --- 1) Günlük rutin (id 1-99) --- */
 const S_GUNLUK = [
-  {"id":1,"tip":"fiil","zorluk":1,"soru":"«أَسْتَيْقِظُ» ne demek?","secenekler":["uyanırım","uyurum","yıkanırım","giyerim"],"dogru":0,"arapca":"أَسْتَيْقِظُ"},
-  {"id":2,"tip":"fiil","zorluk":1,"soru":"«أَتَوَضَّأُ» ne demek?","secenekler":["abdest alırım","namaz kılarım","uyanırım","yemek yerim"],"dogru":0,"arapca":"أَتَوَضَّأُ"},
-  {"id":3,"tip":"fiil","zorluk":1,"soru":"«أُصَلّي» ne demek?","secenekler":["namaz kılarım","ders çalışırım","koşarım","dönerim"],"dogru":0,"arapca":"أُصَلّي"},
-  {"id":4,"tip":"fiil","zorluk":1,"soru":"«أَتَناوَلُ الفَطورَ» ne demek?","secenekler":["kahvaltı yaparım","akşam yemeği yerim","süt içerim","uyurum"],"dogru":0,"arapca":"أَتَناوَلُ الفَطورَ"},
-  {"id":5,"tip":"fiil","zorluk":1,"soru":"«أَلْبَسُ مَلابِسي» ne demek?","secenekler":["elbiselerimi giyerim","ellerimi yıkarım","dişlerimi fırçalarım","odamı temizlerim"],"dogru":0,"arapca":"أَلْبَسُ مَلابِسي"},
-  {"id":6,"tip":"fiil","zorluk":1,"soru":"«أَرْجِعُ إِلى البَيْتِ» ne demek?","secenekler":["eve dönerim","okula giderim","evden çıkarım","eve girerim"],"dogru":0,"arapca":"أَرْجِعُ إِلى البَيْتِ"},
-  {"id":7,"tip":"fiil","zorluk":1,"soru":"«أُساعِدُ أُمّي» ne demek?","secenekler":["anneme yardım ederim","annemi severim","annemi beklerim","anneme sorarım"],"dogru":0,"arapca":"أُساعِدُ أُمّي"},
-  {"id":8,"tip":"fiil","zorluk":1,"soru":"«أَدْرُسُ دُروسي» ne demek?","secenekler":["derslerimi çalışırım","derse giderim","ders anlatırım","dersi dinlerim"],"dogru":0,"arapca":"أَدْرُسُ دُروسي"},
-  {"id":9,"tip":"fiil","zorluk":2,"soru":"«Dişlerimi temizlerim» cümlesinin Arapçası hangisidir?","secenekler":["أُنَظِّفُ أَسْناني","أَغْسِلُ يَدَيَّ","أَلْبَسُ مَلابِسي","أَتَناوَلُ الفَطورَ"],"dogru":0,"arSecenek":true},
-  {"id":10,"tip":"fiil","zorluk":2,"soru":"«Geceleyin uyurum» cümlesinin Arapçası hangisidir?","secenekler":["أَنامُ لَيْلًا","أَسْتَيْقِظُ صَباحًا","أَرْجِعُ ظُهْرًا","أَدْرُسُ مَساءً"],"dogru":0,"arSecenek":true},
-  {"id":11,"tip":"fiil","zorluk":2,"soru":"«أَغْسِلُ يَدَيَّ قَبْلَ الطَّعامِ» ne demek?","secenekler":["Yemekten önce ellerimi yıkarım","Yemekten sonra ellerimi yıkarım","Yemekten önce dua ederim","Yemekten sonra dişlerimi fırçalarım"],"dogru":0,"arapca":"أَغْسِلُ يَدَيَّ قَبْلَ الطَّعامِ"},
-  {"id":12,"tip":"fiil","zorluk":2,"soru":"«مُبَكِّرًا» ne demek?","secenekler":["erken","geç","yavaş","hızlı"],"dogru":0,"arapca":"مُبَكِّرًا"},
-  {"id":13,"tip":"cumle","bicim":"surukle","zorluk":2,"soru":"Kelimeleri sırala: «Sabah erken uyanırım.»","parcalar":["أَسْتَيْقِظُ","في","الصَّباحِ","مُبَكِّرًا"]},
-  {"id":14,"tip":"cumle","bicim":"surukle","zorluk":2,"soru":"Kelimeleri sırala: «Ailemle kahvaltı yaparım.»","parcalar":["أَتَناوَلُ","الفَطورَ","مَعَ","عائِلَتي"]},
-  {"id":15,"tip":"cumle","bicim":"surukle","zorluk":2,"soru":"Kelimeleri sırala: «Öğleyin eve dönerim.»","parcalar":["أَرْجِعُ","إِلى","البَيْتِ","ظُهْرًا"]},
-  {"id":16,"tip":"cumle","bicim":"surukle","zorluk":3,"soru":"Kelimeleri sırala: «Abdest alırım, sonra sabah namazını kılarım.»","parcalar":["أَتَوَضَّأُ","ثُمَّ","أُصَلّي","الفَجْرَ"]},
-  {"id":17,"tip":"anlam","bicim":"eslestir","zorluk":2,"soru":"Fiilleri Türkçe anlamlarıyla eşleştir.","ciftler":[["أَسْتَيْقِظُ","uyanırım"],["أَنامُ","uyurum"],["أَلْبَسُ","giyerim"],["أُساعِدُ","yardım ederim"]]},
-  {"id":18,"tip":"anlam","bicim":"eslestir","zorluk":2,"soru":"Fiilleri Türkçe anlamlarıyla eşleştir.","ciftler":[["أَتَوَضَّأُ","abdest alırım"],["أُصَلّي","namaz kılarım"],["أَدْرُسُ","ders çalışırım"],["أَذْهَبُ","giderim"]]},
-  {"id":19,"tip":"anlam","bicim":"eslestir","zorluk":3,"soru":"Zaman zarflarını eşleştir.","ciftler":[["الصَّباح","sabah"],["الظُّهْر","öğle"],["المَساء","akşam"],["اللَّيْل","gece"]]},
-  {"id":20,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"«ev» kelimesini harflere basarak yaz.","cevapYazi":"بيت","tuslar":["ب","ي","ت","ن","ث","م","ل","ر","س","د"]}
+  {"id":1,"tip":"fiil","zorluk":1,"soru":"مَا مَعْنَى «أَسْتَيْقِظُ»؟","secenekler":["uyanırım","uyurum","yıkanırım","giyerim"],"dogru":0,"arapca":"أَسْتَيْقِظُ"},
+  {"id":2,"tip":"fiil","zorluk":1,"soru":"مَا مَعْنَى «أَتَوَضَّأُ»؟","secenekler":["abdest alırım","namaz kılarım","uyanırım","yemek yerim"],"dogru":0,"arapca":"أَتَوَضَّأُ"},
+  {"id":3,"tip":"fiil","zorluk":1,"soru":"مَا مَعْنَى «أُصَلّي»؟","secenekler":["namaz kılarım","ders çalışırım","koşarım","dönerim"],"dogru":0,"arapca":"أُصَلّي"},
+  {"id":4,"tip":"fiil","zorluk":1,"soru":"مَا مَعْنَى «أَتَناوَلُ الفَطورَ»؟","secenekler":["kahvaltı yaparım","akşam yemeği yerim","süt içerim","uyurum"],"dogru":0,"arapca":"أَتَناوَلُ الفَطورَ"},
+  {"id":5,"tip":"fiil","zorluk":1,"soru":"مَا مَعْنَى «أَلْبَسُ مَلابِسي»؟","secenekler":["elbiselerimi giyerim","ellerimi yıkarım","dişlerimi fırçalarım","odamı temizlerim"],"dogru":0,"arapca":"أَلْبَسُ مَلابِسي"},
+  {"id":6,"tip":"fiil","zorluk":1,"soru":"مَا مَعْنَى «أَرْجِعُ إِلى البَيْتِ»؟","secenekler":["eve dönerim","okula giderim","evden çıkarım","eve girerim"],"dogru":0,"arapca":"أَرْجِعُ إِلى البَيْتِ"},
+  {"id":7,"tip":"fiil","zorluk":1,"soru":"مَا مَعْنَى «أُساعِدُ أُمّي»؟","secenekler":["anneme yardım ederim","annemi severim","annemi beklerim","anneme sorarım"],"dogru":0,"arapca":"أُساعِدُ أُمّي"},
+  {"id":8,"tip":"fiil","zorluk":1,"soru":"مَا مَعْنَى «أَدْرُسُ دُروسي»؟","secenekler":["derslerimi çalışırım","derse giderim","ders anlatırım","dersi dinlerim"],"dogru":0,"arapca":"أَدْرُسُ دُروسي"},
+  {"id":9,"tip":"fiil","zorluk":2,"soru":"مَا تَرْجَمَةُ «Dişlerimi temizlerim» بِالعَرَبِيَّةِ؟","secenekler":["أُنَظِّفُ أَسْناني","أَغْسِلُ يَدَيَّ","أَلْبَسُ مَلابِسي","أَتَناوَلُ الفَطورَ"],"dogru":0,"arSecenek":true},
+  {"id":10,"tip":"fiil","zorluk":2,"soru":"مَا تَرْجَمَةُ «Geceleyin uyurum» بِالعَرَبِيَّةِ؟","secenekler":["أَنامُ لَيْلًا","أَسْتَيْقِظُ صَباحًا","أَرْجِعُ ظُهْرًا","أَدْرُسُ مَساءً"],"dogru":0,"arSecenek":true},
+  {"id":11,"tip":"fiil","zorluk":2,"soru":"مَا مَعْنَى «أَغْسِلُ يَدَيَّ قَبْلَ الطَّعامِ»؟","secenekler":["Yemekten önce ellerimi yıkarım","Yemekten sonra ellerimi yıkarım","Yemekten önce dua ederim","Yemekten sonra dişlerimi fırçalarım"],"dogru":0,"arapca":"أَغْسِلُ يَدَيَّ قَبْلَ الطَّعامِ"},
+  {"id":12,"tip":"fiil","zorluk":2,"soru":"مَا مَعْنَى «مُبَكِّرًا»؟","secenekler":["erken","geç","yavaş","hızlı"],"dogru":0,"arapca":"مُبَكِّرًا"},
+  {"id":13,"tip":"cumle","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ الكَلِمَاتِ: «Sabah erken uyanırım.»","parcalar":["أَسْتَيْقِظُ","في","الصَّباحِ","مُبَكِّرًا"]},
+  {"id":14,"tip":"cumle","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ الكَلِمَاتِ: «Ailemle kahvaltı yaparım.»","parcalar":["أَتَناوَلُ","الفَطورَ","مَعَ","عائِلَتي"]},
+  {"id":15,"tip":"cumle","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ الكَلِمَاتِ: «Öğleyin eve dönerim.»","parcalar":["أَرْجِعُ","إِلى","البَيْتِ","ظُهْرًا"]},
+  {"id":16,"tip":"cumle","bicim":"surukle","zorluk":3,"soru":"رَتِّبِ الكَلِمَاتِ: «Abdest alırım, sonra sabah namazını kılarım.»","parcalar":["أَتَوَضَّأُ","ثُمَّ","أُصَلّي","الفَجْرَ"]},
+  {"id":17,"tip":"anlam","bicim":"eslestir","zorluk":2,"soru":"صِلِ الأَفْعَالَ بِمَعَانِيهَا.","ciftler":[["أَسْتَيْقِظُ","uyanırım"],["أَنامُ","uyurum"],["أَلْبَسُ","giyerim"],["أُساعِدُ","yardım ederim"]]},
+  {"id":18,"tip":"anlam","bicim":"eslestir","zorluk":2,"soru":"صِلِ الأَفْعَالَ بِمَعَانِيهَا.","ciftler":[["أَتَوَضَّأُ","abdest alırım"],["أُصَلّي","namaz kılarım"],["أَدْرُسُ","ders çalışırım"],["أَذْهَبُ","giderim"]]},
+  {"id":19,"tip":"anlam","bicim":"eslestir","zorluk":3,"soru":"صِلْ ظُرُوفَ الزَّمَانِ.","ciftler":[["الصَّباح","sabah"],["الظُّهْر","öğle"],["المَساء","akşam"],["اللَّيْل","gece"]]},
+  {"id":20,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"اكْتُبْ «ev» بِالحُرُوفِ.","cevapYazi":"بيت","tuslar":["ب","ي","ت","ن","ث","م","ل","ر","س","د"]}
 ];
 
 /* --- 2) Yiyecek & içecekler (id 101-199) --- */
 const S_YEMEK = [
-  {"id":101,"tip":"yemek","zorluk":1,"soru":"«الحَليب» ne demek?","secenekler":["süt","peynir","bal","su"],"dogru":0,"arapca":"الحَليب"},
-  {"id":102,"tip":"yemek","zorluk":1,"soru":"«الجُبْن» ne demek?","secenekler":["peynir","zeytin","et","ekmek"],"dogru":0,"arapca":"الجُبْن"},
-  {"id":103,"tip":"yemek","zorluk":1,"soru":"«الزَّيْتون» ne demek?","secenekler":["zeytin","üzüm","elma","hurma"],"dogru":0,"arapca":"الزَّيْتون"},
-  {"id":104,"tip":"yemek","zorluk":1,"soru":"«العَسَل» ne demek?","secenekler":["bal","tereyağı","reçel","şeker"],"dogru":0,"arapca":"العَسَل"},
-  {"id":105,"tip":"yemek","zorluk":1,"soru":"«الزُّبْدَة» ne demek?","secenekler":["tereyağı","bal","peynir","yoğurt"],"dogru":0,"arapca":"الزُّبْدَة"},
-  {"id":106,"tip":"yemek","zorluk":1,"soru":"«السَّمَك» ne demek?","secenekler":["balık","tavuk","et","pirinç"],"dogru":0,"arapca":"السَّمَك"},
-  {"id":107,"tip":"yemek","zorluk":1,"soru":"«الدَّجاج» ne demek?","secenekler":["tavuk","balık","et","yumurta"],"dogru":0,"arapca":"الدَّجاج"},
-  {"id":108,"tip":"yemek","zorluk":1,"soru":"«الأُرْز» ne demek?","secenekler":["pirinç","makarna","ekmek","çorba"],"dogru":0,"arapca":"الأُرْز"},
-  {"id":109,"tip":"yemek","zorluk":1,"soru":"«العَصير» ne demek?","secenekler":["meyve suyu","çay","kahve","süt"],"dogru":0,"arapca":"العَصير"},
-  {"id":110,"tip":"yemek","zorluk":1,"soru":"«الخُبْز» ne demek?","secenekler":["ekmek","peynir","pirinç","tuz"],"dogru":0,"arapca":"الخُبْز"},
-  {"id":111,"tip":"yemek","zorluk":2,"soru":"«الفَطور - الغَداء - العَشاء» sırasıyla ne demek?","secenekler":["kahvaltı - öğle yemeği - akşam yemeği","öğle yemeği - kahvaltı - akşam yemeği","akşam yemeği - kahvaltı - öğle yemeği","kahvaltı - akşam yemeği - öğle yemeği"],"dogru":0},
-  {"id":112,"tip":"yemek","zorluk":2,"soru":"«Kahvaltıda süt içerim» cümlesinin Arapçası hangisidir?","secenekler":["أَشْرَبُ الحَليبَ في الفَطورِ","آكُلُ الجُبْنَ في الفَطورِ","أَشْرَبُ العَصيرَ في العَشاءِ","آكُلُ السَّمَكَ في الغَداءِ"],"dogru":0,"arSecenek":true},
-  {"id":113,"tip":"yemek","bicim":"surukle","zorluk":2,"soru":"Kelimeleri sırala: «Öğle yemeğinde et ve pirinç yerim.»","parcalar":["أَتَناوَلُ","اللَّحْمَ","وَالأُرْزَ","في","الغَداءِ"]},
-  {"id":114,"tip":"yemek","bicim":"surukle","zorluk":2,"soru":"Kelimeleri sırala: «Öğle yemeğinden sonra kahve içerim.»","parcalar":["أَشْرَبُ","القَهْوَةَ","بَعْدَ","الغَداءِ"]},
-  {"id":115,"tip":"yemek","bicim":"surukle","zorluk":3,"soru":"Kelimeleri sırala: «Kahvaltıda zeytin ve peynir yerim.»","parcalar":["أَتَناوَلُ","الزَّيْتونَ","وَالجُبْنَ","في","الفَطورِ"]},
-  {"id":116,"tip":"yemek","bicim":"eslestir","zorluk":2,"soru":"İçecekleri eşleştir.","ciftler":[["الحَليب","süt"],["القَهْوَة","kahve"],["الشّاي","çay"],["العَصير","meyve suyu"]]},
-  {"id":117,"tip":"yemek","bicim":"eslestir","zorluk":2,"soru":"Yiyecekleri eşleştir.","ciftler":[["السَّمَك","balık"],["الدَّجاج","tavuk"],["اللَّحْم","et"],["الخُبْز","ekmek"]]},
-  {"id":118,"tip":"yemek","bicim":"eslestir","zorluk":3,"soru":"Kahvaltılıkları eşleştir.","ciftler":[["الزَّيْتون","zeytin"],["الجُبْن","peynir"],["العَسَل","bal"],["الزُّبْدَة","tereyağı"]]},
-  {"id":119,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"«ekmek» kelimesini harflere basarak yaz.","cevapYazi":"خبز","tuslar":["خ","ب","ز","ح","ج","ر","د","ن","ت","م"]},
-  {"id":120,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"«balık» kelimesini harflere basarak yaz.","cevapYazi":"سمك","tuslar":["س","م","ك","ش","ن","ل","ب","ت","ح","ر"]}
+  {"id":101,"tip":"yemek","zorluk":1,"soru":"مَا مَعْنَى «الحَليب»؟","secenekler":["süt","peynir","bal","su"],"dogru":0,"arapca":"الحَليب"},
+  {"id":102,"tip":"yemek","zorluk":1,"soru":"مَا مَعْنَى «الجُبْن»؟","secenekler":["peynir","zeytin","et","ekmek"],"dogru":0,"arapca":"الجُبْن"},
+  {"id":103,"tip":"yemek","zorluk":1,"soru":"مَا مَعْنَى «الزَّيْتون»؟","secenekler":["zeytin","üzüm","elma","hurma"],"dogru":0,"arapca":"الزَّيْتون"},
+  {"id":104,"tip":"yemek","zorluk":1,"soru":"مَا مَعْنَى «العَسَل»؟","secenekler":["bal","tereyağı","reçel","şeker"],"dogru":0,"arapca":"العَسَل"},
+  {"id":105,"tip":"yemek","zorluk":1,"soru":"مَا مَعْنَى «الزُّبْدَة»؟","secenekler":["tereyağı","bal","peynir","yoğurt"],"dogru":0,"arapca":"الزُّبْدَة"},
+  {"id":106,"tip":"yemek","zorluk":1,"soru":"مَا مَعْنَى «السَّمَك»؟","secenekler":["balık","tavuk","et","pirinç"],"dogru":0,"arapca":"السَّمَك"},
+  {"id":107,"tip":"yemek","zorluk":1,"soru":"مَا مَعْنَى «الدَّجاج»؟","secenekler":["tavuk","balık","et","yumurta"],"dogru":0,"arapca":"الدَّجاج"},
+  {"id":108,"tip":"yemek","zorluk":1,"soru":"مَا مَعْنَى «الأُرْز»؟","secenekler":["pirinç","makarna","ekmek","çorba"],"dogru":0,"arapca":"الأُرْز"},
+  {"id":109,"tip":"yemek","zorluk":1,"soru":"مَا مَعْنَى «العَصير»؟","secenekler":["meyve suyu","çay","kahve","süt"],"dogru":0,"arapca":"العَصير"},
+  {"id":110,"tip":"yemek","zorluk":1,"soru":"مَا مَعْنَى «الخُبْز»؟","secenekler":["ekmek","peynir","pirinç","tuz"],"dogru":0,"arapca":"الخُبْز"},
+  {"id":111,"tip":"yemek","zorluk":2,"soru":"مَا مَعْنَى «الفَطور - الغَداء - العَشاء» بِالتَّرْتِيبِ؟","secenekler":["kahvaltı - öğle yemeği - akşam yemeği","öğle yemeği - kahvaltı - akşam yemeği","akşam yemeği - kahvaltı - öğle yemeği","kahvaltı - akşam yemeği - öğle yemeği"],"dogru":0},
+  {"id":112,"tip":"yemek","zorluk":2,"soru":"مَا تَرْجَمَةُ «Kahvaltıda süt içerim» بِالعَرَبِيَّةِ؟","secenekler":["أَشْرَبُ الحَليبَ في الفَطورِ","آكُلُ الجُبْنَ في الفَطورِ","أَشْرَبُ العَصيرَ في العَشاءِ","آكُلُ السَّمَكَ في الغَداءِ"],"dogru":0,"arSecenek":true},
+  {"id":113,"tip":"yemek","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ الكَلِمَاتِ: «Öğle yemeğinde et ve pirinç yerim.»","parcalar":["أَتَناوَلُ","اللَّحْمَ","وَالأُرْزَ","في","الغَداءِ"]},
+  {"id":114,"tip":"yemek","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ الكَلِمَاتِ: «Öğle yemeğinden sonra kahve içerim.»","parcalar":["أَشْرَبُ","القَهْوَةَ","بَعْدَ","الغَداءِ"]},
+  {"id":115,"tip":"yemek","bicim":"surukle","zorluk":3,"soru":"رَتِّبِ الكَلِمَاتِ: «Kahvaltıda zeytin ve peynir yerim.»","parcalar":["أَتَناوَلُ","الزَّيْتونَ","وَالجُبْنَ","في","الفَطورِ"]},
+  {"id":116,"tip":"yemek","bicim":"eslestir","zorluk":2,"soru":"صِلِ المَشْرُوبَاتِ.","ciftler":[["الحَليب","süt"],["القَهْوَة","kahve"],["الشّاي","çay"],["العَصير","meyve suyu"]]},
+  {"id":117,"tip":"yemek","bicim":"eslestir","zorluk":2,"soru":"صِلِ الأَطْعِمَةَ.","ciftler":[["السَّمَك","balık"],["الدَّجاج","tavuk"],["اللَّحْم","et"],["الخُبْز","ekmek"]]},
+  {"id":118,"tip":"yemek","bicim":"eslestir","zorluk":3,"soru":"صِلْ أَطْعِمَةَ الفَطُورِ.","ciftler":[["الزَّيْتون","zeytin"],["الجُبْن","peynir"],["العَسَل","bal"],["الزُّبْدَة","tereyağı"]]},
+  {"id":119,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"اكْتُبْ «ekmek» بِالحُرُوفِ.","cevapYazi":"خبز","tuslar":["خ","ب","ز","ح","ج","ر","د","ن","ت","م"]},
+  {"id":120,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"اكْتُبْ «balık» بِالحُرُوفِ.","cevapYazi":"سمك","tuslar":["س","م","ك","ش","ن","ل","ب","ت","ح","ر"]}
 ];
 
 /* --- 3) Saatler (id 201-299) --- */
 const S_SAAT = [
-  {"id":201,"tip":"saat","zorluk":1,"soru":"«السّاعَةُ الثّالِثَةُ» saat kaçtır?","secenekler":["3","2","4","8"],"dogru":0,"arapca":"السّاعَةُ الثّالِثَةُ"},
-  {"id":202,"tip":"saat","zorluk":1,"soru":"«السّاعَةُ السّابِعَةُ» saat kaçtır?","secenekler":["7","6","8","9"],"dogru":0,"arapca":"السّاعَةُ السّابِعَةُ"},
-  {"id":203,"tip":"saat","zorluk":1,"soru":"«السّاعَةُ العاشِرَةُ» saat kaçtır?","secenekler":["10","9","11","12"],"dogru":0,"arapca":"السّاعَةُ العاشِرَةُ"},
-  {"id":204,"tip":"saat","zorluk":2,"soru":"«السّاعَةُ الحادِيَةَ عَشْرَةَ» saat kaçtır?","secenekler":["11","10","12","1"],"dogru":0,"arapca":"السّاعَةُ الحادِيَةَ عَشْرَةَ"},
-  {"id":205,"tip":"saat","zorluk":2,"soru":"Saat 1 Arapça nasıl söylenir?","secenekler":["السّاعَةُ الواحِدَةُ","السّاعَةُ الثّانِيَةُ","السّاعَةُ الحادِيَةَ عَشْرَةَ","السّاعَةُ الثّامِنَةُ"],"dogru":0,"arSecenek":true},
-  {"id":206,"tip":"saat","zorluk":2,"soru":"Saat 12 Arapça nasıl söylenir?","secenekler":["السّاعَةُ الثّانِيَةَ عَشْرَةَ","السّاعَةُ الثّانِيَةُ","السّاعَةُ العاشِرَةُ","السّاعَةُ التّاسِعَةُ"],"dogru":0,"arSecenek":true},
-  {"id":207,"tip":"saat","zorluk":2,"soru":"«السّاعَةُ السّادِسَةُ» saat kaçtır?","secenekler":["6","5","7","9"],"dogru":0,"arapca":"السّاعَةُ السّادِسَةُ"},
-  {"id":208,"tip":"saat","bicim":"surukle","zorluk":2,"soru":"Saatleri 1'den 4'e doğru sırala (sağdan sola).","parcalar":["الواحِدَة","الثّانِيَة","الثّالِثَة","الرّابِعَة"]},
-  {"id":209,"tip":"saat","bicim":"surukle","zorluk":2,"soru":"Saatleri 5'ten 8'e doğru sırala (sağdan sola).","parcalar":["الخامِسَة","السّادِسَة","السّابِعَة","الثّامِنَة"]},
-  {"id":210,"tip":"saat","bicim":"surukle","zorluk":3,"soru":"Kelimeleri sırala: «Saat yedide okula giderim.»","parcalar":["أَذْهَبُ","إِلى","المَدْرَسَةِ","في","السّاعَةِ","السّابِعَةِ"]},
-  {"id":211,"tip":"saat","bicim":"eslestir","zorluk":2,"soru":"Saatleri rakamlarla eşleştir.","ciftler":[["الثّانِيَة","2"],["الرّابِعَة","4"],["السّادِسَة","6"],["الثّامِنَة","8"]]},
-  {"id":212,"tip":"saat","bicim":"eslestir","zorluk":3,"soru":"Saatleri rakamlarla eşleştir.","ciftler":[["الخامِسَة","5"],["التّاسِعَة","9"],["العاشِرَة","10"],["الثّانِيَة عَشْرَة","12"]]},
-  {"id":213,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"«saat» kelimesini harflere basarak yaz.","cevapYazi":"ساعة","tuslar":["س","ا","ع","ة","ص","ح","ه","ت","ن","م"]}
+  {"id":201,"tip":"saat","zorluk":1,"soru":"كَمِ السَّاعَةُ؟ «السّاعَةُ الثّالِثَةُ»","secenekler":["3","2","4","8"],"dogru":0,"arapca":"السّاعَةُ الثّالِثَةُ"},
+  {"id":202,"tip":"saat","zorluk":1,"soru":"كَمِ السَّاعَةُ؟ «السّاعَةُ السّابِعَةُ»","secenekler":["7","6","8","9"],"dogru":0,"arapca":"السّاعَةُ السّابِعَةُ"},
+  {"id":203,"tip":"saat","zorluk":1,"soru":"كَمِ السَّاعَةُ؟ «السّاعَةُ العاشِرَةُ»","secenekler":["10","9","11","12"],"dogru":0,"arapca":"السّاعَةُ العاشِرَةُ"},
+  {"id":204,"tip":"saat","zorluk":2,"soru":"كَمِ السَّاعَةُ؟ «السّاعَةُ الحادِيَةَ عَشْرَةَ»","secenekler":["11","10","12","1"],"dogru":0,"arapca":"السّاعَةُ الحادِيَةَ عَشْرَةَ"},
+  {"id":205,"tip":"saat","zorluk":2,"soru":"كَيْفَ نَقُولُ السَّاعَةَ 1 بِالعَرَبِيَّةِ؟","secenekler":["السّاعَةُ الواحِدَةُ","السّاعَةُ الثّانِيَةُ","السّاعَةُ الحادِيَةَ عَشْرَةَ","السّاعَةُ الثّامِنَةُ"],"dogru":0,"arSecenek":true},
+  {"id":206,"tip":"saat","zorluk":2,"soru":"كَيْفَ نَقُولُ السَّاعَةَ 12 بِالعَرَبِيَّةِ؟","secenekler":["السّاعَةُ الثّانِيَةَ عَشْرَةَ","السّاعَةُ الثّانِيَةُ","السّاعَةُ العاشِرَةُ","السّاعَةُ التّاسِعَةُ"],"dogru":0,"arSecenek":true},
+  {"id":207,"tip":"saat","zorluk":2,"soru":"كَمِ السَّاعَةُ؟ «السّاعَةُ السّادِسَةُ»","secenekler":["6","5","7","9"],"dogru":0,"arapca":"السّاعَةُ السّادِسَةُ"},
+  {"id":208,"tip":"saat","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ السَّاعَاتِ مِنْ 1 إِلَى 4 (مِنَ اليَمِينِ).","parcalar":["الواحِدَة","الثّانِيَة","الثّالِثَة","الرّابِعَة"]},
+  {"id":209,"tip":"saat","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ السَّاعَاتِ مِنْ 5 إِلَى 8 (مِنَ اليَمِينِ).","parcalar":["الخامِسَة","السّادِسَة","السّابِعَة","الثّامِنَة"]},
+  {"id":210,"tip":"saat","bicim":"surukle","zorluk":3,"soru":"رَتِّبِ الكَلِمَاتِ: «Saat yedide okula giderim.»","parcalar":["أَذْهَبُ","إِلى","المَدْرَسَةِ","في","السّاعَةِ","السّابِعَةِ"]},
+  {"id":211,"tip":"saat","bicim":"eslestir","zorluk":2,"soru":"صِلِ السَّاعَاتِ بِالأَرْقَامِ.","ciftler":[["الثّانِيَة","2"],["الرّابِعَة","4"],["السّادِسَة","6"],["الثّامِنَة","8"]]},
+  {"id":212,"tip":"saat","bicim":"eslestir","zorluk":3,"soru":"صِلِ السَّاعَاتِ بِالأَرْقَامِ.","ciftler":[["الخامِسَة","5"],["التّاسِعَة","9"],["العاشِرَة","10"],["الثّانِيَة عَشْرَة","12"]]},
+  {"id":213,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"اكْتُبْ «saat» بِالحُرُوفِ.","cevapYazi":"ساعة","tuslar":["س","ا","ع","ة","ص","ح","ه","ت","ن","م"]}
 ];
 
 /* --- 4) Haftanın günleri (id 301-399) --- */
 const S_GUNLER = [
-  {"id":301,"tip":"gun","zorluk":1,"soru":"«يَوْمُ الجُمُعَةِ» hangi gündür?","secenekler":["Cuma","Perşembe","Cumartesi","Pazar"],"dogru":0,"arapca":"يَوْمُ الجُمُعَةِ"},
-  {"id":302,"tip":"gun","zorluk":1,"soru":"«يَوْمُ السَّبْتِ» hangi gündür?","secenekler":["Cumartesi","Cuma","Pazar","Pazartesi"],"dogru":0,"arapca":"يَوْمُ السَّبْتِ"},
-  {"id":303,"tip":"gun","zorluk":1,"soru":"«يَوْمُ الأَحَدِ» hangi gündür?","secenekler":["Pazar","Cumartesi","Pazartesi","Salı"],"dogru":0,"arapca":"يَوْمُ الأَحَدِ"},
-  {"id":304,"tip":"gun","zorluk":1,"soru":"«يَوْمُ الاِثْنَيْنِ» hangi gündür?","secenekler":["Pazartesi","Salı","Çarşamba","Pazar"],"dogru":0,"arapca":"يَوْمُ الاِثْنَيْنِ"},
-  {"id":305,"tip":"gun","zorluk":1,"soru":"«يَوْمُ الخَميسِ» hangi gündür?","secenekler":["Perşembe","Çarşamba","Cuma","Salı"],"dogru":0,"arapca":"يَوْمُ الخَميسِ"},
-  {"id":306,"tip":"gun","zorluk":2,"soru":"«Çarşamba» Arapça nasıl söylenir?","secenekler":["الأَرْبِعاء","الثُّلاثاء","الخَميس","الاِثْنَيْن"],"dogru":0,"arSecenek":true},
-  {"id":307,"tip":"gun","zorluk":2,"soru":"«يَوْمُ الثُّلاثاءِ» hangi gündür?","secenekler":["Salı","Çarşamba","Pazartesi","Perşembe"],"dogru":0,"arapca":"يَوْمُ الثُّلاثاءِ"},
-  {"id":308,"tip":"gun","bicim":"surukle","zorluk":2,"soru":"Kelimeleri sırala: «Pazar günü Cumartesi gününden sonra gelir.»","parcalar":["يَوْمُ","الأَحَدِ","يَأْتي","بَعْدَ","يَوْمِ","السَّبْتِ"]},
-  {"id":309,"tip":"gun","bicim":"surukle","zorluk":2,"soru":"Günleri sırala: Pazartesi → Perşembe (sağdan sola).","parcalar":["الاِثْنَيْن","الثُّلاثاء","الأَرْبِعاء","الخَميس"]},
-  {"id":310,"tip":"gun","bicim":"eslestir","zorluk":2,"soru":"Günleri eşleştir.","ciftler":[["الاِثْنَيْن","Pazartesi"],["الثُّلاثاء","Salı"],["الأَرْبِعاء","Çarşamba"],["الخَميس","Perşembe"]]},
-  {"id":311,"tip":"gun","bicim":"eslestir","zorluk":2,"soru":"Günleri eşleştir.","ciftler":[["الجُمُعَة","Cuma"],["السَّبْت","Cumartesi"],["الأَحَد","Pazar"],["الأُسْبوع","hafta"]]},
-  {"id":312,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"«gün» kelimesini harflere basarak yaz.","cevapYazi":"يوم","tuslar":["ي","و","م","ن","ب","ت","ل","ر","س","ه"]}
+  {"id":301,"tip":"gun","zorluk":1,"soru":"أَيُّ يَوْمٍ هُوَ «يَوْمُ الجُمُعَةِ»؟","secenekler":["Cuma","Perşembe","Cumartesi","Pazar"],"dogru":0,"arapca":"يَوْمُ الجُمُعَةِ"},
+  {"id":302,"tip":"gun","zorluk":1,"soru":"أَيُّ يَوْمٍ هُوَ «يَوْمُ السَّبْتِ»؟","secenekler":["Cumartesi","Cuma","Pazar","Pazartesi"],"dogru":0,"arapca":"يَوْمُ السَّبْتِ"},
+  {"id":303,"tip":"gun","zorluk":1,"soru":"أَيُّ يَوْمٍ هُوَ «يَوْمُ الأَحَدِ»؟","secenekler":["Pazar","Cumartesi","Pazartesi","Salı"],"dogru":0,"arapca":"يَوْمُ الأَحَدِ"},
+  {"id":304,"tip":"gun","zorluk":1,"soru":"أَيُّ يَوْمٍ هُوَ «يَوْمُ الاِثْنَيْنِ»؟","secenekler":["Pazartesi","Salı","Çarşamba","Pazar"],"dogru":0,"arapca":"يَوْمُ الاِثْنَيْنِ"},
+  {"id":305,"tip":"gun","zorluk":1,"soru":"أَيُّ يَوْمٍ هُوَ «يَوْمُ الخَميسِ»؟","secenekler":["Perşembe","Çarşamba","Cuma","Salı"],"dogru":0,"arapca":"يَوْمُ الخَميسِ"},
+  {"id":306,"tip":"gun","zorluk":2,"soru":"كَيْفَ نَقُولُ «Çarşamba» بِالعَرَبِيَّةِ؟","secenekler":["الأَرْبِعاء","الثُّلاثاء","الخَميس","الاِثْنَيْن"],"dogru":0,"arSecenek":true},
+  {"id":307,"tip":"gun","zorluk":2,"soru":"أَيُّ يَوْمٍ هُوَ «يَوْمُ الثُّلاثاءِ»؟","secenekler":["Salı","Çarşamba","Pazartesi","Perşembe"],"dogru":0,"arapca":"يَوْمُ الثُّلاثاءِ"},
+  {"id":308,"tip":"gun","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ الكَلِمَاتِ: «Pazar günü Cumartesi gününden sonra gelir.»","parcalar":["يَوْمُ","الأَحَدِ","يَأْتي","بَعْدَ","يَوْمِ","السَّبْتِ"]},
+  {"id":309,"tip":"gun","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ الأَيَّامَ: Pazartesi → Perşembe (مِنَ اليَمِينِ).","parcalar":["الاِثْنَيْن","الثُّلاثاء","الأَرْبِعاء","الخَميس"]},
+  {"id":310,"tip":"gun","bicim":"eslestir","zorluk":2,"soru":"صِلِ الأَيَّامَ.","ciftler":[["الاِثْنَيْن","Pazartesi"],["الثُّلاثاء","Salı"],["الأَرْبِعاء","Çarşamba"],["الخَميس","Perşembe"]]},
+  {"id":311,"tip":"gun","bicim":"eslestir","zorluk":2,"soru":"صِلِ الأَيَّامَ.","ciftler":[["الجُمُعَة","Cuma"],["السَّبْت","Cumartesi"],["الأَحَد","Pazar"],["الأُسْبوع","hafta"]]},
+  {"id":312,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"اكْتُبْ «gün» بِالحُرُوفِ.","cevapYazi":"يوم","tuslar":["ي","و","م","ن","ب","ت","ل","ر","س","ه"]}
 ];
 
 /* --- 5) Namaz vakitleri (id 401-499) --- */
 const S_NAMAZ = [
-  {"id":401,"tip":"namaz","zorluk":1,"soru":"«الفَجْر» hangi namaz vaktidir?","secenekler":["sabah","öğle","ikindi","akşam"],"dogru":0,"arapca":"الفَجْر"},
-  {"id":402,"tip":"namaz","zorluk":1,"soru":"«الظُّهْر» hangi namaz vaktidir?","secenekler":["öğle","ikindi","akşam","yatsı"],"dogru":0,"arapca":"الظُّهْر"},
-  {"id":403,"tip":"namaz","zorluk":1,"soru":"«العَصْر» hangi namaz vaktidir?","secenekler":["ikindi","öğle","akşam","sabah"],"dogru":0,"arapca":"العَصْر"},
-  {"id":404,"tip":"namaz","zorluk":1,"soru":"«المَغْرِب» hangi namaz vaktidir?","secenekler":["akşam","yatsı","ikindi","sabah"],"dogru":0,"arapca":"المَغْرِب"},
-  {"id":405,"tip":"namaz","zorluk":1,"soru":"«العِشاء» hangi namaz vaktidir?","secenekler":["yatsı","akşam","sabah","öğle"],"dogru":0,"arapca":"العِشاء"},
-  {"id":406,"tip":"namaz","zorluk":2,"soru":"«شُروقُ الشَّمْسِ» ne demek?","secenekler":["güneşin doğuşu","güneşin batışı","gece yarısı","öğle vakti"],"dogru":0,"arapca":"شُروقُ الشَّمْسِ"},
-  {"id":407,"tip":"namaz","bicim":"surukle","zorluk":2,"soru":"Kelimeleri sırala: «Güneş doğmadan önce sabah namazı kılarım.»","parcalar":["أُصَلّي","الفَجْرَ","قَبْلَ","شُروقِ","الشَّمْسِ"]},
-  {"id":408,"tip":"namaz","bicim":"surukle","zorluk":2,"soru":"Kelimeleri sırala: «Uyumadan önce yatsı namazı kılarım.»","parcalar":["أُصَلّي","العِشاءَ","قَبْلَ","النَّوْمِ"]},
-  {"id":409,"tip":"namaz","bicim":"surukle","zorluk":3,"soru":"Kelimeleri sırala: «Muhammed öğle namazını cemaatle kılar.»","parcalar":["يُصَلّي","مُحَمَّدٌ","الظُّهْرَ","مَعَ","الجَماعَةِ"]},
-  {"id":410,"tip":"namaz","bicim":"eslestir","zorluk":2,"soru":"Namaz vakitlerini eşleştir.","ciftler":[["الفَجْر","sabah"],["الظُّهْر","öğle"],["العَصْر","ikindi"],["المَغْرِب","akşam"]]},
-  {"id":411,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"«mescid / cami» kelimesini harflere basarak yaz.","cevapYazi":"مسجد","tuslar":["م","س","ج","د","ح","خ","ش","ن","ت","ر"]}
+  {"id":401,"tip":"namaz","zorluk":1,"soru":"أَيُّ صَلَاةٍ هِيَ «الفَجْر»؟","secenekler":["sabah","öğle","ikindi","akşam"],"dogru":0,"arapca":"الفَجْر"},
+  {"id":402,"tip":"namaz","zorluk":1,"soru":"أَيُّ صَلَاةٍ هِيَ «الظُّهْر»؟","secenekler":["öğle","ikindi","akşam","yatsı"],"dogru":0,"arapca":"الظُّهْر"},
+  {"id":403,"tip":"namaz","zorluk":1,"soru":"أَيُّ صَلَاةٍ هِيَ «العَصْر»؟","secenekler":["ikindi","öğle","akşam","sabah"],"dogru":0,"arapca":"العَصْر"},
+  {"id":404,"tip":"namaz","zorluk":1,"soru":"أَيُّ صَلَاةٍ هِيَ «المَغْرِب»؟","secenekler":["akşam","yatsı","ikindi","sabah"],"dogru":0,"arapca":"المَغْرِب"},
+  {"id":405,"tip":"namaz","zorluk":1,"soru":"أَيُّ صَلَاةٍ هِيَ «العِشاء»؟","secenekler":["yatsı","akşam","sabah","öğle"],"dogru":0,"arapca":"العِشاء"},
+  {"id":406,"tip":"namaz","zorluk":2,"soru":"مَا مَعْنَى «شُروقُ الشَّمْسِ»؟","secenekler":["güneşin doğuşu","güneşin batışı","gece yarısı","öğle vakti"],"dogru":0,"arapca":"شُروقُ الشَّمْسِ"},
+  {"id":407,"tip":"namaz","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ الكَلِمَاتِ: «Güneş doğmadan önce sabah namazı kılarım.»","parcalar":["أُصَلّي","الفَجْرَ","قَبْلَ","شُروقِ","الشَّمْسِ"]},
+  {"id":408,"tip":"namaz","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ الكَلِمَاتِ: «Uyumadan önce yatsı namazı kılarım.»","parcalar":["أُصَلّي","العِشاءَ","قَبْلَ","النَّوْمِ"]},
+  {"id":409,"tip":"namaz","bicim":"surukle","zorluk":3,"soru":"رَتِّبِ الكَلِمَاتِ: «Muhammed öğle namazını cemaatle kılar.»","parcalar":["يُصَلّي","مُحَمَّدٌ","الظُّهْرَ","مَعَ","الجَماعَةِ"]},
+  {"id":410,"tip":"namaz","bicim":"eslestir","zorluk":2,"soru":"صِلْ أَوْقَاتَ الصَّلَاةِ.","ciftler":[["الفَجْر","sabah"],["الظُّهْر","öğle"],["العَصْر","ikindi"],["المَغْرِب","akşam"]]},
+  {"id":411,"tip":"kelime","bicim":"yazma","zorluk":3,"soru":"اكْتُبْ «mescid / cami» بِالحُرُوفِ.","cevapYazi":"مسجد","tuslar":["م","س","ج","د","ح","خ","ش","ن","ت","ر"]}
 ];
 
 /* --- 6) Zamir - fiil uyumu (id 501-599) --- */
 const S_ZAMIR = [
-  {"id":501,"tip":"zamir","zorluk":2,"soru":"«هُوَ ... مُبَكِّرًا» boşluğa hangisi gelir?","secenekler":["يَسْتَيْقِظُ","تَسْتَيْقِظُ","أَسْتَيْقِظُ","تَسْتَيْقِظينَ"],"dogru":0,"arSecenek":true},
-  {"id":502,"tip":"zamir","zorluk":2,"soru":"«هِيَ ... الفَجْرَ» boşluğa hangisi gelir?","secenekler":["تُصَلّي","يُصَلّي","أُصَلّي","تُصَلّينَ"],"dogru":0,"arSecenek":true},
-  {"id":503,"tip":"zamir","zorluk":2,"soru":"«أَنْتِ ... إِلى البَيْتِ» boşluğa hangisi gelir?","secenekler":["تَرْجِعينَ","تَرْجِعُ","يَرْجِعُ","أَرْجِعُ"],"dogru":0,"arSecenek":true},
-  {"id":504,"tip":"zamir","zorluk":2,"soru":"«أَنْتَ ... أُمَّكَ» boşluğa hangisi gelir?","secenekler":["تُساعِدُ","تُساعِدينَ","يُساعِدُ","أُساعِدُ"],"dogru":0,"arSecenek":true},
-  {"id":505,"tip":"zamir","zorluk":2,"soru":"«هِيَ ... أَسْنانَها» boşluğa hangisi gelir?","secenekler":["تُنَظِّفُ","يُنَظِّفُ","أُنَظِّفُ","تُنَظِّفينَ"],"dogru":0,"arSecenek":true},
-  {"id":506,"tip":"zamir","zorluk":2,"soru":"«أَنْتِ ... لَيْلًا» boşluğa hangisi gelir?","secenekler":["تَنامينَ","تَنامُ","يَنامُ","أَنامُ"],"dogru":0,"arSecenek":true},
-  {"id":507,"tip":"zamir","zorluk":3,"soru":"«يَتَناوَلُ» fiilinin öznesi hangisidir?","secenekler":["هُوَ","هِيَ","أَنا","أَنْتِ"],"dogru":0,"arSecenek":true},
-  {"id":508,"tip":"zamir","bicim":"eslestir","zorluk":2,"soru":"Zamirleri fiillerle eşleştir (دَرَسَ).","ciftler":[["أَنا","أَدْرُسُ"],["هُوَ","يَدْرُسُ"],["هِيَ","تَدْرُسُ"],["أَنْتِ","تَدْرُسينَ"]]},
-  {"id":509,"tip":"zamir","bicim":"eslestir","zorluk":3,"soru":"Zamirleri fiillerle eşleştir (نامَ).","ciftler":[["أَنا","أَنامُ"],["هُوَ","يَنامُ"],["هِيَ","تَنامُ"],["أَنْتِ","تَنامينَ"]]},
-  {"id":510,"tip":"zamir","bicim":"surukle","zorluk":2,"soru":"Kelimeleri sırala: «O (kız) ailesiyle kahvaltı yapar.»","parcalar":["هِيَ","تَتَناوَلُ","الفَطورَ","مَعَ","أُسْرَتِها"]},
-  {"id":511,"tip":"zamir","bicim":"surukle","zorluk":3,"soru":"Kelimeleri sırala: «O (erkek) sabahleyin dişlerini temizler.»","parcalar":["هُوَ","يُنَظِّفُ","أَسْنانَهُ","في","الصَّباحِ"]}
+  {"id":501,"tip":"zamir","zorluk":2,"soru":"مَا الكَلِمَةُ المُنَاسِبَةُ لِلْفَرَاغِ؟ «هُوَ ... مُبَكِّرًا»","secenekler":["يَسْتَيْقِظُ","تَسْتَيْقِظُ","أَسْتَيْقِظُ","تَسْتَيْقِظينَ"],"dogru":0,"arSecenek":true},
+  {"id":502,"tip":"zamir","zorluk":2,"soru":"مَا الكَلِمَةُ المُنَاسِبَةُ لِلْفَرَاغِ؟ «هِيَ ... الفَجْرَ»","secenekler":["تُصَلّي","يُصَلّي","أُصَلّي","تُصَلّينَ"],"dogru":0,"arSecenek":true},
+  {"id":503,"tip":"zamir","zorluk":2,"soru":"مَا الكَلِمَةُ المُنَاسِبَةُ لِلْفَرَاغِ؟ «أَنْتِ ... إِلى البَيْتِ»","secenekler":["تَرْجِعينَ","تَرْجِعُ","يَرْجِعُ","أَرْجِعُ"],"dogru":0,"arSecenek":true},
+  {"id":504,"tip":"zamir","zorluk":2,"soru":"مَا الكَلِمَةُ المُنَاسِبَةُ لِلْفَرَاغِ؟ «أَنْتَ ... أُمَّكَ»","secenekler":["تُساعِدُ","تُساعِدينَ","يُساعِدُ","أُساعِدُ"],"dogru":0,"arSecenek":true},
+  {"id":505,"tip":"zamir","zorluk":2,"soru":"مَا الكَلِمَةُ المُنَاسِبَةُ لِلْفَرَاغِ؟ «هِيَ ... أَسْنانَها»","secenekler":["تُنَظِّفُ","يُنَظِّفُ","أُنَظِّفُ","تُنَظِّفينَ"],"dogru":0,"arSecenek":true},
+  {"id":506,"tip":"zamir","zorluk":2,"soru":"مَا الكَلِمَةُ المُنَاسِبَةُ لِلْفَرَاغِ؟ «أَنْتِ ... لَيْلًا»","secenekler":["تَنامينَ","تَنامُ","يَنامُ","أَنامُ"],"dogru":0,"arSecenek":true},
+  {"id":507,"tip":"zamir","zorluk":3,"soru":"مَنْ فَاعِلُ الفِعْلِ «يَتَناوَلُ»؟","secenekler":["هُوَ","هِيَ","أَنا","أَنْتِ"],"dogru":0,"arSecenek":true},
+  {"id":508,"tip":"zamir","bicim":"eslestir","zorluk":2,"soru":"صِلِ الضَّمَائِرَ بِالأَفْعَالِ (دَرَسَ).","ciftler":[["أَنا","أَدْرُسُ"],["هُوَ","يَدْرُسُ"],["هِيَ","تَدْرُسُ"],["أَنْتِ","تَدْرُسينَ"]]},
+  {"id":509,"tip":"zamir","bicim":"eslestir","zorluk":3,"soru":"صِلِ الضَّمَائِرَ بِالأَفْعَالِ (نامَ).","ciftler":[["أَنا","أَنامُ"],["هُوَ","يَنامُ"],["هِيَ","تَنامُ"],["أَنْتِ","تَنامينَ"]]},
+  {"id":510,"tip":"zamir","bicim":"surukle","zorluk":2,"soru":"رَتِّبِ الكَلِمَاتِ: «O (kız) ailesiyle kahvaltı yapar.»","parcalar":["هِيَ","تَتَناوَلُ","الفَطورَ","مَعَ","أُسْرَتِها"]},
+  {"id":511,"tip":"zamir","bicim":"surukle","zorluk":3,"soru":"رَتِّبِ الكَلِمَاتِ: «O (erkek) sabahleyin dişlerini temizler.»","parcalar":["هُوَ","يُنَظِّفُ","أَسْنانَهُ","في","الصَّباحِ"]}
 ];
 
 const SORULAR = [].concat(S_GUNLUK, S_YEMEK, S_SAAT, S_GUNLER, S_NAMAZ, S_ZAMIR);
 
 const TIP_BILGI = {
-  "fiil":    { ad: "Günlük Fiiller",  emoji: "🏃" },
-  "cumle":   { ad: "Cümle",           emoji: "💬" },
-  "anlam":   { ad: "Anlam",           emoji: "💡" },
-  "yemek":   { ad: "Yiyecek-İçecek",  emoji: "🍽️" },
-  "saat":    { ad: "Saatler",         emoji: "🕒" },
-  "gun":     { ad: "Haftanın Günleri",emoji: "📅" },
-  "namaz":   { ad: "Namaz Vakitleri", emoji: "🕌" },
-  "zamir":   { ad: "Zamir-Fiil",      emoji: "👥" },
-  "kelime":  { ad: "Kelime Yazma",    emoji: "🔤" }
+  "fiil":    { ad: "أَفْعَالٌ يَوْمِيَّةٌ",  emoji: "🏃" },
+  "cumle":   { ad: "جُمْلَةٌ",           emoji: "💬" },
+  "anlam":   { ad: "مَعْنًى",           emoji: "💡" },
+  "yemek":   { ad: "طَعَامٌ وَشَرَابٌ",  emoji: "🍽️" },
+  "saat":    { ad: "السَّاعَاتُ",         emoji: "🕒" },
+  "gun":     { ad: "أَيَّامُ الأُسْبُوعِ",emoji: "📅" },
+  "namaz":   { ad: "أَوْقَاتُ الصَّلَاةِ", emoji: "🕌" },
+  "zamir":   { ad: "ضَمِيرٌ وَفِعْلٌ",      emoji: "👥" },
+  "kelime":  { ad: "كِتَابَةُ الكَلِمَاتِ",    emoji: "🔤" }
 };
-const ZORLUK_AD = { 1: "Kolay", 2: "Orta", 3: "Zor" };
+const ZORLUK_AD = { 1: "سَهْلٌ", 2: "مُتَوَسِّطٌ", 3: "صَعْبٌ" };
 const SIK_RENK = ["#E74C3C", "#3498DB", "#F1C40F", "#27AE60", "#9B59B6"]; // A B C D E
 const SEVIYE_ZORLUK = { kolay: 1, orta: 2, zor: 3 };
 
@@ -248,13 +248,13 @@ const SEVIYE_ZORLUK = { kolay: 1, orta: 2, zor: 3 };
    • sorular: SORULAR ile aynı biçimde; boşsa o konuda yarışma başlatılamaz.
    NOT: Soru id'leri aynı konu içinde benzersiz olmalıdır (birleşik konu da dâhil).      */
 const KONULAR = [
-  { id: "unite1",  ad: "1. Ünite — Tümü (ماذا فَعَلْتُ اليَوْم؟)", pdf: "", sorular: SORULAR },
-  { id: "gunluk",  ad: "Günlük Rutin",        pdf: "", sorular: S_GUNLUK },
-  { id: "yemek",   ad: "Yiyecek ve İçecekler",pdf: "", sorular: S_YEMEK },
-  { id: "saat",    ad: "Saatler",             pdf: "", sorular: S_SAAT },
-  { id: "gunler",  ad: "Haftanın Günleri",    pdf: "", sorular: S_GUNLER },
-  { id: "namaz",   ad: "Namaz Vakitleri",     pdf: "", sorular: S_NAMAZ },
-  { id: "zamir",   ad: "Zamir - Fiil Uyumu",  pdf: "", sorular: S_ZAMIR }
+  { id: "unite1",  ad: "الوَحْدَةُ الأُولَى — كُلُّ الأَسْئِلَةِ (ماذا فَعَلْتُ اليَوْم؟)", pdf: "", sorular: SORULAR },
+  { id: "gunluk",  ad: "الرُّوتِينُ اليَوْمِيُّ",        pdf: "", sorular: S_GUNLUK },
+  { id: "yemek",   ad: "الطَّعَامُ وَالشَّرَابُ",pdf: "", sorular: S_YEMEK },
+  { id: "saat",    ad: "السَّاعَاتُ",             pdf: "", sorular: S_SAAT },
+  { id: "gunler",  ad: "أَيَّامُ الأُسْبُوعِ",    pdf: "", sorular: S_GUNLER },
+  { id: "namaz",   ad: "أَوْقَاتُ الصَّلَاةِ",     pdf: "", sorular: S_NAMAZ },
+  { id: "zamir",   ad: "الضَّمِيرُ وَالفِعْلُ",  pdf: "", sorular: S_ZAMIR }
 ];
 
 /* ---------------- Biçime göre HTML üreticileri ---------------- */
@@ -271,7 +271,7 @@ function sikKartHtml(s, dogruGoster){
     return h;
   }
   const bb = BICIM_BILGI[b] || { ad: b, emoji: "❓" };
-  const govde = dogruGoster ? dogruCevapMetni(s) : (bb.ad + " sorusu");
+  const govde = dogruGoster ? dogruCevapMetni(s) : ("سُؤَالٌ · " + bb.ad);
   return '<div class="biy-secenek'+(dogruGoster?' dogru':'')+' biy-arapca-secenek biy-bicim-kutu">' +
          '<span class="biy-sik">'+bb.emoji+'</span><span class="biy-secenek-metin">'+kacis(govde)+'</span></div>';
 }
@@ -319,8 +319,7 @@ function tahtaIcerikHtml(soru, sonucMu){
 const state = {
   mod: null, uid: null,
   oyunModu: "takim",         // takim | birey | okul  (yarışma biçimi)
-  siniflar: [],              // okul modu: sınıf adları ["7-A","7-B"]
-  bekleyenListe: [],         // birey/okul: onay bekleyen katılımcılar
+  bekleyenListe: [],         // birey modu: onay bekleyen katılımcılar
   katilimId: null,           // öğrenci tarafı: kendi katılımcı kaydının id'si
   katilimAbone: null,        // öğrenci tarafı: kendi kaydını dinleyen abonelik
   katilBagli: false,         // takimBagla bir kez çalıştı mı
@@ -347,7 +346,6 @@ const state = {
   sayacInterval: null,
   sonCevapIndex: -1,
   calisma: null,             // takım: yarım kalan cevap { index, yerlesim, secili, yazi }
-  sinifKonu: null, sinifZ: 1, sinifList: [], sinifIndex: 0, sinifCevapAcik: false,   // sınıf modu (çevrimdışı)
   sonucAnimIndex: -1,        // sonuç ekranı animasyonu hangi soru için oynatıldı
   sonucTimerlar: [],         // sonuç ekranı adım zamanlayıcıları (temizlik için)
   finalKonfeti: false,       // yarışma bitti ekranında konfeti bir kez patlar
@@ -423,13 +421,67 @@ function odaLinki(oda){
    birey : tek karekod, herkes kendi adını yazar, öğretmen onaylar
    okul  : tek karekod, öğrenci adını yazar + sınıfını seçer, sınıflar ORTALAMA puanla yarışır  */
 const MOD_BILGI = {
-  takim: { ad: "Takım Modu", emoji: "👥", kisi: "takım",      baslik: "Takım Oluştur & Lobi" },
-  birey: { ad: "Birey Modu", emoji: "🙋", kisi: "kişi",       baslik: "Katılımcılar & Lobi" },
-  okul:  { ad: "Okul Modu",  emoji: "🏫", kisi: "öğrenci",    baslik: "Sınıflar & Lobi" }
+  takim: { ad: "نِظَامُ الفِرَقِ", emoji: "👥", kisi: "فَرِيقٌ", cog: "فِرَق",      baslik: "إِنْشَاءُ الفِرَقِ وَالانْتِظَارُ" },
+  birey: { ad: "نِظَامُ الأَفْرَادِ", emoji: "🙋", kisi: "مُشَارِكٌ",  cog: "مُشارِكونَ", baslik: "المُشَارِكُونَ وَالانْتِظَارُ" },
+  okul:  { ad: "نِظَامُ الصُّفُوفِ",  emoji: "🏫", kisi: "صَفٌّ", cog: "صُفوف",      baslik: "إِنْشَاءُ الصُّفُوفِ وَالانْتِظَارُ" }
 };
 function modAl(){ return MOD_BILGI[state.oyunModu] ? state.oyunModu : "takim"; }
-function tekKarekod(){ return modAl() !== "takim"; }   // birey/okul: tek ortak karekod
+function tekKarekod(){ return modAl() === "birey"; }   // yalnız birey: tek ortak karekod
+function kartliMod(){ return modAl() !== "birey"; }    // takım & okul: her katılımcıya ayrı karekod
 function kisiSozu(){ return (MOD_BILGI[modAl()] || MOD_BILGI.takim).kisi; }
+function cogSozu(){ return (MOD_BILGI[modAl()] || MOD_BILGI.takim).cog; }
+
+/* ---- Ozel SVG simgeleri (emoji yerine) ------------------------------- */
+const SIMGELER = {
+  "⏳": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="url(#biyGrTuruncu)" opacity=".14"/>' +
+    '<g class="biy-sv-kum" fill="none" stroke="url(#biyGrTuruncu)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">' +
+      '<path d="M20 12h24M20 52h24"/><path d="M22 12v6l10 14 10-14v-6"/><path d="M22 52v-6l10-14 10 14v6"/></g>' +
+    '<circle class="biy-sv-tane" cx="32" cy="33" r="2.6" fill="url(#biyGrTuruncu)"/>',
+  "✅": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="url(#biyGrYesil)" opacity=".18"/>' +
+    '<circle cx="32" cy="32" r="21" fill="none" stroke="url(#biyGrYesil)" stroke-width="3.5" class="biy-sv-halka"/>' +
+    '<path class="biy-sv-tik" d="M21 33l8 8 15-16" fill="none" stroke="url(#biyGrYesil)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>',
+  "❌": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="#ef4444" opacity=".14"/>' +
+    '<circle cx="32" cy="32" r="21" fill="none" stroke="#ef4444" stroke-width="3.5"/>' +
+    '<g class="biy-sv-carpi" stroke="#ef4444" stroke-width="4.5" stroke-linecap="round"><line x1="24" y1="24" x2="40" y2="40"/><line x1="40" y1="24" x2="24" y2="40"/></g>',
+  "⚠️": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="url(#biyGrTuruncu)" opacity=".16"/>' +
+    '<path d="M32 12 55 52H9z" fill="none" stroke="url(#biyGrTuruncu)" stroke-width="3.5" stroke-linejoin="round"/>' +
+    '<g class="biy-sv-uyari" stroke="url(#biyGrTuruncu)" stroke-width="4" stroke-linecap="round"><line x1="32" y1="27" x2="32" y2="38"/><line x1="32" y1="45" x2="32" y2="45"/></g>',
+  "🎉": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="url(#biyGrMor)" opacity=".16"/>' +
+    '<path d="M14 52 30 20l14 14z" fill="url(#biyGrMor)" opacity=".85"/>' +
+    '<g class="biy-sv-serpme" stroke-linecap="round" stroke-width="3.5">' +
+      '<line x1="44" y1="14" x2="49" y2="9" stroke="#f59e0b"/><line x1="50" y1="24" x2="57" y2="23" stroke="#10b981"/>' +
+      '<line x1="38" y1="9" x2="39" y2="3" stroke="#ef4444"/><line x1="52" y1="34" x2="58" y2="37" stroke="#3b82f6"/></g>',
+  "🏅": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="url(#biyGrTuruncu)" opacity=".16"/>' +
+    '<g class="biy-sv-kurdele"><path d="M22 8l8 18-8 4-4-16z" fill="url(#biyGrMavi)"/><path d="M42 8l-8 18 8 4 4-16z" fill="url(#biyGrMor)"/></g>' +
+    '<circle class="biy-sv-madalya" cx="32" cy="42" r="14" fill="url(#biyGrTuruncu)"/>' +
+    '<circle cx="32" cy="42" r="9" fill="none" stroke="#fff" stroke-width="2.5" opacity=".85"/>',
+  "🏁": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="url(#biyGrMavi)" opacity=".14"/>' +
+    '<line x1="18" y1="10" x2="18" y2="54" stroke="url(#biyGrMavi)" stroke-width="3.5" stroke-linecap="round"/>' +
+    '<g class="biy-sv-bayrak"><rect x="18" y="12" width="28" height="20" fill="url(#biyGrMavi)" opacity=".25"/>' +
+      '<rect x="18" y="12" width="7" height="10" fill="url(#biyGrMavi)"/><rect x="32" y="12" width="7" height="10" fill="url(#biyGrMavi)"/>' +
+      '<rect x="25" y="22" width="7" height="10" fill="url(#biyGrMavi)"/><rect x="39" y="22" width="7" height="10" fill="url(#biyGrMavi)"/></g>',
+  "📺": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="url(#biyGrMavi)" opacity=".14"/>' +
+    '<rect x="10" y="20" width="44" height="30" rx="4" fill="none" stroke="url(#biyGrMavi)" stroke-width="3.5"/>' +
+    '<path d="M22 12l10 8 10-8" fill="none" stroke="url(#biyGrMavi)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<rect class="biy-sv-parlama" x="14" y="24" width="10" height="22" fill="#fff" opacity=".5"/>',
+  "✋": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="#ef4444" opacity=".14"/>' +
+    '<g class="biy-sv-el" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="M24 30V14M32 30V10M40 30V14"/><path d="M18 30v10a16 16 0 0 0 16 16h2a12 12 0 0 0 12-12V24"/></g>',
+  "🚪": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="url(#biyGrMor)" opacity=".14"/>' +
+    '<rect x="16" y="10" width="32" height="44" rx="3" fill="none" stroke="url(#biyGrMor)" stroke-width="3.5"/>' +
+    '<circle class="biy-sv-kol" cx="40" cy="33" r="2.8" fill="url(#biyGrMor)"/>',
+  "🏆": '<circle class="biy-hale" cx="32" cy="32" r="27" fill="url(#biyGrTuruncu)" opacity=".18"/>' +
+    '<path class="biy-sv-kupa" d="M22 10h20v14a10 10 0 0 1-20 0z" fill="url(#biyGrTuruncu)"/>' +
+    '<path d="M22 14h-6a6 6 0 0 0 6 6M42 14h6a6 6 0 0 1-6 6" fill="none" stroke="url(#biyGrTuruncu)" stroke-width="3" stroke-linecap="round"/>' +
+    '<rect x="29" y="34" width="6" height="10" fill="url(#biyGrTuruncu)"/><rect x="20" y="44" width="24" height="6" rx="2" fill="url(#biyGrTuruncu)"/>' +
+    '<g class="biy-sv-parilti" fill="#fff"><circle cx="16" cy="26" r="2"/><circle cx="49" cy="30" r="1.6"/><circle cx="45" cy="8" r="1.6"/></g>'
+};
+function simge(e){
+  const ic = SIMGELER[e];
+  if (!ic) return e;
+  return '<span class="biy-anim"><svg viewBox="0 0 64 64" class="biy-svg" aria-hidden="true">' + ic + '</svg></span>';
+}
+
 
 /* ---- Uygunsuz isim süzgeci ----
    Öğrenci kendi ismini yazdığı için basit bir denetim gerekiyor. Aşağıdaki liste
@@ -455,13 +507,13 @@ function isimTemizle(t){
 /* uygunsa "" döner, değilse kullanıcıya gösterilecek sebebi döner */
 function isimSorunu(ad){
   const ham = isimTemizle(ad);
-  if (ham.length < 2) return "Adını en az 2 harf yaz.";
-  if (!/[a-zA-ZçğıöşüÇĞİÖŞÜ]/.test(ham)) return "Adında harf olmalı.";
+  if (ham.length < 2) return "اكْتُبِ اسْمَكَ بِحَرْفَيْنِ عَلَى الأَقَلِّ.";
+  if (!/[a-zA-ZçğıöşüÇĞİÖŞÜ]/.test(ham)) return "يَجِبُ أَنْ يَكُونَ فِي الاسْمِ حُرُوفٌ.";
   const n = isimNormal(ham);
   const kelimeler = n.split(" ").filter(Boolean);
-  for (const k of kelimeler){ if (YASAK_TAM.indexOf(k) >= 0) return "Bu isim uygun değil, gerçek adını yaz."; }
+  for (const k of kelimeler){ if (YASAK_TAM.indexOf(k) >= 0) return "هَذَا الاسْمُ غَيْرُ مُنَاسِبٍ، اكْتُبِ اسْمَكَ الحَقِيقِيَّ."; }
   const bitisik = n.replace(/ /g,"");
-  for (const p of YASAK_PARCA){ if (bitisik.indexOf(p) >= 0) return "Bu isim uygun değil, gerçek adını yaz."; }
+  for (const p of YASAK_PARCA){ if (bitisik.indexOf(p) >= 0) return "هَذَا الاسْمُ غَيْرُ مُنَاسِبٍ، اكْتُبِ اسْمَكَ الحَقِيقِيَّ."; }
   return "";
 }
 /* aynı isimden ikinci kişi gelirse "Ahmet (2)" yapılır */
@@ -538,7 +590,7 @@ const BIY = {
   // Geri: dosyadan çık. Bağlı cihaz varsa onay iste; çıkışta odayı kapat (cihazlar ayrılsın).
   geriDon(){
     if (state.odaId && (state.takimListe || []).some(t => t.bagli)){
-      BIY._onay("Çıkılsın mı?", "Bağlı sınıf/cihazlar var — çıkarsanız bağlantıları kesilecek.", "Evet, çık", function(){ BIY._geriCik(); });
+      BIY._onay("هَلْ تَخْرُجُ؟", "هُنَاكَ أَجْهِزَةٌ مُتَّصِلَةٌ — إِذَا خَرَجْتَ سَيَنْقَطِعُ اتِّصَالُهَا.", "نَعَمْ، اخْرُجْ", function(){ BIY._geriCik(); });
       return;
     }
     BIY._geriCik();
@@ -566,8 +618,8 @@ const BIY = {
   },
   _konulariHazirla(){
     const sel = $("konuSecim"); if (!sel) return;
-    sel.innerHTML = '<option value=""'+(state.konuId?'':' selected')+' disabled hidden>Konu seçin…</option>' +
-      KONULAR.map(k => '<option value="'+k.id+'"'+(k.pasif?' disabled':'')+(k.id===state.konuId?' selected':'')+'>'+kacis(k.ad)+(k.pasif?' · yakında':'')+'</option>').join("");
+    sel.innerHTML = '<option value=""'+(state.konuId?'':' selected')+' disabled hidden>اخْتَرِ الدَّرْسَ…</option>' +
+      KONULAR.map(k => '<option value="'+k.id+'"'+(k.pasif?' disabled':'')+(k.id===state.konuId?' selected':'')+'>'+kacis(k.ad)+(k.pasif?' · قَرِيبًا':'')+'</option>').join("");
     if (!state.konuId) sel.value = "";
     BIY._konuVurgu();
     BIY._pdfOnizleGuncelle();
@@ -602,14 +654,14 @@ const BIY = {
     ov.innerHTML =
       '<div class="biy-soru-sec-kutu">' +
         '<div class="biy-soru-sec-bas">' +
-          '<h3>🎯 Soru Havuzu</h3>' +
+          '<h3>🎯 مَخْزُونُ الأَسْئِلَةِ</h3>' +
           '<span class="biy-soru-sec-say" id="soruSecSecili"></span>' +
           '<button class="biy-soru-sec-kapat" onclick="BIY.soruSecKapat()">✕</button>' +
         '</div>' +
         '<div class="biy-soru-sec-liste" id="soruSecListe"></div>' +
         '<div class="biy-soru-sec-alt">' +
-          '<button class="biy-btn biy-onay-hayir" onclick="BIY.soruSecTemizle()">Tümünü Temizle</button>' +
-          '<button class="biy-btn biy-btn-yesil" onclick="BIY.soruSecKapat()">Bitti</button>' +
+          '<button class="biy-btn biy-onay-hayir" onclick="BIY.soruSecTemizle()">مَسْحُ الكُلِّ</button>' +
+          '<button class="biy-btn biy-btn-yesil" onclick="BIY.soruSecKapat()">تَمَّ</button>' +
         '</div>' +
       '</div>';
     document.body.appendChild(ov);
@@ -621,7 +673,7 @@ const BIY = {
     const kap = $("soruSecListe"); if (!kap) return;
     const set = BIY._secSet();
     const ara = state.soruSecArama;
-    const zorAd = { 1:"Kolay", 2:"Orta", 3:"Zor" };
+    const zorAd = { 1:"سَهْلٌ", 2:"مُتَوَسِّطٌ", 3:"صَعْبٌ" };
     let html = "";
     KONULAR.forEach(k => {
       if (!Array.isArray(k.sorular) || !k.sorular.length) return;
@@ -633,7 +685,7 @@ const BIY = {
         '<div class="biy-hs-baslik" onclick="BIY.soruSecAkordiyon(\''+k.id+'\')">' +
         '<span class="biy-hs-ok">▸</span>' +
         '<b>'+kacis(k.ad)+'</b> <span class="biy-hs-say">('+seciliSay+'/'+k.sorular.length+')</span>' +
-        '<button class="biy-hs-tumu" onclick="event.stopPropagation();BIY.soruSecTumu(\''+k.id+'\')">Tümünü seç/kaldır</button></div>' +
+        '<button class="biy-hs-tumu" onclick="event.stopPropagation();BIY.soruSecTumu(\''+k.id+'\')">تَحْدِيدُ الكُلِّ</button></div>' +
         '<div class="biy-hs-govde">';
       sorular.forEach(q => {
         const key = k.id + "#" + q.id; const sec = set.has(key);
@@ -646,7 +698,7 @@ const BIY = {
       });
       html += '</div></div>';
     });
-    kap.innerHTML = html || '<p class="biy-alt" style="text-align:center">Sonuç yok.</p>';
+    kap.innerHTML = html || '<p class="biy-alt" style="text-align:center">لَا نَتِيجَةَ.</p>';
     BIY._soruSecSayilar();
   },
   // sayaçları (grup başlıkları + toplam + buton) satırları yeniden çizmeden güncelle
@@ -657,7 +709,7 @@ const BIY = {
       const sec = k.sorular.filter(q => set.has(k.id + "#" + q.id)).length;
       const sp = g.querySelector(".biy-hs-say"); if (sp) sp.textContent = "(" + sec + "/" + k.sorular.length + ")";
     });
-    const say = $("soruSecSecili"); if (say) say.textContent = "Seçili: " + set.size;
+    const say = $("soruSecSecili"); if (say) say.textContent = "المُحَدَّدُ: " + set.size;
     BIY._soruSecSayiGuncelle();
   },
   // tek satır: yeniden çizmeden aç/kapa (kaydırma korunur)
@@ -700,7 +752,7 @@ const BIY = {
       state.soruSayiHavuzdan = true;   // bu sayı havuzdan geldi → havuz bırakılınca sıfırlanacak
       document.querySelectorAll(".biy-sayi-btn").forEach(b => { b.disabled = true; b.classList.add("biy-pasif"); b.classList.remove("secili"); });
       if (inp){ inp.disabled = false; inp.readOnly = true; inp.max = havuz; inp.min = 1; inp.value = havuz; inp.classList.add("biy-secili"); }
-      if (lbl) lbl.textContent = "Soru sayısı (havuzdan " + havuz + "):";
+      if (lbl) lbl.textContent = "عَدَدُ الأَسْئِلَةِ (مِنَ المَخْزُونِ " + havuz + "):";
       return;
     }
     // havuz modundan çıkıldıysa havuz kaynaklı soru sayısını sıfırla (öğretmen yeniden seçsin)
@@ -716,14 +768,14 @@ const BIY = {
       b.disabled = dis; b.classList.toggle("biy-pasif", dis);
     });
     if (inp){ inp.disabled = false; inp.readOnly = false; inp.classList.remove("biy-secili"); inp.max = max; inp.min = 1; inp.placeholder = "≤ " + max; }
-    if (lbl) lbl.textContent = "Soru sayısı (en çok " + max + "):";
+    if (lbl) lbl.textContent = "عَدَدُ الأَسْئِلَةِ (بِحَدٍّ أَقْصَى " + max + "):";
     if (state.soruSayisi != null){ if (state.soruSayisi > max) BIY.setSoruSayisi(max); else BIY.setSoruSayisi(state.soruSayisi); }
     else { document.querySelectorAll(".biy-sayi-btn").forEach(b => b.classList.remove("secili")); if (inp) inp.value = ""; }
   },
   _pdfOnizleGuncelle(){
     const havuz = BIY._secSet().size;
     const k = BIY._aktifKonu();
-    const baslik = $("pdfBaslik"); if (baslik) baslik.textContent = havuz > 0 ? "Karışık" : (k ? (k.ad || "") : "");
+    const baslik = $("pdfBaslik"); if (baslik) baslik.textContent = havuz > 0 ? "مُخْتَلِطٌ" : (k ? (k.ad || "") : "");
     const kart = $("pdfKart"), indir = $("pdfIndir");
     // PDF'ler henüz hazır değil → tüm önizleme bloğunu gizle (PDF_AKTIF=true olunca geri gelir)
     const blok = kart && kart.closest(".biy-pdf-onizleme");
@@ -749,7 +801,7 @@ const BIY = {
     document.querySelectorAll(".biy-sekme").forEach(b => b.classList.toggle("secili", +b.getAttribute("data-z") === z));
     const liste = $("sorularListe"); liste.innerHTML = "";
     const list = BIY._aktifSorular().filter(s => s.zorluk === z);
-    if (!list.length){ liste.innerHTML = '<p class="biy-alt" style="text-align:center">Bu konuda bu seviyede henüz örnek yok.</p>'; return; }
+    if (!list.length){ liste.innerHTML = '<p class="biy-alt" style="text-align:center">لَا أَمْثِلَةَ فِي هَذَا المُسْتَوَى بَعْدُ.</p>'; return; }
     // her soru tipinden yalnızca bir örnek göster (tüm sorular değil)
     const gorulen = new Set(); const ornekler = [];
     list.forEach(s => { if (!gorulen.has(s.tip)){ gorulen.add(s.tip); ornekler.push(s); } });
@@ -775,7 +827,7 @@ const BIY = {
     const icerik = havuz > 0 || konuVar;                 // konu ya da havuzdan soru
     const sayiSecili = (state.soruSayisi != null && state.soruSayisi > 0);  // soru sayısı seçili
     const aktif = icerik && sayiSecili;
-    ["kartSinif", "kartTakim", "kartBirey", "kartOkul"].forEach(id => { const el = $(id); if (el) el.classList.toggle("biy-pasif", !aktif); });
+    ["kartTakim", "kartBirey", "kartOkul"].forEach(id => { const el = $(id); if (el) el.classList.toggle("biy-pasif", !aktif); });
     const not = $("menuNot"); if (not) not.classList.toggle("gizli", aktif);
     BIY._dijitalKartDurum();
   },
@@ -790,71 +842,8 @@ const BIY = {
       const bu = aktifOda && modAl() === m;
       el.classList.toggle("biy-bagli-var", bu);
       const r = el.querySelector(".biy-bagli-rozet");
-      if (r){ r.textContent = "● " + bagli + " cihaz bağlı"; r.classList.toggle("gizli", !bu); }
+      if (r){ r.textContent = "● " + bagli + " جِهَازًا مُتَّصِلًا"; r.classList.toggle("gizli", !bu); }
     });
-  },
-
-  /* ---------- Sınıf Modu (çevrimdışı: soruları sınıfça çöz) ---------- */
-  // yukarıda seçilen konuyu / havuz sorularını kullanır (ekranında ayrı seçim yok)
-  acSinif(){
-    const havuz = BIY._secilenSorular();
-    let list, kaynak;
-    if (havuz.length){ list = havuz.slice(); kaynak = "Karışık · seçili sorular (" + havuz.length + ")"; }
-    else {
-      const k = BIY._aktifKonu(); if (!k) return;   // konu da havuz da yoksa açma
-      list = (k.sorular || []).slice();             // konunun tüm soruları (zorluk fark etmez)
-      kaynak = k.ad;
-    }
-    if (!list.length){   // soru yoksa uyar
-      state.sinifList = []; state.sinifIndex = 0; state.sinifCevapAcik = false;
-      const kb0 = $("sinifKaynak"); if (kb0) kb0.textContent = kaynak;
-      BIY._sinifRender();
-      ekranGoster("ekranSinif");
-      return;
-    }
-    // her açılışta: şıkları karıştır (doğru hep A olmasın) + soru sırasını karıştır
-    list = list.map(soruHazirla);
-    for (let i = list.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); const g = list[i]; list[i] = list[j]; list[j] = g; }
-    // seçilen soru sayısını uygula (konudan rastgele N; havuzda zaten seçilenler)
-    if (!havuz.length && state.soruSayisi != null && state.soruSayisi > 0 && state.soruSayisi < list.length){
-      list = list.slice(0, state.soruSayisi);
-      kaynak = kaynak + " · " + list.length + " soru";
-    }
-    state.sinifList = list; state.sinifIndex = 0; state.sinifCevapAcik = false;
-    const kb = $("sinifKaynak"); if (kb) kb.textContent = kaynak;
-    BIY._sinifRender();
-    ekranGoster("ekranSinif");
-  },
-  sinifGit(delta){
-    const n = (state.sinifList || []).length; if (!n) return;
-    state.sinifIndex = (state.sinifIndex + delta + n) % n;
-    state.sinifCevapAcik = false;
-    BIY._sinifRender();
-  },
-  sinifCevap(){ state.sinifCevapAcik = !state.sinifCevapAcik; BIY._sinifRender(); },
-  _sinifRender(){
-    const govde = $("sinifGovde"); if (!govde) return;
-    const list = state.sinifList || [];
-    const sayac = $("sinifSayac"), cbtn = $("sinifCevapBtn");
-    if (!list.length){
-      govde.innerHTML = '<div class="biy-sinif-bos">Bu konuda bu seviyede henüz soru yok.</div>';
-      if (sayac) sayac.textContent = "0 / 0";
-      if (cbtn) cbtn.textContent = "Cevabı Göster";
-      return;
-    }
-    if (state.sinifIndex >= list.length) state.sinifIndex = 0;
-    const s = list[state.sinifIndex];
-    const t = TIP_BILGI[s.tip] || { ad: s.tip, emoji: "❓" };
-    const sikHtml = sikKartHtml(s, state.sinifCevapAcik);
-    govde.innerHTML =
-      '<div class="biy-sinif-soru">' +
-        '<span class="biy-soru-tip">'+t.emoji+' '+t.ad+'</span>' +
-        (s.arapca ? '<div class="biy-sinif-arapca">'+ kacis(s.arapca) +'</div>' : '') +
-        '<div class="biy-sinif-metin">'+ kacis(s.soru) +'</div>' +
-      '</div>' +
-      '<div class="biy-sinif-siklar">'+ sikHtml +'</div>';
-    if (sayac) sayac.textContent = (state.sinifIndex + 1) + " / " + list.length;
-    if (cbtn) cbtn.textContent = state.sinifCevapAcik ? "Cevabı Gizle" : "Cevabı Göster";
   },
 
   /* ---------- Lobi (üç mod ortak) ---------- */
@@ -863,10 +852,10 @@ const BIY = {
     if (!MOD_BILGI[mod]) mod = "takim";
     // başka modda açık bir oda varsa önce onay iste
     if (state.odaId && state.oyunModu !== mod){
-      const eskiAd = (MOD_BILGI[state.oyunModu] || {}).ad || "yarışma";
-      BIY._onay("Mod değiştirilsin mi?",
-        "Şu an açık bir " + eskiAd + " odası var. Yeni moda geçilirse o oda ve bağlı cihazlar bırakılır.",
-        "Evet, değiştir", () => BIY._lobiAc(mod));
+      const eskiAd = (MOD_BILGI[state.oyunModu] || {}).ad || "المُسَابَقَةِ";
+      BIY._onay("هَلْ تُغَيِّرُ النِّظَامَ؟",
+        "هُنَاكَ غُرْفَةٌ مَفْتُوحَةٌ مِنْ " + eskiAd + ". إِذَا غَيَّرْتَ النِّظَامَ سَتُتْرَكُ تِلْكَ الغُرْفَةُ وَأَجْهِزَتُهَا.",
+        "نَعَمْ، غَيِّرْ", () => BIY._lobiAc(mod));
       return;
     }
     BIY._lobiAc(mod);
@@ -875,7 +864,6 @@ const BIY = {
     if (state.oyunModu !== mod){        // gerçek mod değişimi → eski odayı bırak
       BIY._odaBirak();
       state.oyunModu = mod;
-      if (mod !== "okul") state.siniflar = [];
     }
     state.oyunModu = mod;
     ekranGoster("ekranTakimlar");
@@ -890,7 +878,7 @@ const BIY = {
     // birey/okul: oda hemen kurulur ki ortak karekod ekranda dursun
     if (tekKarekod()){
       try { await BIY._odayiHazirla(); BIY._odaKarekodCiz(); }
-      catch(e){ console.error(e); $("baslatNot").textContent = "Oda kurulamadı (Firebase izinleri?): " + (e.code || e.message); }
+      catch(e){ console.error(e); $("baslatNot").textContent = "تَعَذَّرَ إِنْشَاءُ الغُرْفَةِ: " + (e.code || e.message); }
     }
   },
   // odayı bırak (silmez): abonelikleri kapat, ekranı temizle
@@ -907,13 +895,18 @@ const BIY = {
     const m = modAl(), bilgi = MOD_BILGI[m];
     const bas = $("lobiBaslik"); if (bas) bas.textContent = bilgi.emoji + " " + bilgi.baslik;
     const goster = (id, evet) => { const el = $(id); if (el) el.classList.toggle("gizli", !evet); };
-    goster("takimYapAlan", m === "takim");
-    goster("lobiSinifAlan", m === "okul");
-    goster("lobiOdaAlan",  m !== "takim");
-    goster("lobiBekleyen", m !== "takim");
+    /* Takım ve Okul modu aynı akış: öğretmen ad yazar, her ada bir karekod
+       çıkar. Tek ortak karekod + onay kuyruğu yalnız Birey modundadır.     */
+    goster("takimYapAlan", m !== "birey");
+    goster("lobiOdaAlan",  m === "birey");
+    goster("lobiBekleyen", m === "birey");
     const grid = $("takimlarGrid");
-    if (grid) grid.className = (m === "takim") ? "biy-takimlar-grid" : "biy-kat-liste";
-    if (m === "okul") BIY._siniflariCiz();
+    if (grid) grid.className = (m === "birey") ? "biy-kat-liste" : "biy-takimlar-grid";
+    // ekleme alanının yazıları moda göre (takım adı / sınıf adı)
+    const inp = $("takimAdiInput");
+    if (inp) inp.placeholder = (m === "okul") ? "اسْمُ الصَّفِّ (٧/أ)" : "اسْمُ الفَرِيقِ";
+    const ekleBtn = $("takimEkleBtn");
+    if (ekleBtn) ekleBtn.textContent = (m === "okul") ? "+ أَضِفْ صَفًّا" : "+ أَضِفْ فَرِيقًا";
   },
   // --- Kalıcılık (sayfa yenilense de oyun kaybolmasın) ---
   _kaydet(){
@@ -932,7 +925,6 @@ const BIY = {
       state.odaId = kayit.oda;
       const od0 = snap.data() || {};
       state.oyunModu = MOD_BILGI[od0.mod] ? od0.mod : "takim";
-      state.siniflar = Array.isArray(od0.siniflar) ? od0.siniflar.slice() : [];
       state.oyunSorulari = Array.isArray(kayit.sorular) ? kayit.sorular : [];
       state.yedekSorular = Array.isArray(kayit.yedek) ? kayit.yedek : [];
       state.yedekSoruMap = kayit.yedekMap || {};
@@ -948,7 +940,7 @@ const BIY = {
     const eski = $("biyOnay"); if (eski) eski.remove();
     const ov = document.createElement("div"); ov.id = "biyOnay"; ov.className = "biy-onay-ov";
     ov.innerHTML = '<div class="biy-onay-kutu"><h3>'+kacis(baslik)+'</h3><p>'+kacis(metin)+'</p>' +
-      '<div class="biy-onay-btnlar"><button class="biy-onay-hayir">Vazgeç</button><button class="biy-onay-evet">'+kacis(evetMetin)+'</button></div></div>';
+      '<div class="biy-onay-btnlar"><button class="biy-onay-hayir">إِلْغَاءٌ</button><button class="biy-onay-evet">'+kacis(evetMetin)+'</button></div></div>';
     document.body.appendChild(ov);
     const kapat = () => { if (ov.parentNode) ov.remove(); };
     ov.querySelector(".biy-onay-hayir").onclick = kapat;
@@ -957,9 +949,9 @@ const BIY = {
   },
   // canlı yarışmadan çıkış → lobiye dön (takım bağlantıları KORUNUR)
   yaristanCik(){
-    BIY._onay("Lobiye dönülsün mü?",
-      "Yarışma durdurulup lobiye dönülür. Takım bağlantıları korunur — konu veya soru sayısını değiştirip yeniden başlatabilirsiniz.",
-      "Evet, lobiye dön", function(){ BIY.lobiyeDon(); });
+    BIY._onay("هَلْ تَعُودُ إِلَى الانْتِظَارِ؟",
+      "سَتَتَوَقَّفُ المُسَابَقَةُ وَتَعُودُ إِلَى الانْتِظَارِ. تَبْقَى الأَجْهِزَةُ مُتَّصِلَةً — يُمْكِنُكَ تَغْيِيرُ الدَّرْسِ أَوْ عَدَدِ الأَسْئِلَةِ ثُمَّ البَدْءُ مِنْ جَدِيدٍ.",
+      "نَعَمْ، عُدْ", function(){ BIY.lobiyeDon(); });
   },
   // oyunu durdurup lobiye döner; oda + takım karekod bağlantıları kopmaz
   async lobiyeDon(){
@@ -1028,7 +1020,7 @@ const BIY = {
     }
     await ref.set({
       durum: "lobi", faz: "cevap", aktifIndex: -1, toplamSoru: 0, soruSuresi: SORU_SURESI,
-      mod: modAl(), siniflar: (state.siniflar || []).slice(),
+      mod: modAl(),
       olusturan: state.uid || null, olusturmaZamani: firebase.firestore.FieldValue.serverTimestamp()
     });
     state.odaId = kod;
@@ -1048,20 +1040,20 @@ const BIY = {
       await db.collection(KOLEKSIYON).doc(oda).collection("takimlar").doc(takimId).set({
         ad: ad, bagli: false, puan: 0, olusturmaZamani: firebase.firestore.FieldValue.serverTimestamp()
       });
-    } catch(e){ console.error(e); $("baslatNot").textContent = "Takım eklenemedi (Firebase izinleri?): " + (e.code || e.message); }
+    } catch(e){ console.error(e); $("baslatNot").textContent = (modAl()==="okul"?"صَفٌّ":"فَرِيقٌ") + " لَمْ يُضَفْ: " + (e.code || e.message); }
   },
   _takimlariCiz(snap){
     state.takimListe = []; state.bekleyenListe = [];
     snap.forEach(doc => {
       const t = doc.data();
-      const k = { id: doc.id, ad: t.ad, bagli: !!t.bagli, puan: t.puan || 0, sinif: t.sinif || null };
+      const k = { id: doc.id, ad: t.ad, bagli: !!t.bagli, puan: t.puan || 0 };
       if (t.atildi || t.red) return;                 // çıkarılan / reddedilen listede yok
       if (t.onay === false) state.bekleyenListe.push(k);   // onay bekliyor
       else state.takimListe.push(k);                        // takım modunda onay alanı hiç yoktur
     });
     let sayi = state.takimListe.length;
     let bagli = state.takimListe.filter(t => t.bagli).length;
-    if (modAl() === "takim") BIY._takimKartlariCiz(); else BIY._katilimcilariCiz();
+    if (kartliMod()) BIY._takimKartlariCiz(); else BIY._katilimcilariCiz();
     // takım eklendiyse zorluk seviyesi, soru sayısı ve soru seçimi kilitlenir; hepsi silinince açılır
     // (lobiye dönüldüyse ayarKilidiKapali=true → takım bağlıyken de değiştirilebilir)
     const kilit = sayi > 0 && !state.ayarKilidiKapali;
@@ -1095,7 +1087,7 @@ const BIY = {
   kopyala(btn){
     const inp = btn.parentElement.querySelector("input");
     inp.select(); inp.setSelectionRange(0, 99999);
-    try { navigator.clipboard.writeText(inp.value); btn.textContent = "✓"; setTimeout(()=>btn.textContent="Kopyala", 1200); } catch(e){ document.execCommand("copy"); }
+    try { navigator.clipboard.writeText(inp.value); btn.textContent = "✓"; setTimeout(()=>btn.textContent="نَسْخٌ", 1200); } catch(e){ document.execCommand("copy"); }
   },
 
   /* ---------- YARIŞMAYI BAŞLAT (oyun döngüsü) ---------- */
@@ -1137,7 +1129,7 @@ const BIY = {
       yedek = [];   // görülmemiş yedek sorulmaz
     } else {
       const tumu = BIY._aktifSorular().slice();   // konunun tüm soruları (zorluk fark etmez)
-      if (!tumu.length){ $("baslatNot").textContent = "«" + (BIY._aktifKonu() ? BIY._aktifKonu().ad : "") + "» konusunda henüz soru yok."; return; }
+      if (!tumu.length){ $("baslatNot").textContent = "«" + (BIY._aktifKonu() ? BIY._aktifKonu().ad : "") + "» لَا تَحْتَوِي عَلَى أَسْئِلَةٍ بَعْدُ."; return; }
       for (let i = tumu.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); const g = tumu[i]; tumu[i] = tumu[j]; tumu[j] = g; }
       const hedefSayi = Math.max(1, Math.min(50, state.soruSayisi || TUR_SORU_SAYISI));
       secilen = tumu.slice(0, Math.min(hedefSayi, tumu.length)).map(soruHazirla);
@@ -1152,14 +1144,14 @@ const BIY = {
     try {
       await db.collection(KOLEKSIYON).doc(state.odaId).update({
         durum: "oyun", faz: "cevap", aktifIndex: 0, toplamSoru: secilen.length, soruSuresi: SORU_SURESI,
-        mod: modAl(), siniflar: (state.siniflar || []).slice(),
+        mod: modAl(),
         soruIdSirasi: secilen.map(s => s.id),
         aktifSoru: temizSoru(secilen[0]),
         soruBaslangic: firebase.firestore.FieldValue.serverTimestamp()
       });
       BIY._kaydet();
       BIY._adminOyunaGec();
-    } catch(e){ console.error(e); $("baslatNot").textContent = "Başlatılamadı: " + (e.code || e.message); }
+    } catch(e){ console.error(e); $("baslatNot").textContent = "تَعَذَّرَ البَدْءُ: " + (e.code || e.message); }
   },
 
   _adminOyunaGec(){
@@ -1189,7 +1181,7 @@ const BIY = {
     const ber = (o.durum === "beraberlik");
     const idx = o.aktifIndex || 0;
     const soru = BIY._soruByIndex(idx);
-    if (!soru){ kap.innerHTML = '<div class="biy-oyun-orta"><p class="biy-alt">Bu turun soruları bellekte yok (sayfa yenilenmiş olabilir). Lütfen yarışmayı yeniden başlatın.</p><button class="biy-btn biy-btn-mavi" onclick="BIY.anasayfa()">Ana Menü</button></div>'; return; }
+    if (!soru){ kap.innerHTML = '<div class="biy-oyun-orta"><p class="biy-alt">أَسْئِلَةُ هَذِهِ الجَوْلَةِ غَيْرُ مَوْجُودَةٍ (رُبَّمَا حُدِّثَتِ الصَّفْحَةُ). ابْدَإِ المُسَابَقَةَ مِنْ جَدِيدٍ.</p><button class="biy-btn biy-btn-mavi" onclick="BIY.anasayfa()">القَائِمَةُ الرَّئِيسَةُ</button></div>'; return; }
     const sonuc = (o.faz === "sonuc");
     const t = TIP_BILGI[soru.tip] || { ad: soru.tip, emoji: "❓" };
     // SONUÇ EKRANI — soru ekranından tamamen ayrı (adım adım animasyonlu)
@@ -1220,16 +1212,16 @@ const BIY = {
     const gozSvg = state.soruGizli
       ? '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>'
       : '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
-    const gozBtn = '<button class="biy-gizle-svg" title="'+(state.soruGizli?'Soruyu göster':'Soruyu gizle')+'" onclick="BIY.soruGizleToggle()">'+gozSvg+'</button>';
+    const gozBtn = '<button class="biy-gizle-svg" title="'+(state.soruGizli?'أَظْهِرِ السُّؤَالَ':'أَخْفِ السُّؤَالَ')+'" onclick="BIY.soruGizleToggle()">'+gozSvg+'</button>';
 
     const cips = BIY._ciplerHtml(katilan, buCevaplar);
     const hepsi = katilan.length > 0 && cevapSayisi >= katilan.length;
 
-    const sayacHtml = '<div class="biy-sayac"><span id="sayacNum">'+kalan+'</span><small>sn</small></div>';
+    const sayacHtml = '<div class="biy-sayac"><span id="sayacNum">'+kalan+'</span><small>ث</small></div>';
     const barHtml = '<div class="biy-sayac-bar"><i style="width:'+yuzde+'%"></i></div>';
     const siraMetin = ber
-      ? '⚔️ '+(o.berHedef===1?'Liderlik':'İkincilik')+' · Yedek Soru '+o.berNo
-      : 'Soru '+(idx+1)+' / '+(o.toplamSoru||state.oyunSorulari.length);
+      ? '⚔️ '+(o.berHedef===1?'المَرْكَزُ الأَوَّلُ':'المَرْكَزُ الثَّانِي')+' · سُؤَالُ التَّعَادُلِ '+o.berNo
+      : 'سُؤَالُ '+(idx+1)+' / '+(o.toplamSoru||state.oyunSorulari.length);
 
     let govde =
       '<div class="biy-oyun-ust">' +
@@ -1247,12 +1239,12 @@ const BIY = {
         '<div class="biy-a-optlar">'+ opt +'</div>';
     }
     // sınıfların durumu (gizliyken çok daha büyük)
-    const kaydir = (modAl() !== "takim" && katilan.length > 10) ? " biy-kaydir" : "";
-    govde += '<div class="biy-cevap-durum'+(gizli?' biy-dev':'')+'">'+cevapSayisi+' / '+katilan.length+' '+kisiSozu()+' cevapladı'+(hepsi?' — sonuç açılıyor…':'')+'</div>' +
+    const kaydir = (modAl() === "birey" && katilan.length > 10) ? " biy-kaydir" : "";
+    govde += '<div class="biy-cevap-durum'+(gizli?' biy-dev':'')+'">'+cevapSayisi+' / '+katilan.length+' أَجَابُوا'+(hepsi?' — تَظْهَرُ النَّتِيجَةُ…':'')+'</div>' +
              '<div class="biy-cipler'+(gizli?' biy-dev':'')+kaydir+'">'+cips+'</div>';
     // gizliyken geri sayım AŞAĞIDA ve devasa
     if (gizli){
-      govde += '<div class="biy-alt-sayac">'+barHtml+'<div class="biy-sayac biy-sayac-dev"><span id="sayacNum">'+kalan+'</span><small>sn</small></div></div>';
+      govde += '<div class="biy-alt-sayac">'+barHtml+'<div class="biy-sayac biy-sayac-dev"><span id="sayacNum">'+kalan+'</span><small>ث</small></div></div>';
     }
 
     kap.innerHTML = '<div class="biy-oyun-orta">'+govde+'</div>';
@@ -1315,7 +1307,7 @@ const BIY = {
     const satir = cevapTakimlari.map((tk,ri) => {
       const c = buCevaplar[tk.id]; const dogruMu = !!(c && cevapDogruMu(soru, c.secilen));
       const secim = c ? secimHtml(soru, c.secilen) : '<span class="biy-rev-yok">—</span>';
-      const durum = c ? (dogruMu ? '✅ Doğru' : '❌ Yanlış') : '⏳ Cevapsız';
+      const durum = c ? (dogruMu ? '✅ صَحِيحٌ' : '❌ خَطَأٌ') : '⏳ بِلَا إِجَابَةٍ';
       return '<tr class="'+(c?(dogruMu?'dogru':'yanlis'):'yok')+'" style="--r:'+ri+'"><td>'+kacis(tk.ad)+'</td><td class="biy-rev-sik">'+secim+'</td><td>'+durum+'</td></tr>';
     }).join("");
     // puan durumu (yedekler dahil) + sıra değişimi
@@ -1332,8 +1324,9 @@ const BIY = {
     const rankMap = arr => { const m = {}; arr.forEach((id,i) => m[id] = i+1); return m; };
     const newR = ber ? rankMap(newOrder) : BIY._rank(newP, ids);
     const prevR = ber ? rankMap(prevOrder) : BIY._rank(prevP, ids);
-    const adOf = id => { const t = state.takimListe.find(x => x.id === id) || {};
-      return (t.ad || "") + (modAl() === "okul" && t.sinif ? " · " + t.sinif : ""); };
+    const adOf = id => { const t = state.takimListe.find(x => x.id === id) || {}; return t.ad || ""; };
+    // sonuç tablosunun ilk sütun başlığı moda göre
+    const basSutun = modAl() === "birey" ? "مُشَارِكٌ" : (modAl() === "okul" ? "صَفٌّ" : "فَرِيقٌ");
     const lider = newOrder.map(id => {
       const ns = newR[id] || ids.length, ps = prevR[id] || ids.length, delta = ps - ns;
       const ok = delta > 0 ? '<span class="biy-ok biy-ok-yukari">▲</span>' : (delta < 0 ? '<span class="biy-ok biy-ok-asagi">▼</span>' : '<span class="biy-ok biy-ok-sabit"></span>');
@@ -1345,8 +1338,8 @@ const BIY = {
     const step = taze ? 0 : 2;   // yenileme olursa doğrudan son sahne (liderlik)
     const t = TIP_BILGI[soru.tip] || { ad: soru.tip, emoji: "❓" };
     const baslik = ber
-      ? '⚔️ '+(o.berHedef===1?'Liderlik':'İkincilik')+' Beraberliği · Yedek Soru '+o.berNo
-      : '📊 Sonuç · Soru '+(idx+1)+' / '+toplam;
+      ? '⚔️ '+(o.berHedef===1?'المَرْكَزُ الأَوَّلُ':'المَرْكَزُ الثَّانِي')+' · تَعَادُلٌ · سُؤَالُ '+o.berNo
+      : '📊 النَّتِيجَةُ · سُؤَالُ '+(idx+1)+' / '+toplam;
     return '<div class="biy-oyun-orta biy-sonuc-ekran" data-degisti="'+(degisti?1:0)+'" data-step="'+step+'">' +
       '<div class="biy-sonuc-baslik'+(ber?' biy-ber':'')+'">'+baslik+'</div>' +
       '<div class="biy-sonuc-sahne">' +
@@ -1358,24 +1351,22 @@ const BIY = {
         '</div>' +
         // SAHNE 2: sınıfların verdiği cevaplar (devasa)
         '<div class="biy-sahne-oge oge-reveal">' +
-          '<div class="biy-reveal'+(cevapTakimlari.length > 8 && modAl() !== "takim" ? ' biy-kaydir' : '')+'"><table class="biy-reveal-tablo"><thead><tr><th>'+(modAl()==="takim"?"Takım":"Katılımcı")+'</th><th>Cevabı</th><th>Durum</th></tr></thead><tbody>'+satir+'</tbody></table></div>' +
+          '<div class="biy-reveal'+(cevapTakimlari.length > 8 && modAl() === "birey" ? ' biy-kaydir' : '')+'"><table class="biy-reveal-tablo"><thead><tr><th>'+basSutun+'</th><th>الإِجَابَةُ</th><th>الحَالَةُ</th></tr></thead><tbody>'+satir+'</tbody></table></div>' +
         '</div>' +
         // SAHNE 3: güncel puan durumu (devasa)
         '<div class="biy-sahne-oge oge-lider">' +
-          (modAl() === "okul"
-            ? BIY._okulPuanHtml(idx)
-            : '<div class="biy-sonuc-lider"><h4>🏆 Puan Durumu</h4><ol class="biy-lider-ol'+(newOrder.length>10?' biy-kaydir':'')+'">'+lider+'</ol></div>') +
+          '<div class="biy-sonuc-lider"><h4>🏆 النَّتَائِجُ</h4><ol class="biy-lider-ol'+(newOrder.length>10?' biy-kaydir':'')+'">'+lider+'</ol></div>' +
         '</div>' +
       '</div>' +
       // aşağıda üç ilerleme çizgisi — tıklayınca ilgili sayfaya geçer
       '<div class="biy-sonuc-nokta">' +
-        '<button class="biy-nokta" data-adim="0" onclick="BIY.sonucAdim(0)" title="Soru & doğru şık"></button>' +
-        '<button class="biy-nokta" data-adim="1" onclick="BIY.sonucAdim(1)" title="Sınıfların cevapları"></button>' +
-        '<button class="biy-nokta" data-adim="2" onclick="BIY.sonucAdim(2)" title="Puan durumu"></button>' +
+        '<button class="biy-nokta" data-adim="0" onclick="BIY.sonucAdim(0)" title="السُّؤَالُ وَالإِجَابَةُ الصَّحِيحَةُ"></button>' +
+        '<button class="biy-nokta" data-adim="1" onclick="BIY.sonucAdim(1)" title="إِجَابَاتُ المُشَارِكِينَ"></button>' +
+        '<button class="biy-nokta" data-adim="2" onclick="BIY.sonucAdim(2)" title="النَّتَائِجُ"></button>' +
       '</div>' +
       '<div class="biy-oyun-kontrol"><button class="biy-btn biy-btn-buyuk" onclick="BIY.sonrakiSoru()">'+
-        (ber ? ((BIY._beraberlikCozuldu() || state.berNo >= state.yedekSorular.length) ? '🏁 Sıralamayı Kesinleştir' : 'Sonraki Yedek Soru ›')
-             : (son ? '🏁 Yarışmayı Bitir' : 'Sonraki Soru ›')) +
+        (ber ? ((BIY._beraberlikCozuldu() || state.berNo >= state.yedekSorular.length) ? '🏁 اعْتِمَادُ التَّرْتِيبِ' : 'سُؤَالُ التَّعَادُلِ التَّالِي ›')
+             : (son ? '🏁 إِنْهَاءُ المُسَابَقَةِ' : 'السُّؤَالُ التَّالِي ›')) +
       '</button></div>' +
     '</div>';
   },
@@ -1400,11 +1391,10 @@ const BIY = {
     return state.takimListe.slice().sort((a,b) => (b.puan||0) - (a.puan||0));
   },
   _miniLiderHtml(){
-    return '<h4>Puan Durumu</h4><ol class="biy-lider-ol">' +
+    return '<h4>النَّتَائِجُ</h4><ol class="biy-lider-ol">' +
       BIY._siraliTakimlar().map(t => '<li><span>'+kacis(t.ad)+'</span><b>'+(t.puan||0)+'</b></li>').join("") + '</ol>';
   },
   _leaderboardHtml(final){
-    if (modAl() === "okul") return BIY._okulFinalHtml();
     const o = state.oda || {};
     const P = BIY._puanKumul(1e12);   // yedekler dahil toplam puanlar
     const puanOf = t => (P[t.id] != null ? P[t.id] : (t.puan || 0));
@@ -1417,13 +1407,13 @@ const BIY = {
     }
     const madalya = ["🥇","🥈","🥉"];
     return '<div class="biy-oyun-orta biy-final">' +
-      '<div class="biy-logo">🏆</div><h1>Yarışma Bitti!</h1>' +
+      '<div class="biy-logo">'+simge("🏆")+'</div><h1>انْتَهَتِ المُسَابَقَةُ!</h1>' +
       '<ol class="biy-final-ol'+(sirali.length>10?' biy-kaydir':'')+'">' +
         sirali.map((t,i) => '<li class="'+(i<3?'podyum':'')+(i===0?' birinci':'')+'" style="--i:'+i+'"><span class="biy-final-sira">'+(madalya[i]||(i+1))+'</span><span class="biy-final-ad">'+kacis(t.ad)+'</span><b>'+puanOf(t)+'</b></li>').join("") +
       '</ol>' +
       '<div class="biy-final-butonlar">' +
-        '<button class="biy-btn biy-btn-yesil" onclick="BIY.lobiyeDon()">🔄 Lobiye Dön (' + kisiSozu() + 'ler bağlı kalır)</button>' +
-        '<button class="biy-btn biy-btn-mavi" onclick="BIY.oyunuBitir()">Bitir &amp; Menü</button>' +
+        '<button class="biy-btn biy-btn-yesil" onclick="BIY.lobiyeDon()">🔄 العَوْدَةُ إِلَى الانْتِظَارِ (' + cogSozu() + ' يَبْقَوْنَ مُتَّصِلِينَ)</button>' +
+        '<button class="biy-btn biy-btn-mavi" onclick="BIY.oyunuBitir()">إِنْهَاءٌ &amp; القَائِمَةُ</button>' +
       '</div>' +
     '</div>';
   },
@@ -1538,9 +1528,9 @@ const BIY = {
   async _bitirVeyaBeraberlik(){
     try { await BIY._puanlariGuncelle(); } catch(e){}
     const ids = state.takimListe.map(t => t.id);
-    // Yedek soruyla beraberlik bozma yalnızca takım modunda anlamlı; birey/okul
-    // modunda katılımcı sayısı çok, tam eşitlik nadir → doğrudan bitir.
-    if (modAl() !== "takim"){ await db.collection(KOLEKSIYON).doc(state.odaId).update({ durum: "bitti", sonSira: [] }); return; }
+    // Yedek soruyla beraberlik bozma takım ve okul modunda anlamlı (az sayıda
+    // yarışmacı); birey modunda katılımcı çok, tam eşitlik nadir → doğrudan bitir.
+    if (modAl() === "birey"){ await db.collection(KOLEKSIYON).doc(state.odaId).update({ durum: "bitti", sonSira: [] }); return; }
     const d = BIY._beraberlikDurumu(BIY._puanKumul(1e12), ids);
     if (!d.hedef){ await db.collection(KOLEKSIYON).doc(state.odaId).update({ durum: "bitti", sonSira: [] }); return; }
     state.berHedef = d.hedef; state.berTakimlar = d.tied; state.berSabit = d.sabit; state.berNo = 0; state.berSorular = [];
@@ -1581,8 +1571,8 @@ const BIY = {
     const takimRef = db.collection(KOLEKSIYON).doc(oda).collection("takimlar").doc(takim);
     try {
       const snap = await takimRef.get();
-      if (!snap.exists){ BIY._takimIcerik('❌','Takım bulunamadı','Bu link geçersiz ya da takım silinmiş olabilir.'); return; }
-      state.takimAd = snap.data().ad || "Takım";
+      if (!snap.exists){ BIY._takimIcerik('❌','لَمْ يُوجَدِ الفَرِيقُ','الرَّابِطُ غَيْرُ صَالِحٍ أَوْ حُذِفَ الفَرِيقُ.'); return; }
+      state.takimAd = snap.data().ad || "فَرِيقٌ";
       // yenileme sonrası: bu soruyu zaten cevapladıysa hatırla
       try { const kc = JSON.parse(localStorage.getItem('biy_cevap') || 'null'); if (kc && kc.oda === oda && kc.takim === takim) state.sonCevapIndex = kc.index; } catch(e){}
       await takimRef.update({ bagli: true, sonGorulme: firebase.firestore.FieldValue.serverTimestamp() });
@@ -1592,13 +1582,13 @@ const BIY = {
 
       if (state.odaAbone) state.odaAbone();
       state.odaAbone = db.collection(KOLEKSIYON).doc(oda).onSnapshot(d => { state.oda = d.data() || null; BIY._renderTakim(); });
-    } catch(e){ console.error(e); BIY._takimIcerik('⚠️','Bağlanılamadı','İnternetini ve linki kontrol et.'); }
+    } catch(e){ console.error(e); BIY._takimIcerik('⚠️','تَعَذَّرَ الاتِّصَالُ','تَحَقَّقْ مِنَ الإِنْتَرْنِتِ وَالرَّابِطِ.'); }
   },
   _takimIcerik(emoji, baslik, metin, ekstra){
     $("takimIcerik").className = "biy-orta";
     $("takimIcerik").innerHTML =
       '<div class="biy-kart">' +
-        '<div class="biy-logo">'+emoji+'</div>' +
+        '<div class="biy-logo">'+simge(emoji)+'</div>' +
         '<h1>'+kacis(baslik)+'</h1>' +
         '<p class="biy-alt">'+kacis(metin)+'</p>' + (ekstra || "") +
       '</div>';
@@ -1611,7 +1601,7 @@ const BIY = {
     if (o.durum === "lobi" || o.aktifIndex === -1){
       // yeni tura hazırlık: önceki turun cevap takibini sıfırla (oda yeniden kullanılıyor olabilir)
       state.sonCevapIndex = -1; try { localStorage.removeItem('biy_cevap'); } catch(e){}
-      BIY._takimIcerik('✅', state.takimAd, 'Bağlandın! Yöneticinin yarışmayı başlatması bekleniyor…',
+      BIY._takimIcerik('✅', state.takimAd, 'تَمَّ الاتِّصَالُ! فِي انْتِظَارِ بَدْءِ المُعَلِّمِ.',
         '<div class="biy-bekle-nokta"><span></span><span></span><span></span></div>');
       sayacDurdur(); return;
     }
@@ -1620,11 +1610,11 @@ const BIY = {
       const ss = Array.isArray(o.sonSira) ? o.sonSira : null;
       if (ss){
         const r = ss.indexOf(state.odaTakim.takim) + 1;
-        if (r === 1) BIY._takimIcerik('🎉','Tebrikler!', 'Birinci oldunuz! 🥇');
-        else if (r > 0) BIY._takimIcerik('🏅', r + '. oldunuz', 'Yarışmayı ' + r + '. sırada tamamladınız.');
-        else BIY._takimIcerik('🏁','Yarışma bitti!', 'Sıralama tahtada.');
+        if (r === 1) BIY._takimIcerik('🎉','أَحْسَنْتَ!', 'المَرْكَزُ الأَوَّلُ! 🥇');
+        else if (r > 0) BIY._takimIcerik('🏅', 'المَرْكَزُ ' + r, 'أَنْهَيْتَ المُسَابَقَةَ فِي المَرْكَزِ ' + r + '.');
+        else BIY._takimIcerik('🏁','انْتَهَتِ المُسَابَقَةُ!', 'التَّرْتِيبُ عَلَى الشَّاشَةِ.');
       } else {
-        BIY._takimIcerik('🏁','Yarışma bitti!', 'Sıralama tahtada (yönetici ekranında).');
+        BIY._takimIcerik('🏁','انْتَهَتِ المُسَابَقَةُ!', 'التَّرْتِيبُ عَلَى شَاشَةِ المُعَلِّمِ.');
       }
       sayacDurdur(); return;
     }
@@ -1632,19 +1622,19 @@ const BIY = {
       const amTied = (o.berTakimlar||[]).indexOf(state.odaTakim.takim) >= 0;
       if (!amTied){
         const rank = (o.berSabit||{})[state.odaTakim.takim];
-        if (rank === 1) BIY._takimIcerik('🎉','Tebrikler!', 'Birinci oldunuz! 🥇');
-        else if (rank) BIY._takimIcerik('🏅', rank + '. oldunuz', 'Yarışmayı ' + rank + '. sırada tamamladınız.');
-        else BIY._takimIcerik('⏳','Beraberlik!', 'Diğer takımlar yedek soruda yarışıyor…');
+        if (rank === 1) BIY._takimIcerik('🎉','أَحْسَنْتَ!', 'المَرْكَزُ الأَوَّلُ! 🥇');
+        else if (rank) BIY._takimIcerik('🏅', 'المَرْكَزُ ' + rank, 'أَنْهَيْتَ المُسَابَقَةَ فِي المَرْكَزِ ' + rank + '.');
+        else BIY._takimIcerik('⏳','تَعَادُلٌ!', 'الآخَرُونَ فِي سُؤَالِ التَّعَادُلِ…');
         sayacDurdur(); return;
       }
-      if (o.faz === "sonuc"){ BIY._takimIcerik('📺','Cevaplar tahtada!', 'Sonraki yedek soru bekleniyor…'); sayacDurdur(); return; }
+      if (o.faz === "sonuc"){ BIY._takimIcerik('📺','الإِجَابَاتُ عَلَى الشَّاشَةِ!', 'فِي انْتِظَارِ سُؤَالِ التَّعَادُلِ التَّالِي…'); sayacDurdur(); return; }
       // beraberlikte olan takım → aşağıdaki cevap akışıyla yedek soruyu cevaplar
     }
     // oyun
     const idx = o.aktifIndex, s = o.aktifSoru;
-    if (!s){ BIY._takimIcerik('⏳','Hazırlanıyor…',''); return; }
+    if (!s){ BIY._takimIcerik('⏳','جَارٍ التَّحْضِيرُ…',''); return; }
     if (o.faz === "sonuc"){
-      BIY._takimIcerik('📺','Cevaplar tahtada!', 'Sonraki soru bekleniyor…');
+      BIY._takimIcerik('📺','الإِجَابَاتُ عَلَى الشَّاشَةِ!', 'فِي انْتِظَارِ السُّؤَالِ التَّالِي…');
       sayacDurdur(); return;
     }
     // cevap fazı
@@ -1656,8 +1646,8 @@ const BIY = {
     const kilit = cevapVerildi || kalan <= 0;
     BIY._calismaHazirla(idx, s);
     const alt = cevapVerildi
-      ? '<div class="biy-t-alindi">✅ Cevabın alındı</div>'
-      : (kalan<=0 ? '<div class="biy-t-alindi biy-gec">⌛ Süre doldu</div>'
+      ? '<div class="biy-t-alindi">✅ وَصَلَتْ إِجَابَتُكَ</div>'
+      : (kalan<=0 ? '<div class="biy-t-alindi biy-gec">⌛ انْتَهَى الوَقْتُ</div>'
                   : '<div class="biy-t-ipucu">'+BIY._ipucuMetni(s)+'</div>');
     $("takimIcerik").className = "biy-oyun-orta";
     $("takimIcerik").innerHTML =
@@ -1676,7 +1666,7 @@ const BIY = {
           .forEach(b => b.setAttribute("disabled",""));
         const kap = $("biyCalisma"); if (kap) kap.classList.add("kilitli");
         const ip = document.querySelector(".biy-t-ipucu");
-        if (ip){ ip.className = "biy-t-alindi biy-gec"; ip.textContent = "⌛ Süre doldu"; }
+        if (ip){ ip.className = "biy-t-alindi biy-gec"; ip.textContent = "⌛ انْتَهَى الوَقْتُ"; }
       }
     });
   },
@@ -1702,15 +1692,15 @@ const BIY = {
   },
   _ipucuMetni(s){
     const b = bicimAl(s);
-    if (b === "surukle")  return "Parçaları sürükle ya da dokunarak sıraya diz";
-    if (b === "eslestir") return "Sağdaki kartları doğru satıra taşı";
-    if (b === "yazma")    return "Harflere basarak kelimeyi yaz";
-    return "Bir şık seç";
+    if (b === "surukle")  return "رَتِّبِ القِطَعَ بِالسَّحْبِ أَوِ اللَّمْسِ";
+    if (b === "eslestir") return "انْقُلِ البِطَاقَاتِ إِلَى السَّطْرِ الصَّحِيحِ";
+    if (b === "yazma")    return "اكْتُبِ الكَلِمَةَ بِالحُرُوفِ";
+    return "اخْتَرْ إِجَابَةً";
   },
   _gonderHtml(kilit, tam){
     return '<div class="biy-t-gonder-sar"><button class="biy-t-gonder" ' +
            ((kilit || !tam) ? 'disabled' : '') +
-           ' onclick="BIY.cevapGonder()">Gönder ✔</button></div>';
+           ' onclick="BIY.cevapGonder()">إِرْسَالٌ ✔</button></div>';
   },
 
   /* ---------- takım tarafı: biçime göre cevap alanı ---------- */
@@ -1734,7 +1724,7 @@ const BIY = {
       return '<div class="biy-t-calisma" id="biyCalisma">' +
                '<div class="biy-t-slotlar" dir="rtl">'+slot+'</div>' +
                '<div class="biy-t-havuz" data-drop="havuz" dir="rtl">' +
-                 (havuz || '<span class="biy-t-bos">Tüm parçalar yerleşti ✔</span>') +
+                 (havuz || '<span class="biy-t-bos">تَمَّ تَرْتِيبُ الكُلِّ ✔</span>') +
                '</div>' +
              '</div>' + BIY._gonderHtml(kilit, tam);
     }
@@ -1759,7 +1749,7 @@ const BIY = {
       return '<div class="biy-t-calisma" id="biyCalisma">' +
                '<div class="biy-t-ciftler">'+satir+'</div>' +
                '<div class="biy-t-havuz" data-drop="havuz">' +
-                 (havuz || '<span class="biy-t-bos">Tüm kartlar yerleşti ✔</span>') +
+                 (havuz || '<span class="biy-t-bos">تَمَّ وَضْعُ الكُلِّ ✔</span>') +
                '</div>' +
              '</div>' + BIY._gonderHtml(kilit, tam);
     }
@@ -1967,8 +1957,8 @@ const BIY = {
      Üç mod da aynı Firestore yapısını kullanır: her katılımcı (ister takım,
      ister tek öğrenci) "takimlar" alt koleksiyonunda bir belgedir. Böylece
      puanlama, sonuç ekranı ve sıralama kodu üç modda da aynı çalışır.
-     Birey/okul modunda belgeye ek olarak  onay(bool) · sinif(string) ·
-     red / atildi  alanları yazılır.
+     Birey modunda belgeye ek olarak  onay(bool) · red · atildi  alanları
+     yazılır; takım/okul modunda öğretmen adları kendi yazdığı için onay yok.
      =================================================================== */
 
   // Başlat düğmesi görünsün mü, altındaki not ne yazsın (moda göre)
@@ -1977,26 +1967,20 @@ const BIY = {
     const sayi  = state.takimListe.length;
     const bagli = state.takimListe.filter(t => t.bagli).length;
     const bek   = state.bekleyenListe.length;
-    const bekNot = bek ? " · " + bek + " kişi onay bekliyor" : "";
-    if (m === "takim"){
+    const bekNot = bek ? " · " + bek + " فِي انْتِظَارِ المُوَافَقَةِ" : "";
+    // Takım ve Okul: her ada bir karekod → hepsi bağlanınca başlar (aynı mantık)
+    if (m !== "birey"){
+      const c = cogSozu();                        // "فِرَق" | "صُفوف"
       if (sayi === 0) return { olur:false, not:"" };
-      if (sayi < 2)   return { olur:false, not: sayi + " takım · başlatmak için en az 2 takım gerekli" };
-      if (bagli < sayi) return { olur:false, not: sayi + " takım · " + bagli + " bağlandı — hepsi bağlanınca başlatılabilir (" + (sayi-bagli) + " takım bekleniyor)" };
-      return { olur:true, not: "✓ " + sayi + " takım hazır — başlatabilirsiniz" };
+      if (sayi < 2)   return { olur:false, not: c + ": " + sayi + " · يَلْزَمُ اثْنَانِ عَلَى الأَقَلِّ" };
+      if (bagli < sayi) return { olur:false, not: c + ": " + sayi + " · اتَّصَلَ " + bagli + " · نَنْتَظِرُ " + (sayi-bagli) };
+      return { olur:true, not: "✓ " + c + ": " + sayi + " · يُمْكِنُكَ البَدْءُ" };
     }
-    if (m === "okul"){
-      if ((state.siniflar || []).length < 2)
-        return { olur:false, not:"Önce en az 2 sınıf ekleyin (7-A, 7-B …)" + bekNot };
-      const sinifSet = new Set(state.takimListe.map(t => t.sinif).filter(Boolean));
-      if (sayi < 2) return { olur:false, not: sayi + " öğrenci onaylandı · en az 2 öğrenci gerekli" + bekNot };
-      if (sinifSet.size < 2) return { olur:false, not: "Onaylananlar tek sınıftan · en az 2 sınıf yarışmalı" + bekNot };
-      return { olur:true, not: "✓ " + sayi + " öğrenci · " + sinifSet.size + " sınıf hazır" + bekNot };
-    }
-    if (sayi < 2) return { olur:false, not: sayi + " kişi onaylandı · en az 2 kişi gerekli" + bekNot };
-    return { olur:true, not: "✓ " + sayi + " kişi hazır — başlatabilirsiniz" + bekNot };
+    if (sayi < 2) return { olur:false, not: "مُشَارِكُونَ: " + sayi + " · يَلْزَمُ اثْنَانِ عَلَى الأَقَلِّ" + bekNot };
+    return { olur:true, not: "✓ مُشَارِكُونَ: " + sayi + " · يُمْكِنُكَ البَدْءُ" + bekNot };
   },
 
-  /* ---------- TAKIM MODU lobisi: her takıma ayrı karekod (eski davranış) ---------- */
+  /* ---------- TAKIM & OKUL lobisi: her takıma/sınıfa ayrı karekod ---------- */
   _takimKartlariCiz(){
     const grid = $("takimlarGrid"); if (!grid) return;
     grid.innerHTML = "";
@@ -2005,30 +1989,28 @@ const BIY = {
       const kart = document.createElement("div");
       kart.className = "biy-takim-kart " + (t.bagli ? "biy-kart-bagli" : "biy-kart-bekliyor");
       kart.innerHTML =
-        '<button class="biy-sil" title="Sil" onclick="BIY.takimSil(&quot;'+t.id+'&quot;)">✕</button>' +
+        '<button class="biy-sil" title="حَذْفٌ" onclick="BIY.takimSil(&quot;'+t.id+'&quot;)">✕</button>' +
         '<h3>'+ kacis(t.ad) +'</h3>' +
-        '<div class="biy-takim-durum '+(t.bagli?"biy-bagli":"biy-bekliyor")+'">'+(t.bagli?"● Bağlandı":"○ Bekleniyor")+'</div>' +
+        '<div class="biy-takim-durum '+(t.bagli?"biy-bagli":"biy-bekliyor")+'">'+(t.bagli?"● مُتَّصِلٌ":"○ فِي الانْتِظَارِ")+'</div>' +
         '<div class="biy-qr" id="'+qrId+'"></div>' +
-        '<div class="biy-takim-link"><input readonly value="'+ kacis(link) +'"><button class="biy-kopya" onclick="BIY.kopyala(this)">Kopyala</button></div>';
+        '<div class="biy-takim-link"><input readonly value="'+ kacis(link) +'"><button class="biy-kopya" onclick="BIY.kopyala(this)">نَسْخٌ</button></div>';
       grid.appendChild(kart);
       try { const box = $(qrId); if (box && window.QRCode){ box.innerHTML=""; new QRCode(box, { text: link, width: 170, height: 170, correctLevel: QRCode.CorrectLevel.M }); } }
       catch(err){ console.warn("QR:", err); }
     });
   },
 
-  /* ---------- BİREY / OKUL lobisi: tek ortak karekod ---------- */
+  /* ---------- BİREY lobisi: tek ortak karekod ---------- */
   _odaKarekodCiz(){
     const kap = $("lobiOdaAlan"); if (!kap || !state.odaId) return;
     const link = odaLinki(state.odaId);
-    const ipucu = modAl() === "okul"
-      ? "Her öğrenci bu karekodu okutur, adını yazıp sınıfını seçer. Sen onayladıkça listeye düşerler."
-      : "Herkes bu tek karekodu okutur ve kendi adını yazar. Sen onayladıkça listeye düşerler.";
+    const ipucu = "يَمْسَحُ الجَمِيعُ هَذَا الرَّمْزَ وَيَكْتُبُ كُلٌّ اسْمَهُ. يَدْخُلُونَ القَائِمَةَ بَعْدَ مُوَافَقَتِكَ.";
     kap.innerHTML =
       '<div class="biy-oda-kart">' +
         '<div class="biy-oda-sol">' +
-          '<span class="biy-oda-etiket">Oda Kodu</span>' +
+          '<span class="biy-oda-etiket">رَمْزُ الغُرْفَةِ</span>' +
           '<span class="biy-oda-kod">'+ kacis(state.odaId) +'</span>' +
-          '<div class="biy-takim-link"><input readonly value="'+ kacis(link) +'"><button class="biy-kopya" onclick="BIY.kopyala(this)">Kopyala</button></div>' +
+          '<div class="biy-takim-link"><input readonly value="'+ kacis(link) +'"><button class="biy-kopya" onclick="BIY.kopyala(this)">نَسْخٌ</button></div>' +
           '<p class="biy-oda-ipucu">'+ ipucu +'</p>' +
         '</div>' +
         '<div class="biy-qr biy-oda-qr" id="odaQrKutu"></div>' +
@@ -2045,17 +2027,16 @@ const BIY = {
     if (bek){
       const b = state.bekleyenListe;
       bek.innerHTML = !b.length
-        ? '<div class="biy-bek-bos">⏳ Onay bekleyen yok — karekodu okutan katılımcılar burada belirir.</div>'
-        : '<div class="biy-bek-ust"><h3>⏳ Onay bekleyen ('+b.length+')</h3>' +
-            (b.length > 1 ? '<button class="biy-btn biy-btn-yesil biy-btn-mini" onclick="BIY.hepsiniOnayla()">Hepsini onayla</button>' : '') +
+        ? '<div class="biy-bek-bos">⏳ لَا أَحَدَ يَنْتَظِرُ — مَنْ يَمْسَحُ الرَّمْزَ يَظْهَرُ هُنَا.</div>'
+        : '<div class="biy-bek-ust"><h3>⏳ فِي انْتِظَارِ المُوَافَقَةِ ('+b.length+')</h3>' +
+            (b.length > 1 ? '<button class="biy-btn biy-btn-yesil biy-btn-mini" onclick="BIY.hepsiniOnayla()">المُوَافَقَةُ عَلَى الكُلِّ</button>' : '') +
           '</div>' +
           '<div class="biy-bek-liste">' + b.map(k =>
             '<div class="biy-bek-kart">' +
-              '<button class="biy-bek-ad" title="İsmi düzelt" onclick="BIY.katilimciAdDegistir(&quot;'+k.id+'&quot;)">'+kacis(k.ad)+'</button>' +
-              (k.sinif ? '<span class="biy-bek-sinif">'+kacis(k.sinif)+'</span>' : '') +
+              '<button class="biy-bek-ad" title="صَحِّحِ الاسْمَ" onclick="BIY.katilimciAdDegistir(&quot;'+k.id+'&quot;)">'+kacis(k.ad)+'</button>' +
               '<span class="biy-bek-btnlar">' +
-                '<button class="biy-onay-ok" title="Onayla" onclick="BIY.katilimciOnayla(&quot;'+k.id+'&quot;)">✓</button>' +
-                '<button class="biy-onay-red" title="Reddet" onclick="BIY.katilimciReddet(&quot;'+k.id+'&quot;)">✕</button>' +
+                '<button class="biy-onay-ok" title="مُوَافَقَةٌ" onclick="BIY.katilimciOnayla(&quot;'+k.id+'&quot;)">✓</button>' +
+                '<button class="biy-onay-red" title="رَفْضٌ" onclick="BIY.katilimciReddet(&quot;'+k.id+'&quot;)">✕</button>' +
               '</span>' +
             '</div>').join("") +
           '</div>';
@@ -2064,20 +2045,18 @@ const BIY = {
     const grid = $("takimlarGrid"); if (!grid) return;
     const L = state.takimListe;
     if (!L.length){
-      grid.innerHTML = '<div class="biy-kat-bos">Henüz onaylanmış katılımcı yok.</div>';
+      grid.innerHTML = '<div class="biy-kat-bos">لَا مُشَارِكِينَ بَعْدُ.</div>';
       return;
     }
-    const sinifRozet = k => (modAl() === "okul" && k.sinif) ? '<span class="biy-kat-sinif">'+kacis(k.sinif)+'</span>' : '';
     grid.innerHTML =
-      '<div class="biy-kat-ust"><span>👥 Katılımcılar ('+L.length+')</span>' +
-        '<span class="biy-kat-ipucu">İsme dokunup düzelt · ✕ ile çıkar</span></div>' +
+      '<div class="biy-kat-ust"><span>👥 المُشَارِكُونَ ('+L.length+')</span>' +
+        '<span class="biy-kat-ipucu">الْمِسِ الاسْمَ لِتُصَحِّحَهُ · ✕ لِلْإِخْرَاجِ</span></div>' +
       '<div class="biy-kat-satirlar'+(L.length > 12 ? ' biy-kaydir' : '')+'">' +
         L.map(k =>
           '<div class="biy-kat-satir '+(k.bagli ? 'bagli' : 'kopuk')+'">' +
-            '<span class="biy-kat-nokta" title="'+(k.bagli?'Bağlı':'Bağlantı yok')+'"></span>' +
-            '<button class="biy-kat-ad" title="İsmi düzelt" onclick="BIY.katilimciAdDegistir(&quot;'+k.id+'&quot;)">'+kacis(k.ad)+'</button>' +
-            sinifRozet(k) +
-            '<button class="biy-kat-at" title="Yarışmadan çıkar" onclick="BIY.katilimciAt(&quot;'+k.id+'&quot;)">✕</button>' +
+            '<span class="biy-kat-nokta" title="'+(k.bagli?'مُتَّصِلٌ':'غَيْرُ مُتَّصِلٍ')+'"></span>' +
+            '<button class="biy-kat-ad" title="صَحِّحِ الاسْمَ" onclick="BIY.katilimciAdDegistir(&quot;'+k.id+'&quot;)">'+kacis(k.ad)+'</button>' +
+            '<button class="biy-kat-at" title="أَخْرِجْ مِنَ المُسَابَقَةِ" onclick="BIY.katilimciAt(&quot;'+k.id+'&quot;)">✕</button>' +
           '</div>').join("") +
       '</div>';
   },
@@ -2098,18 +2077,18 @@ const BIY = {
   },
   katilimciReddet(id){
     const k = state.bekleyenListe.find(x => x.id === id) || {};
-    BIY._onay("Katılım reddedilsin mi?", "«" + (k.ad||"") + "» listeye alınmayacak. Cihazında yeni bir isimle tekrar deneyebilir.",
-      "Reddet", async () => { try { await BIY._katilimciRef(id).update({ red: true }); } catch(e){ console.error(e); } });
+    BIY._onay("هَلْ تَرْفُضُ المُشَارَكَةَ؟", "«" + (k.ad||"") + "» لَنْ يَدْخُلَ القَائِمَةَ. يُمْكِنُهُ المُحَاوَلَةُ بِاسْمٍ جَدِيدٍ.",
+      "رَفْضٌ", async () => { try { await BIY._katilimciRef(id).update({ red: true }); } catch(e){ console.error(e); } });
   },
   katilimciAt(id){
     const k = state.takimListe.find(x => x.id === id) || {};
-    BIY._onay("Yarışmadan çıkarılsın mı?", "«" + (k.ad||"") + "» listeden çıkarılacak ve cihazında bilgilendirme görünecek.",
-      "Çıkar", async () => { try { await BIY._katilimciRef(id).update({ atildi: true, bagli: false }); } catch(e){ console.error(e); } });
+    BIY._onay("هَلْ تُخْرِجُهُ مِنَ المُسَابَقَةِ؟", "«" + (k.ad||"") + "» سَيَخْرُجُ مِنَ القَائِمَةِ وَسَيَظْهَرُ إِشْعَارٌ عَلَى جِهَازِهِ.",
+      "إِخْرَاجٌ", async () => { try { await BIY._katilimciRef(id).update({ atildi: true, bagli: false }); } catch(e){ console.error(e); } });
   },
   katilimciAdDegistir(id){
     const k = state.takimListe.find(x => x.id === id) || state.bekleyenListe.find(x => x.id === id);
     if (!k) return;
-    BIY._metinSor("İsmi düzelt", k.ad, "Kaydet", async (yeni) => {
+    BIY._metinSor("صَحِّحِ الاسْمَ", k.ad, "حِفْظٌ", async (yeni) => {
       const ad = isimTemizle(yeni);
       if (ad.length < 2) return;
       try { await BIY._katilimciRef(id).update({ ad: ad }); } catch(e){ console.error(e); }
@@ -2121,7 +2100,7 @@ const BIY = {
     const ov = document.createElement("div"); ov.id = "biyOnay"; ov.className = "biy-onay-ov";
     ov.innerHTML = '<div class="biy-onay-kutu"><h3>'+kacis(baslik)+'</h3>' +
       '<input id="biyMetinInput" class="biy-onay-input" type="text" maxlength="18" value="'+kacis(mevcut||"")+'">' +
-      '<div class="biy-onay-btnlar"><button class="biy-onay-hayir">Vazgeç</button><button class="biy-onay-evet">'+kacis(evetMetin)+'</button></div></div>';
+      '<div class="biy-onay-btnlar"><button class="biy-onay-hayir">إِلْغَاءٌ</button><button class="biy-onay-evet">'+kacis(evetMetin)+'</button></div></div>';
     document.body.appendChild(ov);
     const kapat = () => { if (ov.parentNode) ov.remove(); };
     const inp = ov.querySelector("#biyMetinInput");
@@ -2133,129 +2112,26 @@ const BIY = {
     setTimeout(() => { inp.focus(); inp.select(); }, 30);
   },
 
-  /* ---------- OKUL MODU: sınıf listesi ---------- */
-  async sinifEkle(){
-    const inp = $("sinifAdiInput"); if (!inp) return;
-    const ad = String(inp.value || "").replace(/\s+/g," ").trim().slice(0, 12);
-    if (!ad){ inp.focus(); return; }
-    if (!state.siniflar) state.siniflar = [];
-    const kucuk = state.siniflar.map(s => s.toLocaleLowerCase("tr"));
-    if (kucuk.indexOf(ad.toLocaleLowerCase("tr")) >= 0){ inp.value = ""; return; }
-    state.siniflar.push(ad); inp.value = "";
-    BIY._siniflariCiz();
-    await BIY._siniflariYaz();
-  },
-  sinifSil(ad){
-    state.siniflar = (state.siniflar || []).filter(s => s !== ad);
-    BIY._siniflariCiz();
-    BIY._siniflariYaz();
-  },
-  async _siniflariYaz(){
-    try {
-      if (!state.odaId) await BIY._odayiHazirla();
-      await db.collection(KOLEKSIYON).doc(state.odaId).update({ siniflar: (state.siniflar||[]).slice() });
-      const d = BIY._baslatDurumu(); const n = $("baslatNot"); if (n) n.textContent = d.not;
-      const b = $("baslatBtn"); if (b) b.classList.toggle("gizli", !d.olur);
-    } catch(e){ console.error(e); }
-  },
-  _siniflariCiz(){
-    const kutu = $("siniflarKutu"); if (!kutu) return;
-    const S = state.siniflar || [];
-    kutu.innerHTML = !S.length
-      ? '<span class="biy-sinif-bos-not">Yarışacak sınıfları yazın (örn. 7-A, 7-B, 7-C).</span>'
-      : S.map(s => '<span class="biy-sinif-cip">'+kacis(s)+
-          '<button title="Sil" onclick="BIY.sinifSil(&quot;'+kacis(s)+'&quot;)">✕</button></span>').join("");
-  },
-
-  /* ---------- OKUL MODU: sınıf ortalaması ----------
-     Sınıf mevcutları eşit olmadığı için TOPLAM değil ORTALAMA puan yarışır. */
-  _sinifOzet(cutoff){
-    const P = BIY._puanKumul(cutoff);
-    const m = {};
-    state.takimListe.forEach(t => {
-      const s = t.sinif || "—";
-      if (!m[s]) m[s] = { ad: s, toplam: 0, kisi: 0 };
-      m[s].toplam += (P[t.id] || 0); m[s].kisi++;
-    });
-    const liste = Object.keys(m).map(k => {
-      const o = m[k]; o.ort = Math.round(o.toplam / Math.max(1, o.kisi)); return o;
-    });
-    liste.sort((a,b) => b.ort - a.ort || b.toplam - a.toplam);
-    return liste;
-  },
-  _enIyiler(cutoff, adet){
-    const P = BIY._puanKumul(cutoff);
-    return state.takimListe.slice()
-      .map(t => ({ ad: t.ad, sinif: t.sinif || "", puan: P[t.id] || 0 }))
-      .sort((a,b) => b.puan - a.puan)
-      .slice(0, adet || 5);
-  },
-  _okulPuanHtml(idx){
-    const simdi = BIY._sinifOzet(idx), once = BIY._sinifOzet(idx - 1);
-    const oncekiSira = {}; once.forEach((o,i) => oncekiSira[o.ad] = i + 1);
-    const satirlar = simdi.map((o,i) => {
-      const ps = oncekiSira[o.ad] || (i+1), delta = ps - (i+1);
-      const ok = delta > 0 ? '<span class="biy-ok biy-ok-yukari">▲</span>'
-               : (delta < 0 ? '<span class="biy-ok biy-ok-asagi">▼</span>' : '<span class="biy-ok biy-ok-sabit"></span>');
-      return '<li class="biy-lider-satir'+(delta>0?' biy-lider-yukari':(delta<0?' biy-lider-asagi':''))+'">' +
-        '<span class="biy-lider-sira">'+(i+1)+'</span>'+ok +
-        '<span class="biy-lider-ad">'+kacis(o.ad)+'<small class="biy-sinif-kisi"> '+o.kisi+' kişi</small></span>' +
-        '<b>'+o.ort+'</b></li>';
-    }).join("");
-    const iyi = BIY._enIyiler(idx, 5).map((k,i) =>
-      '<li><span class="biy-iyi-sira">'+(i+1)+'</span><span class="biy-iyi-ad">'+kacis(k.ad)+
-      (k.sinif ? '<small> · '+kacis(k.sinif)+'</small>' : '')+'</span><b>'+k.puan+'</b></li>').join("");
-    return '<div class="biy-sonuc-lider biy-okul-lider">' +
-      '<div class="biy-okul-sol"><h4>🏫 Sınıf Ortalaması</h4><ol class="biy-lider-ol'+(simdi.length>10?' biy-kaydir':'')+'">'+satirlar+'</ol></div>' +
-      '<div class="biy-okul-sag"><h4>⭐ En İyi 5 Öğrenci</h4><ol class="biy-iyi-ol">'+iyi+'</ol></div>' +
-    '</div>';
-  },
-  _okulFinalHtml(){
-    const siniflar = BIY._sinifOzet(1e12);
-    const madalya = ["🥇","🥈","🥉"];
-    const iyi = BIY._enIyiler(1e12, 5);
-    return '<div class="biy-oyun-orta biy-final">' +
-      '<div class="biy-logo">🏆</div><h1>Yarışma Bitti!</h1>' +
-      '<p class="biy-final-alt">Sınıflar ortalama puana göre sıralandı.</p>' +
-      '<ol class="biy-final-ol'+(siniflar.length>10?' biy-kaydir':'')+'">' +
-        siniflar.map((o,i) => '<li class="'+(i<3?'podyum':'')+(i===0?' birinci':'')+'" style="--i:'+i+'">' +
-          '<span class="biy-final-sira">'+(madalya[i]||(i+1))+'</span>' +
-          '<span class="biy-final-ad">'+kacis(o.ad)+'<small class="biy-sinif-kisi"> '+o.kisi+' kişi · toplam '+o.toplam+'</small></span>' +
-          '<b>'+o.ort+'</b></li>').join("") +
-      '</ol>' +
-      '<div class="biy-final-iyiler"><h4>⭐ En İyi 5 Öğrenci</h4><ol class="biy-iyi-ol">' +
-        iyi.map((k,i) => '<li><span class="biy-iyi-sira">'+(i+1)+'</span><span class="biy-iyi-ad">'+kacis(k.ad)+
-          (k.sinif ? '<small> · '+kacis(k.sinif)+'</small>' : '')+'</span><b>'+k.puan+'</b></li>').join("") +
-      '</ol></div>' +
-      '<div class="biy-final-butonlar">' +
-        '<button class="biy-btn biy-btn-yesil" onclick="BIY.lobiyeDon()">🔄 Lobiye Dön (öğrenciler bağlı kalır)</button>' +
-        '<button class="biy-btn biy-btn-mavi" onclick="BIY.oyunuBitir()">Bitir &amp; Menü</button>' +
-      '</div>' +
-    '</div>';
-  },
-
   // tahtadaki "kim cevapladı" şeridi
   _ciplerHtml(katilan, buCevaplar){
-    const okul = (modAl() === "okul");
     return katilan.map(tk => {
       const ok = !!buCevaplar[tk.id];
       return '<span class="biy-cip '+(ok?'ok':'')+'">' + (ok ? '<span class="biy-cip-tik">✓</span> ' : '') +
-        kacis(tk.ad) + (okul && tk.sinif ? '<small class="biy-cip-sinif">'+kacis(tk.sinif)+'</small>' : '') + '</span>';
+        kacis(tk.ad) + '</span>';
     }).join("");
   },
 
   /* ===================================================================
-     ÖĞRENCİ TARAFI — tek karekodla katılım (birey / okul)
+     ÖĞRENCİ TARAFI — tek karekodla katılım (yalnız birey modu)
      =================================================================== */
   async katilimAkisi(oda){
     state.odaTakim = { oda: oda, takim: null };
     ekranGoster("ekranKatil");
     try {
       const snap = await db.collection(KOLEKSIYON).doc(oda).get();
-      if (!snap.exists){ BIY._katilNot("Oda bulunamadı. Karekodu tekrar okut ya da öğretmenine sor.", true); return; }
+      if (!snap.exists){ BIY._katilNot("لَمْ تُوجَدِ الغُرْفَةُ. امْسَحِ الرَّمْزَ مِنْ جَدِيدٍ أَوِ اسْأَلْ مُعَلِّمَكَ.", true); return; }
       const o = snap.data() || {};
-      state.oyunModu = (o.mod === "okul" || o.mod === "birey") ? o.mod : "birey";
-      state.siniflar = Array.isArray(o.siniflar) ? o.siniflar : [];
+      state.oyunModu = "birey";   // ortak karekod bağlantısı yalnız birey odalarında üretilir
       // daha önce katıldıysa aynı kayda dön
       let kayit = null; try { kayit = JSON.parse(localStorage.getItem("biy_katilim") || "null"); } catch(e){}
       if (kayit && kayit.oda === oda && kayit.takim){
@@ -2266,20 +2142,13 @@ const BIY = {
       BIY._katilFormu();
     } catch(e){
       console.error(e);
-      BIY._katilNot("Bağlanılamadı. İnternetini kontrol et.", true);
+      BIY._katilNot("تَعَذَّرَ الاتِّصَالُ. تَحَقَّقْ مِنَ الإِنْتَرْنِتِ.", true);
     }
   },
   _katilFormu(){
     ekranGoster("ekranKatil");
     const kart = $("katilKart"); if (kart) kart.classList.remove("gizli");
     const bekle = $("katilBekle"); if (bekle) bekle.classList.add("gizli");
-    const okul = (modAl() === "okul");
-    const alan = $("katilSinifAlan"); if (alan) alan.classList.toggle("gizli", !okul);
-    const sel = $("katilSinifSelect");
-    if (sel && okul){
-      sel.innerHTML = '<option value="">Sınıfını seç…</option>' +
-        (state.siniflar || []).map(s => '<option value="'+kacis(s)+'">'+kacis(s)+'</option>').join("");
-    }
     const not = $("katilNot"); if (not) not.textContent = "";
     const inp = $("katilAdInput"); if (inp){ inp.value = ""; setTimeout(() => inp.focus(), 60); }
   },
@@ -2293,13 +2162,7 @@ const BIY = {
     const sorun = isimSorunu(ham);
     if (sorun){ BIY._katilNot(sorun, true); if (inp) inp.focus(); return; }
     let ad = isimTemizle(ham);
-    let sinif = null;
-    if (modAl() === "okul"){
-      const sel = $("katilSinifSelect");
-      sinif = sel ? sel.value : "";
-      if (!sinif){ BIY._katilNot("Sınıfını seç.", true); return; }
-    }
-    BIY._katilNot("Gönderiliyor…", false);
+    BIY._katilNot("جَارٍ الإِرْسَالُ…", false);
     try {
       // aynı isim varsa numaralandır
       const hepsi = await db.collection(KOLEKSIYON).doc(oda).collection("takimlar").get();
@@ -2307,14 +2170,14 @@ const BIY = {
       ad = isimBenzersiz(ad, adlar);
       const id = rastgeleKod(5);
       await db.collection(KOLEKSIYON).doc(oda).collection("takimlar").doc(id).set({
-        ad: ad, sinif: sinif, onay: false, bagli: true, puan: 0,
+        ad: ad, onay: false, bagli: true, puan: 0,
         olusturmaZamani: firebase.firestore.FieldValue.serverTimestamp()
       });
       try { localStorage.setItem("biy_katilim", JSON.stringify({ oda: oda, takim: id })); } catch(e){}
       BIY._katilimIzle(oda, id);
     } catch(e){
       console.error(e);
-      BIY._katilNot("Katılamadın (bağlantı ya da izin sorunu): " + (e.code || e.message), true);
+      BIY._katilNot("تَعَذَّرَتِ المُشَارَكَةُ: " + (e.code || e.message), true);
     }
   },
   // kendi kaydını dinle: onay / ret / çıkarılma
@@ -2325,7 +2188,7 @@ const BIY = {
     state.katilimAbone = ref.onSnapshot(d => {
       if (!d.exists){ try { localStorage.removeItem("biy_katilim"); } catch(e){} BIY._katilFormu(); return; }
       const t = d.data() || {};
-      state.takimAd = t.ad || "Katılımcı";
+      state.takimAd = t.ad || "مُشَارِكٌ";
       if (t.atildi){
         state.atildiMi = true;
         if (state.takimNabiz){ clearInterval(state.takimNabiz); state.takimNabiz = null; }
@@ -2333,17 +2196,17 @@ const BIY = {
         if (state.odaAbone){ state.odaAbone(); state.odaAbone = null; }
         try { localStorage.removeItem("biy_katilim"); } catch(e){}
         sayacDurdur(); ekranGoster("ekranTakim");
-        BIY._takimIcerik("🚪", "Yarışmadan çıkarıldın", "Öğretmenin seni listeden çıkardı.");
+        BIY._takimIcerik("🚪", "تَمَّ إِخْرَاجُكَ مِنَ المُسَابَقَةِ", "أَخْرَجَكَ المُعَلِّمُ مِنَ القَائِمَةِ.");
         return;
       }
       if (t.red){
         try { localStorage.removeItem("biy_katilim"); } catch(e){}
-        BIY._katilBeklemeEkrani("✋", "İsmin kabul edilmedi", "Gerçek adınla tekrar dene.",
-          '<button class="biy-btn biy-btn-yesil" onclick="BIY.katilYeniden()">Yeni isimle katıl</button>');
+        BIY._katilBeklemeEkrani("✋", "لَمْ يُقْبَلِ الاسْمُ", "حَاوِلْ مَرَّةً أُخْرَى بِاسْمِكَ الحَقِيقِيِّ.",
+          '<button class="biy-btn biy-btn-yesil" onclick="BIY.katilYeniden()">شَارِكْ بِاسْمٍ جَدِيدٍ</button>');
         return;
       }
       if (t.onay !== true){
-        BIY._katilBeklemeEkrani("⏳", kacis(t.ad || ""), "Öğretmenin onayı bekleniyor…",
+        BIY._katilBeklemeEkrani("⏳", kacis(t.ad || ""), "فِي انْتِظَارِ مُوَافَقَةِ المُعَلِّمِ…",
           '<div class="biy-bekle-nokta"><span></span><span></span><span></span></div>');
         return;
       }
@@ -2352,7 +2215,7 @@ const BIY = {
         state.katilBagli = true;
         BIY.takimBagla(oda, id);
       }
-    }, err => { console.error(err); BIY._katilNot("Bağlantı koptu: " + (err.code || err.message), true); });
+    }, err => { console.error(err); BIY._katilNot("انْقَطَعَ الاتِّصَالُ: " + (err.code || err.message), true); });
   },
   _katilBeklemeEkrani(emoji, baslik, metin, ekstra){
     ekranGoster("ekranKatil");
@@ -2360,7 +2223,7 @@ const BIY = {
     const bekle = $("katilBekle");
     if (bekle){
       bekle.classList.remove("gizli");
-      bekle.innerHTML = '<div class="biy-kart biy-orta"><div class="biy-logo">'+emoji+'</div>' +
+      bekle.innerHTML = '<div class="biy-kart biy-orta"><div class="biy-logo">'+simge(emoji)+'</div>' +
         '<h1>'+baslik+'</h1><p class="biy-alt">'+kacis(metin)+'</p>' + (ekstra || "") + '</div>';
     }
   },

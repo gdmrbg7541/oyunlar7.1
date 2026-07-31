@@ -87,7 +87,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: clamp(15px, 4vh, 45px); /* Mobilde boşluklar daha agresif kısıldı */
+            gap: clamp(8px, 3.5vh, 34px);
             z-index: 10;
         }
 
@@ -96,8 +96,8 @@
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            padding: clamp(15px, 4vw, 35px) clamp(15px, 6vw, 60px);
-            border-radius: 40px;
+            padding: clamp(10px, 2.7vh, 26px) clamp(15px, 6vw, 60px);
+            border-radius: clamp(22px, 4vh, 36px);
             border: 1px solid rgba(255, 255, 255, 0.9);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
             width: 100%;
@@ -110,18 +110,18 @@
             display: inline-block;
             background: linear-gradient(135deg, var(--secondary), #e67e22);
             color: white;
-            padding: clamp(8px, 2vw, 12px) clamp(20px, 5vw, 40px); /* Daha dolgun */
-            border-radius: 30px;
-            font-size: clamp(1.4rem, 4vw, 2.2rem); /* Çok daha büyük font */
+            padding: clamp(3px, 0.8vh, 7px) clamp(14px, 3.2vw, 28px);
+            border-radius: 999px;
+            font-size: clamp(0.8rem, 2.5vh, 1.3rem);
             font-weight: normal;
-            margin-bottom: 35px;
+            margin-bottom: clamp(5px, 1.5vh, 14px);
             box-shadow: 0 4px 15px rgba(211, 84, 0, 0.35);
             letter-spacing: 0.5px;
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .header h1 { 
-            font-size: clamp(1.8rem, 7vw, 4.5rem); /* Minimum boyut agresif küçültüldü */
+            font-size: clamp(1.35rem, min(6.6vw, 6.2vh), 3.6rem);
             color: var(--primary); 
             line-height: 1.2;
             margin-bottom: 5px;
@@ -140,7 +140,7 @@
             justify-content: center; 
             align-items: stretch;
             width: 100%;
-            gap: clamp(10px, 3vw, 25px); /* Mobilde kartlar arası boşluk kısıldı */
+            gap: clamp(7px, 2.4vh, 22px);
         }
 
         .game-card {
@@ -150,8 +150,8 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 2px solid rgba(255, 255, 255, 1);
-            border-radius: clamp(20px, 4vw, 30px); 
-            padding: clamp(10px, 4vw, 25px); /* Mobilde iç boşluklar agresif kısıldı */
+            border-radius: clamp(16px, 3vh, 28px);
+            padding: clamp(8px, 2.3vh, 20px) clamp(8px, 2vw, 18px);
             text-align: center;
             text-decoration: none; 
             color: var(--primary); 
@@ -165,7 +165,7 @@
             flex: 1 1 calc(25% - 25px);
             max-width: 320px;
             min-width: clamp(120px, 22%, 220px); /* 4 kart yan yana sığabilmesi için küçültüldü */
-            min-height: clamp(120px, 18vh, 190px);
+            min-height: clamp(74px, 20.8vh, 190px);
             z-index: 1;
         }
 
@@ -174,7 +174,7 @@
             position: absolute;
             bottom: -5%;
             left: 2%; 
-            font-size: clamp(4rem, 12vw, 10rem); /* Dev rakamlar mobilde hızla küçülür */
+            font-size: clamp(2.6rem, 9vh, 8rem);
             font-family: 'Georgia', 'Times New Roman', serif;
             font-style: italic;
             font-weight: 400;
@@ -202,16 +202,16 @@
         }
 
         .icon-circle {
-            width: clamp(45px, 10vw, 85px); /* Mobilde ikon kutusu iyice küçülür */
-            height: clamp(45px, 10vw, 85px); 
+            width: clamp(34px, 9.9vh, 80px);
+            height: clamp(34px, 9.9vh, 80px);
             background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
             border: 2px solid rgba(255,255,255,1);
-            border-radius: clamp(15px, 4vw, 24px); 
+            border-radius: clamp(11px, 2.6vh, 22px);
             display: flex; 
             align-items: center;
             justify-content: center; 
-            margin-bottom: clamp(8px, 2vw, 15px); 
-            font-size: clamp(1.6rem, 5vw, 3.2rem); /* İkon boyutu agresif küçülür */
+            margin-bottom: clamp(4px, 1.5vh, 13px);
+            font-size: clamp(1.15rem, 5.2vh, 2.9rem);
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -223,50 +223,50 @@
         }
 
         .game-card h2 { 
-            font-size: clamp(0.95rem, 8vw, 2.5rem); /* Mobilde başlık daha hızlı küçülür */
+            font-size: clamp(0.8rem, min(3.6vh, 3.4vw), 1.9rem);
             font-weight: normal;
             line-height: 1.3;
         }
 
         /* MOBİL EKRANLAR */
         @media (max-width: 768px) {
-            .game-card { 
+            .game-card {
                 flex-basis: calc(50% - 10px);
+                min-height: clamp(66px, 13vh, 150px);
+                padding: clamp(7px, 1.2vh, 16px) clamp(8px, 2.5vw, 16px);
             }
             .game-card::before {
                 bottom: -8%;
             }
+            .icon-circle {
+                width: clamp(30px, 6.5vh, 62px);
+                height: clamp(30px, 6.5vh, 62px);
+                margin-bottom: clamp(3px, 1vh, 10px);
+                font-size: clamp(1rem, 3.4vh, 2rem);
+            }
+            .game-card h2 { font-size: clamp(0.78rem, min(2.2vh, 4.5vw), 1.4rem); }
+            .header { padding: clamp(8px, 1.8vh, 20px) clamp(12px, 5vw, 40px); }
+            .unit-badge { margin-bottom: clamp(4px, 1.2vh, 11px); }
+            .main-container { gap: clamp(7px, 2.5vh, 24px); }
+            .grid-container { gap: clamp(6px, 1.6vh, 16px); }
+            .quiz-card { min-height: clamp(58px, 13.5vh, 120px);
+                         padding: clamp(7px, 1.4vh, 16px) clamp(12px, 4vw, 30px); }
+            .quiz-ikon { width: clamp(40px, 11vh, 86px); height: clamp(40px, 11vh, 86px); }
         }
 
         /* ÇOK DAR EKRANLAR (400px altı) */
         @media (max-width: 400px) {
             .game-card {
-                flex-basis: 100%;
-                max-width: 100%;
-                min-height: 80px;
-                flex-direction: row; 
-                gap: 12px;
-                padding: 12px 15px;
-                justify-content: flex-start;
-                text-align: right;
+                flex-basis: calc(50% - 5px);
+                border-radius: 16px;
             }
-            .icon-circle {
-                margin-bottom: 0;
-                flex-shrink: 0;
-                width: 45px;
-                height: 45px;
-                font-size: 1.5rem;
-                border-radius: 14px;
-            }
-            .game-card h2 {
-                margin-top: 0;
-                font-size: 1rem;
-            }
+            .icon-circle { border-radius: 12px; }
             .game-card::before {
                 left: 5%;
-                bottom: -25%;
-                font-size: 4.5rem;
+                bottom: -12%;
+                font-size: 3.2rem;
             }
+            .grid-container { gap: 8px; }
         }
     
     
@@ -282,11 +282,11 @@
             flex: 1 1 100%;
             max-width: 100%;
             min-width: 0;
-            min-height: clamp(105px, 19vh, 165px);
+            min-height: clamp(66px, 18.8vh, 158px);
             flex-direction: row;
             justify-content: center;
-            gap: clamp(12px, 3.5vw, 38px);
-            padding: clamp(12px, 3vw, 26px) clamp(16px, 5vw, 46px);
+            gap: clamp(10px, 3.5vw, 34px);
+            padding: clamp(8px, 2.1vh, 20px) clamp(14px, 4vw, 42px);
             background: linear-gradient(115deg, #221a4a 0%, #3a2a78 46%, #5c40a8 100%);
             border: 2px solid rgba(255, 214, 120, 0.5);
             box-shadow: 0 14px 40px rgba(50, 35, 110, 0.32);
@@ -330,8 +330,8 @@
 
         .quiz-ikon {
             flex-shrink: 0;
-            width: clamp(62px, 12vw, 118px);
-            height: clamp(62px, 12vw, 118px);
+            width: clamp(46px, 14vh, 112px);
+            height: clamp(46px, 14vh, 112px);
             z-index: 1;
         }
         .quiz-ikon svg { width: 100%; height: 100%; display: block; overflow: visible; }
@@ -345,12 +345,12 @@
         }
         .quiz-card h2 {
             color: #fff;
-            font-size: clamp(1.15rem, 4.6vw, 2.6rem);
+            font-size: clamp(0.95rem, min(4.3vh, 4.2vw), 2.2rem);
             line-height: 1.25;
             text-shadow: 0 2px 10px rgba(0,0,0,0.25);
         }
         .quiz-alt {
-            font-size: clamp(0.75rem, 2.4vw, 1.15rem);
+            font-size: clamp(0.65rem, min(2.1vh, 2.4vw), 1.05rem);
             color: rgba(255, 231, 178, 0.9);
         }
 
@@ -362,8 +362,8 @@
             background: rgba(255, 255, 255, 0.13);
             border: 1px solid rgba(255, 214, 120, 0.45);
             border-radius: 999px;
-            padding: 3px 14px 4px;
-            font-size: clamp(0.7rem, 2.2vw, 1.05rem);
+            padding: 2px 12px 3px;
+            font-size: clamp(0.6rem, min(1.9vh, 2.2vw), 0.95rem);
             color: #FFE7B2;
         }
         .quiz-nokta {
@@ -378,53 +378,123 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 90, 90, 0); }
         }
 
-        /* --- SVG kupanin hareketleri --- */
-        .q-isinlar { transform-origin: 60px 50px; animation: quizDon 20s linear infinite; }
-        @keyframes quizDon { to { transform: rotate(360deg); } }
-
-        .q-hale { animation: quizNefes 3.4s ease-in-out infinite; }
-        @keyframes quizNefes { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
-
-        .q-kupa { transform-origin: 60px 60px; animation: quizSuzul 3.8s ease-in-out infinite; }
-        @keyframes quizSuzul { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
-        .q-parlak { animation: quizGecis 3.2s ease-in-out infinite; }
-        @keyframes quizGecis {
-            0%        { transform: translateX(-46px); opacity: 0; }
-            18%       { opacity: 0.55; }
-            58%       { opacity: 0.55; }
-            76%, 100% { transform: translateX(64px); opacity: 0; }
+        /* --- "Iki telefon karekoda baglaniyor" hareketleri ---
+           4 saniyelik dongu: karekod hafifce nefes alir, uzerinden turuncu
+           tarama cizgisi gecer, iki telefondan altin noktalar kareye dogru
+           akar, sonunda yesil onay halkasi ve tik belirir. */
+        .q-qr { transform-box: fill-box; transform-origin: center;
+                animation: qrNefes 4s ease-in-out infinite; }
+        @keyframes qrNefes {
+            0%, 100% { transform: scale(1); }
+            44%      { transform: scale(1.06); }
+            60%      { transform: scale(1); }
         }
 
-        .q-yildiz {
-            transform-box: fill-box;
-            transform-origin: center;
-            animation: quizParla 2.6s ease-in-out infinite;
+        .q-tarama { animation: qrTara 4s cubic-bezier(.5, 0, .5, 1) infinite; }
+        @keyframes qrTara {
+            0%        { transform: translateY(-26px); opacity: 0; }
+            10%       { opacity: 0.95; }
+            42%       { transform: translateY(26px);  opacity: 0.95; }
+            50%, 100% { transform: translateY(26px);  opacity: 0; }
         }
-        .q-y2 { animation-delay: 0.85s; }
-        .q-y3 { animation-delay: 1.7s; }
-        @keyframes quizParla {
-            0%, 100% { opacity: 0;    transform: scale(0.35) rotate(0deg); }
-            45%      { opacity: 0.95; transform: scale(1) rotate(30deg); }
+
+        .q-halka { transform-box: fill-box; transform-origin: center;
+                   animation: qrHalka 4s ease-out infinite; }
+        @keyframes qrHalka {
+            0%, 46%   { opacity: 0;    transform: scale(0.7); }
+            56%       { opacity: 0.85; }
+            82%, 100% { opacity: 0;    transform: scale(1.25); }
         }
+
+        .q-onay { transform-box: fill-box; transform-origin: center;
+                  animation: qrOnay 4s ease-out infinite; }
+        @keyframes qrOnay {
+            0%, 48%  { opacity: 0; transform: scale(0.4); }
+            58%      { opacity: 1; transform: scale(1.12); }
+            66%, 86% { opacity: 1; transform: scale(1); }
+            100%     { opacity: 0; transform: scale(1); }
+        }
+
+        /* telefonlar yavasca nefes alir gibi inip kalkar */
+        .q-tel   { animation: qrTelSalin 4s ease-in-out infinite; }
+        .q-tel-b { animation-delay: 0.55s; }
+        @keyframes qrTelSalin {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-3px); }
+        }
+
+        /* telefondan kareye akan veri noktalari */
+        .q-nok { opacity: 0; }
+        .q-ns  { animation: qrAkisSol 2s ease-in-out infinite; }
+        .q-ng  { animation: qrAkisSag 2s ease-in-out infinite; }
+        .q-n2  { animation-delay: 0.4s; }
+        .q-n3  { animation-delay: 0.8s; }
+        @keyframes qrAkisSol {
+            0%   { transform: translate(0, 0);       opacity: 0; }
+            18%  { opacity: 1; }
+            72%  { opacity: 1; }
+            100% { transform: translate(10px, -7px); opacity: 0; }
+        }
+        @keyframes qrAkisSag {
+            0%   { transform: translate(0, 0);        opacity: 0; }
+            18%  { opacity: 1; }
+            72%  { opacity: 1; }
+            100% { transform: translate(-10px, -7px); opacity: 0; }
+        }
+
+        /* kesikli baglanti izi kareye dogru kayar */
+        .q-iz { animation: qrIz 1.6s linear infinite; }
+        @keyframes qrIz { to { stroke-dashoffset: -12; } }
 
         @media (max-width: 400px) {
             .quiz-card {
-                justify-content: flex-start;
-                text-align: right;
-                gap: 12px;
-                padding: 12px 15px;
-                min-height: 92px;
+                gap: 10px;
+                padding: 8px 12px;
+                min-height: clamp(58px, 12vh, 100px);
             }
-            .quiz-yazi { align-items: flex-start; }
-            .quiz-card h2 { font-size: 1.05rem; }
+            .quiz-card h2 { font-size: clamp(0.9rem, 2.6vh, 1.15rem); }
+        }
+
+        /* Cok basik ekranlar (yatay tutulan telefon): sekiz kart yine de
+           tek ekrana sigsin diye butun dikey olculer bir kademe daha kisilir.
+           Diger sorgulardan sonra geldigi icin sira geregi ustun gelir. */
+        @media (max-height: 470px) {
+            body { padding: 1vh 2vw; }
+            .main-container { gap: clamp(6px, 2vh, 16px); }
+            .header { padding: clamp(6px, 1.6vh, 14px) clamp(12px, 5vw, 40px); }
+            .unit-badge {
+                font-size: clamp(0.7rem, 2.2vh, 1rem);
+                margin-bottom: clamp(3px, 1vh, 8px);
+            }
+            .header h1 { font-size: clamp(1.1rem, min(5vw, 5.4vh), 2rem); }
+            .game-card {
+                min-height: clamp(58px, 18vh, 90px);
+                padding: clamp(5px, 1.6vh, 12px) clamp(6px, 1.6vw, 12px);
+            }
+            .icon-circle {
+                width: clamp(26px, 8vh, 44px);
+                height: clamp(26px, 8vh, 44px);
+                margin-bottom: clamp(2px, 1vh, 6px);
+                font-size: clamp(0.9rem, 4.4vh, 1.6rem);
+            }
+            .game-card h2 { font-size: clamp(0.72rem, min(3.2vh, 3vw), 1.1rem); }
+            .game-card::before { font-size: clamp(2rem, 7vh, 4rem); }
+            .grid-container { gap: clamp(5px, 1.8vh, 12px); }
+            .quiz-card {
+                min-height: clamp(50px, 16vh, 84px);
+                padding: clamp(5px, 1.5vh, 12px) clamp(10px, 3vw, 26px);
+            }
+            .quiz-ikon { width: clamp(34px, 12vh, 66px); height: clamp(34px, 12vh, 66px); }
         }
 
         /* Kullanici sistem ayarinda hareketi azaltmissa kart sabit dursun */
         @media (prefers-reduced-motion: reduce) {
-            .quiz-card::after, .quiz-nokta, .q-isinlar,
-            .q-hale, .q-kupa, .q-parlak, .q-yildiz { animation: none; }
-            .q-yildiz { opacity: 0.8; transform: none; }
+            .quiz-card::after, .quiz-nokta, .q-qr, .q-tarama, .q-halka,
+            .q-onay, .q-tel, .q-nok, .q-iz { animation: none; }
+            .q-tarama { opacity: 0; }
+            .q-halka  { opacity: 0.45; transform: none; }
+            .q-onay   { opacity: 1;    transform: none; }
+            .q-nok    { opacity: 0.9;  transform: none; }
         }
 
 </style>
@@ -498,77 +568,150 @@
                 <h2>قِراءَة السّاعَة</h2>
             </a>
 
-            <!-- Canlı bilgi yarışması (Firebase). Öğretmen odayı kurar, öğrenciler
-                 karekodla/bağlantıyla katılır. İnternet gerektirir; çevrimdışıysa
-                 "Sınıf Modu" ile projeksiyondan da oynanabilir. -->
+            <!-- Canlı bilgi yarışması (Firebase). Öğretmen odayı kurar,
+                 öğrenciler karekodla ya da bağlantıyla katılır. İnternet gerekir. -->
             <a href="bilgiyarismasivezinler.html" class="game-card quiz-card" data-num="8">
                 <div class="quiz-ikon">
-                    <!-- Animasyonlu kupa: arkada donen isinlar, nefes alan hale,
-                         suzulen kupa, kupanin uzerinden gecen parlaklik ve
-                         sirayla yanip sonen uc yildiz. -->
-                    <svg viewBox="0 0 120 120" role="img" aria-label="كَأس">
+                    <!-- İki telefon ortadaki karekoda bağlanmaya çalışır:
+                         karekod nefes alır, turuncu tarama çizgisi üzerinden geçer,
+                         telefonlardan altın veri noktaları kareye doğru akar ve
+                         döngünün sonunda yeşil onay halkası ile tik belirir. -->
+                    <svg viewBox="0 0 120 120" role="img" aria-label="رَمْزُ الاِسْتِجابَةِ">
                         <defs>
                             <linearGradient id="qAltin" x1="0" y1="0" x2="0.3" y2="1">
                                 <stop offset="0%"   stop-color="#FFF0C2"/>
-                                <stop offset="42%"  stop-color="#FFC94A"/>
+                                <stop offset="45%"  stop-color="#FFC94A"/>
                                 <stop offset="100%" stop-color="#DE8F0E"/>
                             </linearGradient>
-                            <linearGradient id="qTaban" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%"   stop-color="#FFD97A"/>
-                                <stop offset="100%" stop-color="#C67B08"/>
+                            <linearGradient id="qGovde" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%"   stop-color="#54429f"/>
+                                <stop offset="100%" stop-color="#1e1746"/>
                             </linearGradient>
-                            <radialGradient id="qHale" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%"  stop-color="#FFD770" stop-opacity="0.55"/>
-                                <stop offset="65%" stop-color="#FFD770" stop-opacity="0"/>
-                            </radialGradient>
+                            <linearGradient id="qEkran" x1="0" y1="0" x2="0.6" y2="1">
+                                <stop offset="0%"   stop-color="#a9deff"/>
+                                <stop offset="100%" stop-color="#4aa3e8"/>
+                            </linearGradient>
+                            <linearGradient id="qTaraGr" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%"   stop-color="#FF8A3D" stop-opacity="0"/>
+                                <stop offset="100%" stop-color="#FF8A3D" stop-opacity="0.45"/>
+                            </linearGradient>
                             <clipPath id="qKirp">
-                                <path d="M40,26 H80 V44 C80,61 72,72 60,72 C48,72 40,61 40,44 Z"/>
+                                <rect x="36" y="12" width="48" height="48" rx="9"/>
                             </clipPath>
                         </defs>
 
-                        <circle class="q-hale" cx="60" cy="50" r="48" fill="url(#qHale)"/>
+                        <!-- baglanti kuruldugunda disa acilan halka -->
+                        <circle class="q-halka" cx="60" cy="36" r="30"
+                                fill="none" stroke="#7CE7A8" stroke-width="2.5"/>
 
-                        <g class="q-isinlar" stroke="#FFD770" stroke-width="3"
-                           stroke-linecap="round" opacity="0.45">
-                            <line x1="60" y1="4" x2="60" y2="13"/>
-                            <line x1="60" y1="4" x2="60" y2="13" transform="rotate(45 60 50)"/>
-                            <line x1="60" y1="4" x2="60" y2="13" transform="rotate(90 60 50)"/>
-                            <line x1="60" y1="4" x2="60" y2="13" transform="rotate(135 60 50)"/>
-                            <line x1="60" y1="4" x2="60" y2="13" transform="rotate(180 60 50)"/>
-                            <line x1="60" y1="4" x2="60" y2="13" transform="rotate(225 60 50)"/>
-                            <line x1="60" y1="4" x2="60" y2="13" transform="rotate(270 60 50)"/>
-                            <line x1="60" y1="4" x2="60" y2="13" transform="rotate(315 60 50)"/>
+                        <!-- kesikli baglanti izleri -->
+                        <g class="q-iz" stroke="url(#qAltin)" stroke-width="1.6"
+                           stroke-linecap="round" stroke-dasharray="1.5 4.5" opacity="0.55">
+                            <line x1="38" y1="68" x2="48" y2="61"/>
+                            <line x1="82" y1="68" x2="72" y2="61"/>
                         </g>
 
-                        <g class="q-kupa">
-                            <!-- kulplar -->
-                            <path d="M40,31 C29,29 24,35 25,42 C26,51 33,56 41,57"
-                                  fill="none" stroke="url(#qTaban)" stroke-width="5" stroke-linecap="round"/>
-                            <path d="M80,31 C91,29 96,35 95,42 C94,51 87,56 79,57"
-                                  fill="none" stroke="url(#qTaban)" stroke-width="5" stroke-linecap="round"/>
-                            <!-- kase -->
-                            <path d="M40,26 H80 V44 C80,61 72,72 60,72 C48,72 40,61 40,44 Z"
-                                  fill="url(#qAltin)"/>
-                            <!-- kasenin uzerinden gecen parlaklik (kaseye kirpilmis) -->
+                        <!-- KAREKOD -->
+                        <g class="q-qr">
+                            <rect x="36" y="12" width="48" height="48" rx="9"
+                                  fill="#ffffff" stroke="url(#qAltin)" stroke-width="2.6"/>
+                            <!-- uc kose isareti (halka + ic kare) -->
+                            <path fill="#2b1c5e" fill-rule="evenodd"
+                                  d="M40.5,16.5 h14 v14 h-14 Z M43.5,19.5 h8 v8 h-8 Z
+                                     M65.5,16.5 h14 v14 h-14 Z M68.5,19.5 h8 v8 h-8 Z
+                                     M40.5,41.5 h14 v14 h-14 Z M43.5,44.5 h8 v8 h-8 Z"/>
+                            <g fill="#2b1c5e">
+                                <rect x="45.5" y="21.5" width="4" height="4"/>
+                                <rect x="70.5" y="21.5" width="4" height="4"/>
+                                <rect x="45.5" y="46.5" width="4" height="4"/>
+                                <!-- veri kareleri -->
+                                <rect x="55.5" y="16.5" width="4" height="4"/>
+                                <rect x="60.5" y="21.5" width="4" height="4"/>
+                                <rect x="55.5" y="26.5" width="4" height="4"/>
+                                <rect x="60.5" y="26.5" width="4" height="4"/>
+                                <rect x="40.5" y="31.5" width="4" height="4"/>
+                                <rect x="50.5" y="31.5" width="4" height="4"/>
+                                <rect x="60.5" y="31.5" width="4" height="4"/>
+                                <rect x="70.5" y="31.5" width="4" height="4"/>
+                                <rect x="45.5" y="36.5" width="4" height="4"/>
+                                <rect x="55.5" y="36.5" width="4" height="4"/>
+                                <rect x="65.5" y="36.5" width="4" height="4"/>
+                                <rect x="75.5" y="36.5" width="4" height="4"/>
+                                <rect x="55.5" y="41.5" width="4" height="4"/>
+                                <rect x="65.5" y="41.5" width="4" height="4"/>
+                                <rect x="75.5" y="41.5" width="4" height="4"/>
+                                <rect x="60.5" y="46.5" width="4" height="4"/>
+                                <rect x="70.5" y="46.5" width="4" height="4"/>
+                                <rect x="55.5" y="51.5" width="4" height="4"/>
+                                <rect x="65.5" y="51.5" width="4" height="4"/>
+                                <rect x="75.5" y="51.5" width="4" height="4"/>
+                            </g>
+                            <!-- kareye kirpilmis tarama cizgisi -->
                             <g clip-path="url(#qKirp)">
-                                <g transform="rotate(16 60 48)">
-                                    <rect class="q-parlak" x="52" y="14" width="13" height="72"
-                                          rx="6" fill="#fff" opacity="0.5"/>
+                                <g class="q-tarama">
+                                    <rect x="36" y="24" width="48" height="12" fill="url(#qTaraGr)"/>
+                                    <rect x="36" y="35" width="48" height="2" rx="1" fill="#FF8A3D"/>
                                 </g>
                             </g>
-                            <!-- kasedeki yildiz -->
-                            <path d="M60,38 L63.2,44.6 L70.4,45.6 L65.2,50.7 L66.4,58 L60,54.5 L53.6,58 L54.8,50.7 L49.6,45.6 L56.8,44.6 Z"
-                                  fill="#fff" opacity="0.6"/>
-                            <!-- govde ve taban -->
-                            <rect x="55" y="72" width="10" height="10" fill="url(#qTaban)"/>
-                            <rect x="46" y="82" width="28" height="6" rx="2" fill="url(#qTaban)"/>
-                            <rect x="40" y="88" width="40" height="9" rx="4" fill="url(#qAltin)"/>
                         </g>
 
-                        <g fill="#FFF3C8">
-                            <path class="q-yildiz"      d="M24,22 L26,28 L32,30 L26,32 L24,38 L22,32 L16,30 L22,28 Z"/>
-                            <path class="q-yildiz q-y2" d="M99,32 L100.6,36.8 L105.4,38.4 L100.6,40 L99,44.8 L97.4,40 L92.6,38.4 L97.4,36.8 Z"/>
-                            <path class="q-yildiz q-y3" d="M94,88 L95.8,93.4 L101.2,95.2 L95.8,97 L94,102.4 L92.2,97 L86.8,95.2 L92.2,93.4 Z"/>
+                        <!-- SOL TELEFON -->
+                        <g transform="rotate(9 22 86)">
+                            <g class="q-tel">
+                                <rect x="6" y="62" width="32" height="50" rx="7"
+                                      fill="url(#qGovde)" stroke="#FFD678" stroke-width="1.6"
+                                      stroke-opacity="0.75"/>
+                                <rect x="9.5" y="66.5" width="25" height="38" rx="3.5" fill="url(#qEkran)"/>
+                                <rect x="17" y="64" width="10" height="1.8" rx="0.9" fill="#fff" opacity="0.45"/>
+                                <rect x="17" y="106.5" width="10" height="2" rx="1" fill="#fff" opacity="0.45"/>
+                                <g fill="none" stroke="#22406b" stroke-width="1.8"
+                                   stroke-linecap="round" opacity="0.7">
+                                    <path d="M14,76 v-3.5 h4"/>
+                                    <path d="M30,76 v-3.5 h-4"/>
+                                    <path d="M14,95 v3.5 h4"/>
+                                    <path d="M30,95 v3.5 h-4"/>
+                                </g>
+                                <rect x="18.5" y="81" width="7" height="7" rx="1.4"
+                                      fill="#22406b" opacity="0.5"/>
+                            </g>
+                        </g>
+
+                        <!-- SAG TELEFON -->
+                        <g transform="rotate(-9 98 86)">
+                            <g class="q-tel q-tel-b">
+                                <rect x="82" y="62" width="32" height="50" rx="7"
+                                      fill="url(#qGovde)" stroke="#FFD678" stroke-width="1.6"
+                                      stroke-opacity="0.75"/>
+                                <rect x="85.5" y="66.5" width="25" height="38" rx="3.5" fill="url(#qEkran)"/>
+                                <rect x="93" y="64" width="10" height="1.8" rx="0.9" fill="#fff" opacity="0.45"/>
+                                <rect x="93" y="106.5" width="10" height="2" rx="1" fill="#fff" opacity="0.45"/>
+                                <g fill="none" stroke="#22406b" stroke-width="1.8"
+                                   stroke-linecap="round" opacity="0.7">
+                                    <path d="M90,76 v-3.5 h4"/>
+                                    <path d="M106,76 v-3.5 h-4"/>
+                                    <path d="M90,95 v3.5 h4"/>
+                                    <path d="M106,95 v3.5 h-4"/>
+                                </g>
+                                <rect x="94.5" y="81" width="7" height="7" rx="1.4"
+                                      fill="#22406b" opacity="0.5"/>
+                            </g>
+                        </g>
+
+                        <!-- telefonlardan kareye akan veri noktalari -->
+                        <g fill="url(#qAltin)">
+                            <circle class="q-nok q-ns"      cx="38" cy="68" r="2.6"/>
+                            <circle class="q-nok q-ns q-n2" cx="38" cy="68" r="2.1"/>
+                            <circle class="q-nok q-ns q-n3" cx="38" cy="68" r="1.7"/>
+                            <circle class="q-nok q-ng"      cx="82" cy="68" r="2.6"/>
+                            <circle class="q-nok q-ng q-n2" cx="82" cy="68" r="2.1"/>
+                            <circle class="q-nok q-ng q-n3" cx="82" cy="68" r="1.7"/>
+                        </g>
+
+                        <!-- baglandi onayi -->
+                        <g class="q-onay">
+                            <circle cx="60" cy="36" r="13" fill="#2FB865"/>
+                            <path d="M53.5,36.5 l4.5,4.5 l8.5,-9" fill="none" stroke="#fff"
+                                  stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
                         </g>
                     </svg>
                 </div>
