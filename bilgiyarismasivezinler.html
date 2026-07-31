@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Harmattan:wght@400;700&family=Marhey:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="bilgiyarismasivezinler.css?v=76">
+<link rel="stylesheet" href="bilgiyarismasivezinler.css?v=79">
 
 <!-- Firebase 8.10.1 (compat) — proje: bilgiyarismasi7sinif1unite -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -162,7 +162,9 @@
     </div>
 
     <div class="biy-seviye-secim biy-sorusayi-secim">
-      <span class="biy-seviye-label biy-sayi-etiket biy-anim" id="soruSayiEtiket">
+      <button type="button" class="biy-seviye-label biy-sayi-etiket biy-anim" id="soruSayiEtiket"
+              aria-expanded="false" aria-controls="sayiAkordiyon" title="عَدَد الأَسْئِلَة"
+              onclick="BIY.sayiAcKapat()">
         <svg viewBox="0 0 64 64" class="biy-svg biy-svg-sayi" role="img" aria-label="عَدَد الأَسْئِلَة (بِحَدّ أَقْصى 50)">
           <title>عَدَد الأَسْئِلَة (بِحَدّ أَقْصى 50)</title>
           <circle class="biy-hale" cx="32" cy="32" r="26" fill="url(#biyGrMor)" opacity=".14"/>
@@ -185,11 +187,31 @@
             <text class="biy-ss-rakam" id="soruSayiRakam" x="45" y="45" dy=".35em" text-anchor="middle" fill="#fff">0</text>
           </g>
         </svg>
-      </span>
-      <button class="biy-sayi-btn" data-sayi="10" onclick="BIY.setSoruSayisi(10)">10</button>
-      <button class="biy-sayi-btn" data-sayi="20" onclick="BIY.setSoruSayisi(20)">20</button>
-      <button class="biy-sayi-btn" data-sayi="25" onclick="BIY.setSoruSayisi(25)">25</button>
-      <button class="biy-sayi-btn" data-sayi="50" onclick="BIY.setSoruSayisi(50)">50</button>
+      </button>
+      <div class="biy-sayi-akordiyon" id="sayiAkordiyon">
+        <button class="biy-sayi-btn" data-sayi="10" onclick="BIY.setSoruSayisi(10)">10</button>
+        <button class="biy-sayi-btn" data-sayi="20" onclick="BIY.setSoruSayisi(20)">20</button>
+        <button class="biy-sayi-btn" data-sayi="25" onclick="BIY.setSoruSayisi(25)">25</button>
+        <button class="biy-sayi-btn" data-sayi="50" onclick="BIY.setSoruSayisi(50)">50</button>
+      </div>
+      <div class="biy-bicim-sec" id="bicimSec">
+        <button type="button" class="biy-bicim-btn" id="bicimSecBtn" aria-haspopup="true"
+                aria-expanded="false" title="أَنْواع الأَسْئِلَة" onclick="BIY.bicimAcKapat()">
+          <svg viewBox="0 0 64 64" class="biy-svg biy-svg-bicim" role="img" aria-label="أَنْواع الأَسْئِلَة">
+            <title>أَنْواع الأَسْئِلَة</title>
+            <circle class="biy-hale" cx="32" cy="32" r="26" fill="url(#biyGrMavi)" opacity=".14"/>
+            <g stroke="#CBD5E1" stroke-width="4.6" stroke-linecap="round">
+              <line x1="16" y1="20" x2="48" y2="20"/>
+              <line x1="16" y1="32" x2="48" y2="32"/>
+              <line x1="16" y1="44" x2="48" y2="44"/>
+            </g>
+            <circle class="biy-bf-k1" cx="26" cy="20" r="5.6" fill="url(#biyGrTuruncu)" stroke="#fff" stroke-width="2.2"/>
+            <circle class="biy-bf-k2" cx="40" cy="32" r="5.6" fill="url(#biyGrYesil)" stroke="#fff" stroke-width="2.2"/>
+            <circle class="biy-bf-k3" cx="30" cy="44" r="5.6" fill="url(#biyGrMor)" stroke="#fff" stroke-width="2.2"/>
+          </svg>
+        </button>
+        <div class="biy-bs-panel" id="bicimSecPanel" aria-label="أَنْواع الأَسْئِلَة" hidden></div>
+      </div>
     </div>
 
     <div class="biy-menu">
@@ -344,7 +366,7 @@
 
 </div>
 
-<script src="bilgiyarismasivezinler.js?v=85"></script>
+<script src="bilgiyarismasivezinler.js?v=88"></script>
 <script id="kidef-koruma">
 /* KAYNAK KORUMA (CAYDIRICI) — sag tik + gelistirici araclari kisayollari.
    Not: Tam guvenlik degildir; asil koruma Firestore kurallarindadir. */

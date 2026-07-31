@@ -54,6 +54,59 @@ const BICIM_BILGI = {
 function bicimAl(s){ return (s && s.bicim) || "test"; }
 // Metin Arapça mı? (kutulara doğru yazı tipini vermek için)
 function arMi(t){ return /[؀-ۿ]/.test(String(t == null ? "" : t)); }
+/* ---------------- Etiketler: animasyonlu SVG rozetler ----------------
+   Soru tipi / bicim / zorluk yazi degil ikon; soru cumlesinin ustunde
+   ayri satirda durur. Renk ve animasyon CSS'te (biy-ea-*). */
+const _EA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">';
+const ETIKET_TIP = {
+  "fiil":  _EA+'<circle cx="12" cy="12" r="4"/><g class="biy-ea-don"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"/></g></svg>',
+  "cumle": _EA+'<path d="M6.5 4.5h11a2.5 2.5 0 0 1 2.5 2.5v6a2.5 2.5 0 0 1-2.5 2.5H10.5L6 19v-3.5A2.5 2.5 0 0 1 4 13V7a2.5 2.5 0 0 1 2.5-2.5z"/><path class="biy-ea-ciz" d="M8.5 8.5h7M8.5 11.5h4.5"/></svg>',
+  "anlam": _EA+'<path d="M9.8 17.5h4.4M10.6 20.5h2.8"/><path d="M12 3.2a5.6 5.6 0 0 1 3.2 10.2c-.7.5-1 1.1-1 1.9h-4.4c0-.8-.3-1.4-1-1.9A5.6 5.6 0 0 1 12 3.2z"/><g class="biy-ea-parla"><path d="M3.6 5.4l1.5.9M20.4 5.4l-1.5.9M12 .9v1.5"/></g></svg>',
+  "yemek": _EA+'<circle cx="12" cy="14.5" r="6.2"/><circle cx="12" cy="14.5" r="2.6"/><g class="biy-ea-buhar"><path d="M9.4 5.6c0-1.1 1-1.5 1-2.6M13.6 5.6c0-1.1 1-1.5 1-2.6"/></g></svg>',
+  "saat":  _EA+'<circle cx="12" cy="12" r="8.6"/><g class="biy-ea-saat"><path d="M12 12V6.8"/></g><path d="M12 12l3.4 2"/></svg>',
+  "gun":   _EA+'<rect x="3.5" y="5" width="17" height="15.2" rx="2"/><path d="M3.5 9.6h17M8 2.8v4M16 2.8v4"/><circle class="biy-ea-puls" cx="12" cy="15" r="1.6" fill="currentColor" stroke="none"/></svg>',
+  "namaz": _EA+'<path d="M4 20.5h16"/><path d="M6 20.5v-7M18 20.5v-7"/><path d="M12 4.8c3 2 4.6 3.8 4.6 6.5v9.2H7.4v-9.2c0-2.7 1.6-4.5 4.6-6.5z"/><circle class="biy-ea-puls" cx="12" cy="2.4" r="1" fill="currentColor" stroke="none"/></svg>',
+  "zamir": _EA+'<g class="biy-ea-zip"><circle cx="8.3" cy="8.8" r="2.5"/><path d="M3.8 19.2c0-2.6 2-4.6 4.5-4.6s4.5 2 4.5 4.6"/></g><g class="biy-ea-zip2"><circle cx="16.6" cy="7.8" r="2.2"/><path d="M14.6 14.4c.6-.3 1.3-.5 2-.5 2.3 0 4 1.9 4 4.3"/></g></svg>',
+  "kelime": _EA+'<rect x="3" y="6" width="18" height="12" rx="2"/><g class="biy-ea-bas"><rect x="9.4" y="10" width="5.2" height="4" rx="1"/></g><path d="M6 9.5h1.2M16.8 9.5H18M6 14.5h1.2M16.8 14.5H18"/></svg>',
+  "varsayilan": _EA+'<circle cx="12" cy="12" r="8.6"/><path class="biy-ea-ciz" d="M9.6 9.2a2.4 2.4 0 1 1 3.3 2.2c-.8.4-.9 1-.9 1.8"/><circle cx="12" cy="16.6" r=".9" fill="currentColor" stroke="none"/></svg>'
+};
+const ETIKET_BICIM = {
+  "test":     _EA+'<circle cx="12" cy="12" r="8.6"/><path class="biy-ea-ciz" d="M8.2 12.4l2.6 2.6 5-5.8"/></svg>',
+  "surukle":  _EA+'<rect x="2.8" y="9.4" width="5.2" height="5.2" rx="1.3"/><rect x="16" y="9.4" width="5.2" height="5.2" rx="1.3"/><g class="biy-ea-kay"><rect x="9.4" y="9.4" width="5.2" height="5.2" rx="1.3" fill="currentColor" stroke="none"/></g></svg>',
+  "eslestir": _EA+'<circle cx="5.4" cy="7" r="1.9"/><circle cx="18.6" cy="7" r="1.9"/><circle cx="5.4" cy="17" r="1.9"/><circle cx="18.6" cy="17" r="1.9"/><path class="biy-ea-ciz" d="M7.6 7h8.8M7.6 17h8.8"/></svg>',
+  "yazma":    _EA+'<path d="M4.5 19.5l1-3.8L16.6 4.6a2.1 2.1 0 0 1 3 3L8.4 18.7z"/><path class="biy-ea-ciz" d="M4.5 22.6h15"/></svg>'
+};
+const _YILDIZ = 'M12 3.6l2.2 4.4 4.9.7-3.5 3.5.8 4.9-4.4-2.3-4.4 2.3.8-4.9-3.5-3.5 4.9-.7z';
+const _EAY = _EA.replace('fill="none"', 'fill="currentColor"');
+const ETIKET_ZORLUK = {
+  1: _EAY+'<path class="biy-ea-y1" stroke="none" d="'+_YILDIZ+'"/></svg>',
+  2: _EAY+'<path class="biy-ea-y1" stroke="none" transform="translate(1.5,4.5) scale(.62)" d="'+_YILDIZ+'"/><path class="biy-ea-y2" stroke="none" transform="translate(9.1,4.5) scale(.62)" d="'+_YILDIZ+'"/></svg>',
+  3: _EAY+'<path class="biy-ea-y1" stroke="none" transform="translate(1.4,1.9) scale(.55)" d="'+_YILDIZ+'"/><path class="biy-ea-y2" stroke="none" transform="translate(9.4,1.9) scale(.55)" d="'+_YILDIZ+'"/><path class="biy-ea-y3" stroke="none" transform="translate(5.4,8.9) scale(.55)" d="'+_YILDIZ+'"/></svg>'
+};
+function etiketHtml(s){
+  const t = TIP_BILGI[s.tip] || { ad: s.tip || "" };
+  const b = bicimAl(s);
+  const bb = BICIM_BILGI[b] || { ad: b };
+  return '<div class="biy-etiketler">' +
+    '<span class="biy-etiket biy-et-tip" title="'+kacis(t.ad)+'">'+(ETIKET_TIP[s.tip]||ETIKET_TIP.varsayilan)+'</span>' +
+    '<span class="biy-etiket biy-et-bicim" title="'+kacis(bb.ad)+'">'+(ETIKET_BICIM[b]||ETIKET_TIP.varsayilan)+'</span>' +
+    (ETIKET_ZORLUK[s.zorluk] ? '<span class="biy-etiket biy-et-zorluk z'+s.zorluk+'" title="'+kacis(ZORLUK_AD[s.zorluk]||"")+'">'+ETIKET_ZORLUK[s.zorluk]+'</span>' : '') +
+  '</div>';
+}
+/* Soru cümlesinin ekran hâli: arapca alanı zaten büyük gösterildiği için
+   soru içindeki «aynı metin» tekrarı kaldırılır (çift cümle olmaz);
+   «Türkçe» bölümler bdi ile soldan sağa (LTR) akar. */
+function soruHtml(s){
+  let m = String((s && s.soru) || "");
+  if (s && s.arapca){
+    const tekrar = "«" + s.arapca + "»";
+    if (m.indexOf(tekrar) >= 0)
+      m = m.replace(tekrar, "").replace(/\s{2,}/g, " ").replace(/\s+([؟?،.])/g, "$1").trim();
+  }
+  return kacis(m).replace(/«([^»]*)»/g, function(tum, ic){
+    return /[A-Za-zÇĞİÖŞÜçğıöşü]/.test(ic) ? '«<bdi class="biy-ltr-ic">' + ic + '</bdi>»' : tum;
+  });
+}
 function karistir(dizi){
   const a = (dizi || []).slice();
   for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); const g = a[i]; a[i] = a[j]; a[j] = g; }
@@ -116,18 +169,18 @@ function secimHtml(soru, secilen){
 
 /* --- 1) Günlük rutin (id 1-99) --- */
 const S_GUNLUK = [
-  {"id":1,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَسْتَيْقِظُ»؟","secenekler":["uyanırım","uyurum","yıkanırım","giyerim"],"dogru":0,"arapca":"أَسْتَيْقِظُ"},
-  {"id":2,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَتَوَضَّأُ»؟","secenekler":["abdest alırım","namaz kılarım","uyanırım","yemek yerim"],"dogru":0,"arapca":"أَتَوَضَّأُ"},
-  {"id":3,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أُصَلّي»؟","secenekler":["namaz kılarım","ders çalışırım","koşarım","dönerim"],"dogru":0,"arapca":"أُصَلّي"},
-  {"id":4,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَتَناوَلُ الفَطور»؟","secenekler":["kahvaltı yaparım","akşam yemeği yerim","süt içerim","uyurum"],"dogru":0,"arapca":"أَتَناوَلُ الفَطور"},
-  {"id":5,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَلْبَسُ مَلابِسي»؟","secenekler":["elbiselerimi giyerim","ellerimi yıkarım","dişlerimi fırçalarım","odamı temizlerim"],"dogru":0,"arapca":"أَلْبَسُ مَلابِسي"},
-  {"id":6,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَرْجِعُ إِلى البَيْت»؟","secenekler":["eve dönerim","okula giderim","evden çıkarım","eve girerim"],"dogru":0,"arapca":"أَرْجِعُ إِلى البَيْت"},
-  {"id":7,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أُساعِدُ أُمّي»؟","secenekler":["anneme yardım ederim","annemi severim","annemi beklerim","anneme sorarım"],"dogru":0,"arapca":"أُساعِدُ أُمّي"},
-  {"id":8,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَدْرُسُ دُروسي»؟","secenekler":["derslerimi çalışırım","derse giderim","ders anlatırım","dersi dinlerim"],"dogru":0,"arapca":"أَدْرُسُ دُروسي"},
+  {"id":1,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَسْتَيْقِظُ»؟","secenekler":["Uyanırım","Uyurum","Yıkanırım","Giyerim"],"dogru":0,"arapca":"أَسْتَيْقِظُ"},
+  {"id":2,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَتَوَضَّأُ»؟","secenekler":["Abdest alırım","Namaz kılarım","Uyanırım","Yemek yerim"],"dogru":0,"arapca":"أَتَوَضَّأُ"},
+  {"id":3,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أُصَلّي»؟","secenekler":["Namaz kılarım","Ders çalışırım","Koşarım","Dönerim"],"dogru":0,"arapca":"أُصَلّي"},
+  {"id":4,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَتَناوَلُ الفَطور»؟","secenekler":["Kahvaltı yaparım","Akşam yemeği yerim","Süt içerim","Uyurum"],"dogru":0,"arapca":"أَتَناوَلُ الفَطور"},
+  {"id":5,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَلْبَسُ مَلابِسي»؟","secenekler":["Elbiselerimi giyerim","Ellerimi yıkarım","Dişlerimi fırçalarım","Odamı temizlerim"],"dogru":0,"arapca":"أَلْبَسُ مَلابِسي"},
+  {"id":6,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَرْجِعُ إِلى البَيْت»؟","secenekler":["Eve dönerim","Okula giderim","Evden çıkarım","Eve girerim"],"dogru":0,"arapca":"أَرْجِعُ إِلى البَيْت"},
+  {"id":7,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أُساعِدُ أُمّي»؟","secenekler":["Anneme yardım ederim","Annemi severim","Annemi beklerim","Anneme sorarım"],"dogru":0,"arapca":"أُساعِدُ أُمّي"},
+  {"id":8,"tip":"fiil","zorluk":1,"soru":"ما مَعْنى «أَدْرُسُ دُروسي»؟","secenekler":["Derslerimi çalışırım","Derse giderim","Ders anlatırım","Dersi dinlerim"],"dogru":0,"arapca":"أَدْرُسُ دُروسي"},
   {"id":9,"tip":"fiil","zorluk":2,"soru":"ما تَرْجَمَة «Dişlerimi temizlerim» بِالعَرَبِيَّة؟","secenekler":["أُنَظِّفُ أَسْناني","أَغْسِلُ يَدَيّ","أَلْبَسُ مَلابِسي","أَتَناوَلُ الفَطور"],"dogru":0,"arSecenek":true},
   {"id":10,"tip":"fiil","zorluk":2,"soru":"ما تَرْجَمَة «Geceleyin uyurum» بِالعَرَبِيَّة؟","secenekler":["أَنامُ لَيْلًا","أَسْتَيْقِظُ صَباحًا","أَرْجِعُ ظُهْرًا","أَدْرُسُ مَساءً"],"dogru":0,"arSecenek":true},
   {"id":11,"tip":"fiil","zorluk":2,"soru":"ما مَعْنى «أَغْسِلُ يَدَيّ قَبْل الطَّعام»؟","secenekler":["Yemekten önce ellerimi yıkarım","Yemekten sonra ellerimi yıkarım","Yemekten önce dua ederim","Yemekten sonra dişlerimi fırçalarım"],"dogru":0,"arapca":"أَغْسِلُ يَدَيّ قَبْل الطَّعام"},
-  {"id":12,"tip":"fiil","zorluk":2,"soru":"ما مَعْنى «مُبَكِّرًا»؟","secenekler":["erken","geç","yavaş","hızlı"],"dogru":0,"arapca":"مُبَكِّرًا"},
+  {"id":12,"tip":"fiil","zorluk":2,"soru":"ما مَعْنى «مُبَكِّرًا»؟","secenekler":["Erken","Geç","Yavaş","Hızlı"],"dogru":0,"arapca":"مُبَكِّرًا"},
   {"id":13,"tip":"cumle","bicim":"surukle","zorluk":2,"soru":"رَتِّب الكَلِمات: «Sabah erken uyanırım.»","parcalar":["أَسْتَيْقِظُ","في","الصَّباح","مُبَكِّرًا"]},
   {"id":14,"tip":"cumle","bicim":"surukle","zorluk":2,"soru":"رَتِّب الكَلِمات: «Ailemle kahvaltı yaparım.»","parcalar":["أَتَناوَلُ","الفَطور","مَع","عائِلَتي"]},
   {"id":15,"tip":"cumle","bicim":"surukle","zorluk":2,"soru":"رَتِّب الكَلِمات: «Öğleyin eve dönerim.»","parcalar":["أَرْجِعُ","إِلى","البَيْت","ظُهْرًا"]},
@@ -140,17 +193,17 @@ const S_GUNLUK = [
 
 /* --- 2) Yiyecek & içecekler (id 101-199) --- */
 const S_YEMEK = [
-  {"id":101,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الحَليب»؟","secenekler":["süt","peynir","bal","su"],"dogru":0,"arapca":"الحَليب"},
-  {"id":102,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الجُبْن»؟","secenekler":["peynir","zeytin","et","ekmek"],"dogru":0,"arapca":"الجُبْن"},
-  {"id":103,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الزَّيْتون»؟","secenekler":["zeytin","üzüm","elma","hurma"],"dogru":0,"arapca":"الزَّيْتون"},
-  {"id":104,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «العَسَل»؟","secenekler":["bal","tereyağı","reçel","şeker"],"dogru":0,"arapca":"العَسَل"},
-  {"id":105,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الزُّبْدَة»؟","secenekler":["tereyağı","bal","peynir","yoğurt"],"dogru":0,"arapca":"الزُّبْدَة"},
-  {"id":106,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «السَّمَك»؟","secenekler":["balık","tavuk","et","pirinç"],"dogru":0,"arapca":"السَّمَك"},
-  {"id":107,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الدَّجاج»؟","secenekler":["tavuk","balık","et","yumurta"],"dogru":0,"arapca":"الدَّجاج"},
-  {"id":108,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الأُرْز»؟","secenekler":["pirinç","makarna","ekmek","çorba"],"dogru":0,"arapca":"الأُرْز"},
-  {"id":109,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «العَصير»؟","secenekler":["meyve suyu","çay","kahve","süt"],"dogru":0,"arapca":"العَصير"},
-  {"id":110,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الخُبْز»؟","secenekler":["ekmek","peynir","pirinç","tuz"],"dogru":0,"arapca":"الخُبْز"},
-  {"id":111,"tip":"yemek","zorluk":2,"soru":"ما مَعْنى «الفَطور - الغَداء - العَشاء» بِالتَّرْتيب؟","secenekler":["kahvaltı - öğle yemeği - akşam yemeği","öğle yemeği - kahvaltı - akşam yemeği","akşam yemeği - kahvaltı - öğle yemeği","kahvaltı - akşam yemeği - öğle yemeği"],"dogru":0},
+  {"id":101,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الحَليب»؟","secenekler":["Süt","Peynir","Bal","Su"],"dogru":0,"arapca":"الحَليب"},
+  {"id":102,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الجُبْن»؟","secenekler":["Peynir","Zeytin","Et","Ekmek"],"dogru":0,"arapca":"الجُبْن"},
+  {"id":103,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الزَّيْتون»؟","secenekler":["Zeytin","Üzüm","Elma","Hurma"],"dogru":0,"arapca":"الزَّيْتون"},
+  {"id":104,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «العَسَل»؟","secenekler":["Bal","Tereyağı","Reçel","Şeker"],"dogru":0,"arapca":"العَسَل"},
+  {"id":105,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الزُّبْدَة»؟","secenekler":["Tereyağı","Bal","Peynir","Yoğurt"],"dogru":0,"arapca":"الزُّبْدَة"},
+  {"id":106,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «السَّمَك»؟","secenekler":["Balık","Tavuk","Et","Pirinç"],"dogru":0,"arapca":"السَّمَك"},
+  {"id":107,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الدَّجاج»؟","secenekler":["Tavuk","Balık","Et","Yumurta"],"dogru":0,"arapca":"الدَّجاج"},
+  {"id":108,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الأُرْز»؟","secenekler":["Pirinç","Makarna","Ekmek","Çorba"],"dogru":0,"arapca":"الأُرْز"},
+  {"id":109,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «العَصير»؟","secenekler":["Meyve suyu","Çay","Kahve","Süt"],"dogru":0,"arapca":"العَصير"},
+  {"id":110,"tip":"yemek","zorluk":1,"soru":"ما مَعْنى «الخُبْز»؟","secenekler":["Ekmek","Peynir","Pirinç","Tuz"],"dogru":0,"arapca":"الخُبْز"},
+  {"id":111,"tip":"yemek","zorluk":2,"soru":"ما مَعْنى «الفَطور - الغَداء - العَشاء» بِالتَّرْتيب؟","secenekler":["Kahvaltı - öğle yemeği - akşam yemeği","Öğle yemeği - kahvaltı - akşam yemeği","Akşam yemeği - kahvaltı - öğle yemeği","Kahvaltı - akşam yemeği - öğle yemeği"],"dogru":0},
   {"id":112,"tip":"yemek","zorluk":2,"soru":"ما تَرْجَمَة «Kahvaltıda süt içerim» بِالعَرَبِيَّة؟","secenekler":["أَشْرَبُ الحَليب في الفَطور","آكُلُ الجُبْن في الفَطور","أَشْرَبُ العَصير في العَشاء","آكُلُ السَّمَك في الغَداء"],"dogru":0,"arSecenek":true},
   {"id":113,"tip":"yemek","bicim":"surukle","zorluk":2,"soru":"رَتِّب الكَلِمات: «Öğle yemeğinde et ve pirinç yerim.»","parcalar":["أَتَناوَلُ","اللَّحْم","وَالأُرْز","في","الغَداء"]},
   {"id":114,"tip":"yemek","bicim":"surukle","zorluk":2,"soru":"رَتِّب الكَلِمات: «Öğle yemeğinden sonra kahve içerim.»","parcalar":["أَشْرَبُ","القَهْوَة","بَعْد","الغَداء"]},
@@ -197,12 +250,12 @@ const S_GUNLER = [
 
 /* --- 5) Namaz vakitleri (id 401-499) --- */
 const S_NAMAZ = [
-  {"id":401,"tip":"namaz","zorluk":1,"soru":"أَيّ صَلاة هِيَ «الفَجْر»؟","secenekler":["sabah","öğle","ikindi","akşam"],"dogru":0,"arapca":"الفَجْر"},
-  {"id":402,"tip":"namaz","zorluk":1,"soru":"أَيّ صَلاة هِيَ «الظُّهْر»؟","secenekler":["öğle","ikindi","akşam","yatsı"],"dogru":0,"arapca":"الظُّهْر"},
-  {"id":403,"tip":"namaz","zorluk":1,"soru":"أَيّ صَلاة هِيَ «العَصْر»؟","secenekler":["ikindi","öğle","akşam","sabah"],"dogru":0,"arapca":"العَصْر"},
-  {"id":404,"tip":"namaz","zorluk":1,"soru":"أَيّ صَلاة هِيَ «المَغْرِب»؟","secenekler":["akşam","yatsı","ikindi","sabah"],"dogru":0,"arapca":"المَغْرِب"},
-  {"id":405,"tip":"namaz","zorluk":1,"soru":"أَيّ صَلاة هِيَ «العِشاء»؟","secenekler":["yatsı","akşam","sabah","öğle"],"dogru":0,"arapca":"العِشاء"},
-  {"id":406,"tip":"namaz","zorluk":2,"soru":"ما مَعْنى «شُروق الشَّمْس»؟","secenekler":["güneşin doğuşu","güneşin batışı","gece yarısı","öğle vakti"],"dogru":0,"arapca":"شُروق الشَّمْس"},
+  {"id":401,"tip":"namaz","zorluk":1,"soru":"أَيّ صَلاة هِيَ «الفَجْر»؟","secenekler":["Sabah","Öğle","İkindi","Akşam"],"dogru":0,"arapca":"الفَجْر"},
+  {"id":402,"tip":"namaz","zorluk":1,"soru":"أَيّ صَلاة هِيَ «الظُّهْر»؟","secenekler":["Öğle","İkindi","Akşam","Yatsı"],"dogru":0,"arapca":"الظُّهْر"},
+  {"id":403,"tip":"namaz","zorluk":1,"soru":"أَيّ صَلاة هِيَ «العَصْر»؟","secenekler":["İkindi","Öğle","Akşam","Sabah"],"dogru":0,"arapca":"العَصْر"},
+  {"id":404,"tip":"namaz","zorluk":1,"soru":"أَيّ صَلاة هِيَ «المَغْرِب»؟","secenekler":["Akşam","Yatsı","İkindi","Sabah"],"dogru":0,"arapca":"المَغْرِب"},
+  {"id":405,"tip":"namaz","zorluk":1,"soru":"أَيّ صَلاة هِيَ «العِشاء»؟","secenekler":["Yatsı","Akşam","Sabah","Öğle"],"dogru":0,"arapca":"العِشاء"},
+  {"id":406,"tip":"namaz","zorluk":2,"soru":"ما مَعْنى «شُروق الشَّمْس»؟","secenekler":["Güneşin doğuşu","Güneşin batışı","Gece yarısı","Öğle vakti"],"dogru":0,"arapca":"شُروق الشَّمْس"},
   {"id":407,"tip":"namaz","bicim":"surukle","zorluk":2,"soru":"رَتِّب الكَلِمات: «Güneş doğmadan önce sabah namazı kılarım.»","parcalar":["أُصَلّي","الفَجْر","قَبْل","شُروق","الشَّمْس"]},
   {"id":408,"tip":"namaz","bicim":"surukle","zorluk":2,"soru":"رَتِّب الكَلِمات: «Uyumadan önce yatsı namazı kılarım.»","parcalar":["أُصَلّي","العِشاء","قَبْل","النَّوْم"]},
   {"id":409,"tip":"namaz","bicim":"surukle","zorluk":3,"soru":"رَتِّب الكَلِمات: «Muhammed öğle namazını cemaatle kılar.»","parcalar":["يُصَلّي","مُحَمَّد","الظُّهْر","مَع","الجَماعَة"]},
@@ -408,6 +461,7 @@ function tahtaIcerikHtml(soru, sonucMu){
 /* ---------------- Durum ---------------- */
 const state = {
   mod: null, uid: null,
+  bicimSecim: { "test": true, "surukle": true, "eslestir": true, "yazma": true },
   oyunModu: "takim",         // takim | birey | okul  (yarışma biçimi)
   bekleyenListe: [],         // birey modu: onay bekleyen katılımcılar
   katilimId: null,           // öğrenci tarafı: kendi katılımcı kaydının id'si
@@ -832,14 +886,16 @@ const BIY = {
         '<div class="biy-hs-baslik" onclick="BIY.soruSecAkordiyon(\''+k.id+'\')">' +
         '<span class="biy-hs-ok">▸</span>' +
         '<b>'+kacis(k.ad)+'</b> <span class="biy-hs-say">('+seciliSay+'/'+k.sorular.length+')</span>' +
-        '<button class="biy-hs-tumu" onclick="event.stopPropagation();BIY.soruSecTumu(\''+k.id+'\')">تَحْديد الكُلّ</button></div>' +
+        '<button class="biy-hs-tumu" title="تَحْديد الكُلّ" aria-label="تَحْديد الكُلّ" onclick="event.stopPropagation();BIY.soruSecTumu(\''+k.id+'\')">' +
+          '<svg viewBox="0 0 24 24" class="biy-hs-tumu-svg" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+          '<rect x="3.2" y="3.2" width="17.6" height="17.6" rx="4.5"/><path class="biy-ea-ciz" d="M7.4 12.6l3 3 6.2-7.2"/></svg></button></div>' +
         '<div class="biy-hs-govde">';
       sorular.forEach(q => {
         const key = k.id + "#" + q.id; const sec = set.has(key);
         const dogruSik = dogruCevapMetni(q);
         html += '<label class="biy-hs-satir'+(sec?' secili':'')+'" data-key="'+key+'">' +
           '<input type="checkbox" '+(sec?'checked':'')+' onchange="BIY.soruSecTik(\''+key+'\', this)">' +
-          '<span class="biy-hs-metin">'+kacis(q.soru)+(q.arapca?' <i>'+kacis(q.arapca)+'</i>':'')+
+          '<span class="biy-hs-metin">'+soruHtml(q)+(q.arapca?' <i>'+kacis(q.arapca)+'</i>':'')+
             ' <b class="biy-hs-dogru">✓ '+kacis(dogruSik)+'</b></span>' +
         '</label>';
       });
@@ -882,6 +938,51 @@ const BIY = {
   },
   soruSecTemizle(){ BIY._secSet().clear(); BIY._soruSecRender(); BIY._soruSecSayiGuncelle(); },
   soruSecKapat(){ const ov = $("biySoruSec"); if (ov) ov.remove(); BIY._soruSecSayiGuncelle(); },
+  /* ---------- soru tipi (biçim) filtresi ---------- */
+  // aktif konunun sorularından yalnız seçili biçimdekiler
+  _bicimliSorular(){
+    return BIY._aktifSorular().filter(q => state.bicimSecim[bicimAl(q)] !== false);
+  },
+  _bicimPanelDoldur(){
+    const p = $("bicimSecPanel"); if (!p) return;
+    p.innerHTML = Object.keys(BICIM_BILGI).map(b =>
+      '<button type="button" class="biy-bs-oge'+(state.bicimSecim[b] ? ' secili' : '')+'" data-b="'+b+'"' +
+      ' title="'+kacis(BICIM_BILGI[b].ad)+'" aria-pressed="'+(state.bicimSecim[b] ? 'true' : 'false')+'"' +
+      ' onclick="BIY.bicimToggle(\''+b+'\')">' + (ETIKET_BICIM[b] || "") +
+      '<span class="biy-bs-tik" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12.5l4 4 8-9"/></svg></span></button>'
+    ).join("");
+  },
+  bicimToggle(b){
+    const sec = state.bicimSecim;
+    // en az bir tip secili kalmali
+    if (sec[b] && Object.keys(sec).filter(x => sec[x]).length <= 1) return;
+    sec[b] = !sec[b];
+    BIY._bicimPanelDoldur();
+    BIY._soruSayiSinir();
+    BIY._menuDurum();
+  },
+  bicimAcKapat(){
+    const p = $("bicimSecPanel"), b = $("bicimSecBtn"); if (!p) return;
+    if (p.hidden){
+      BIY._bicimPanelDoldur();
+      p.hidden = false;
+      if (b) b.setAttribute("aria-expanded", "true");
+      setTimeout(() => document.addEventListener("mousedown", BIY._bicimDis), 0);
+    } else BIY.bicimKapat();
+  },
+  bicimKapat(){
+    const p = $("bicimSecPanel"), b = $("bicimSecBtn");
+    if (p) p.hidden = true;
+    if (b) b.setAttribute("aria-expanded", "false");
+    document.removeEventListener("mousedown", BIY._bicimDis);
+  },
+  _bicimDis(e){ if (!e.target.closest || !e.target.closest("#bicimSec")) BIY.bicimKapat(); },
+  // hazir rakamlar akordiyonu: rakam SVG'sine tiklaninca acilir/kapanir
+  sayiAcKapat(){
+    const a = $("sayiAkordiyon"), b = $("soruSayiEtiket"); if (!a) return;
+    const acik = a.classList.toggle("acik");
+    if (b) b.setAttribute("aria-expanded", acik ? "true" : "false");
+  },
   // elle seçilen sorular (havuzdan) — sıralı liste
   _secilenSorular(){
     const set = BIY._secSet(); if (!set.size) return [];
@@ -907,7 +1008,7 @@ const BIY = {
     if (state.soruSayiHavuzdan){ state.soruSayisi = null; state.soruSayiHavuzdan = false; }
     let mevcut;
     // dijital yarışma seçilen zorluğu önceliklendirip gerekirse diğer zorluklardan tamamlar → üst sınır konunun TÜM sorusu
-    if (state.konuId) mevcut = BIY._aktifSorular().length;
+    if (state.konuId) mevcut = BIY._bicimliSorular().length;
     else mevcut = 50;                                                    // konu/havuz yok → sınır uygulanmasın
     const max = Math.max(1, Math.min(50, mevcut));
     state.soruSayiMax = max;
@@ -1031,9 +1132,8 @@ const BIY = {
     const kart = document.createElement("div"); kart.className = "biy-soru-kart";
     const sikHtml = sikKartHtml(s, dogruGoster);
     kart.innerHTML =
-      '<span class="biy-soru-tip">'+t.emoji+' '+t.ad+'</span>' +
-      '<span class="biy-zorluk z'+s.zorluk+'">'+ ZORLUK_AD[s.zorluk] +'</span>' +
-      '<div class="biy-soru-metin">'+ kacis(s.soru) +'</div>' +
+      etiketHtml(s) +
+      '<div class="biy-soru-metin">'+ soruHtml(s) +'</div>' +
       (s.arapca ? '<div class="biy-soru-arapca">'+ kacis(s.arapca) +'</div>' : '') +
       '<div class="biy-secenekler">'+ sikHtml +'</div>';
     return kart;
@@ -1042,7 +1142,7 @@ const BIY = {
   // ana menü kartları: geçerli içerik (havuz soruları veya soru içeren konu) seçiliyken aktif olur
   _menuDurum(){
     const havuz = BIY._secSet().size;
-    const konuVar = (BIY._aktifSorular().length > 0);
+    const konuVar = (BIY._bicimliSorular().length > 0);
     const icerik = havuz > 0 || konuVar;                 // konu ya da havuzdan soru
     const sayiSecili = (state.soruSayisi != null && state.soruSayisi > 0);  // soru sayısı seçili
     const aktif = icerik && sayiSecili;
@@ -1225,7 +1325,7 @@ const BIY = {
   },
   // takım silinince/yarış bitince kilitli tüm ayar kontrollerini yeniden aç
   _kontrolleriAc(){
-    document.querySelectorAll(".biy-seviye-btn, .biy-sayi-btn").forEach(b => { b.disabled = false; b.classList.remove("biy-pasif"); });
+    document.querySelectorAll(".biy-seviye-btn, .biy-sayi-btn, .biy-bicim-btn, .biy-bs-oge").forEach(b => { b.disabled = false; b.classList.remove("biy-pasif"); });
     ["soruSayiInput", "soruSecBtn", "konuSecim", "konuSeciciBtn"].forEach(id => { const el = $(id); if (el){ el.disabled = false; el.classList.remove("biy-pasif"); } });
     document.querySelectorAll(".biy-seviye-label").forEach(l => l.classList.remove("biy-pasif"));
   },
@@ -1276,7 +1376,7 @@ const BIY = {
     // takım eklendiyse zorluk seviyesi, soru sayısı ve soru seçimi kilitlenir; hepsi silinince açılır
     // (lobiye dönüldüyse ayarKilidiKapali=true → takım bağlıyken de değiştirilebilir)
     const kilit = sayi > 0 && !state.ayarKilidiKapali;
-    document.querySelectorAll(".biy-seviye-btn, .biy-sayi-btn").forEach(b => { b.disabled = kilit; b.classList.toggle("biy-pasif", kilit); });
+    document.querySelectorAll(".biy-seviye-btn, .biy-sayi-btn, .biy-bicim-btn, .biy-bs-oge").forEach(b => { b.disabled = kilit; b.classList.toggle("biy-pasif", kilit); });
     const sInp = $("soruSayiInput"); if (sInp){ sInp.disabled = kilit; sInp.classList.toggle("biy-pasif", kilit); }
     const ssBtn = $("soruSecBtn"); if (ssBtn){ ssBtn.disabled = kilit; ssBtn.classList.toggle("biy-pasif", kilit); }
     const kSel = $("konuSecim"); if (kSel){ kSel.disabled = kilit; kSel.classList.toggle("biy-pasif", kilit); }
@@ -1353,7 +1453,7 @@ const BIY = {
       secilen = hv.map(soruHazirla);
       yedek = [];   // görülmemiş yedek sorulmaz
     } else {
-      const tumu = BIY._aktifSorular().slice();   // konunun tüm soruları (zorluk fark etmez)
+      const tumu = BIY._bicimliSorular().slice();   // konunun tüm soruları (yalnız seçili biçimler)
       if (!tumu.length){ $("baslatNot").textContent = "«" + (BIY._aktifKonu() ? BIY._aktifKonu().ad : "") + "» لا تَحْتَوي عَلى أَسْئِلَة بَعْد."; return; }
       for (let i = tumu.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); const g = tumu[i]; tumu[i] = tumu[j]; tumu[j] = g; }
       const hedefSayi = Math.max(1, Math.min(50, state.soruSayisi || TUR_SORU_SAYISI));
@@ -1451,7 +1551,7 @@ const BIY = {
     let govde =
       '<div class="biy-oyun-ust">' +
         '<div class="biy-oyun-sira'+(ber?' biy-ber':'')+'">'+siraMetin+' '+gozBtn+'</div>' +
-        '<div class="biy-oyun-tip"><span class="biy-soru-tip">'+t.emoji+' '+t.ad+'</span> <span class="biy-bicim-rozet">'+((BICIM_BILGI[bicimAl(soru)]||{}).emoji||'')+' '+((BICIM_BILGI[bicimAl(soru)]||{}).ad||'')+'</span> <span class="biy-zorluk z'+soru.zorluk+'">'+ZORLUK_AD[soru.zorluk]+'</span></div>' +
+        '<div class="biy-oyun-tip"></div>' +
         // soru gizliyken geri sayım üstte değil, aşağıda büyük gösterilir
         (gizli ? '' : sayacHtml) +
       '</div>' +
@@ -1459,7 +1559,7 @@ const BIY = {
 
     // soru gizliyken hiçbir kutu gösterilmez (sınıf durumu + geri sayım aşağıda büyük)
     if (!gizli){
-      govde += '<div class="biy-oyun-soru">'+ kacis(soru.soru) +'</div>' +
+      govde += etiketHtml(soru) + '<div class="biy-oyun-soru">'+ soruHtml(soru) +'</div>' +
         (soru.arapca ? '<div class="biy-oyun-arapca">'+ kacis(soru.arapca) +'</div>' : '') +
         '<div class="biy-a-optlar">'+ opt +'</div>';
     }
@@ -1571,7 +1671,7 @@ const BIY = {
       '<div class="biy-sonuc-sahne">' +
         // SAHNE 1: soru cümlesi + şıklar + vurgulu doğru şık
         '<div class="biy-sahne-oge oge-dogru">' +
-          '<div class="biy-sonuc-soru-cumle">'+kacis(soru.soru)+'</div>' +
+          etiketHtml(soru) + '<div class="biy-sonuc-soru-cumle">'+soruHtml(soru)+'</div>' +
           (soru.arapca ? '<div class="biy-oyun-arapca">'+kacis(soru.arapca)+'</div>' : '') +
           '<div class="biy-a-optlar">'+optHtml+'</div>' +
         '</div>' +
@@ -1586,9 +1686,9 @@ const BIY = {
       '</div>' +
       // aşağıda üç ilerleme çizgisi — tıklayınca ilgili sayfaya geçer
       '<div class="biy-sonuc-nokta">' +
-        '<button class="biy-nokta" data-adim="0" onclick="BIY.sonucAdim(0)" title="السُّؤال وَالإِجابَة الصَّحيحَة"><span class="biy-nk-ikon"><svg viewBox="0 0 24 24" class="biy-nk-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 4h14.4a1.8 1.8 0 0 1 1.8 1.8v9a1.8 1.8 0 0 1-1.8 1.8H9.6L4.6 21V5.8A1.8 1.8 0 0 1 4.8 4z"/><path d="M8.6 10.4l2.5 2.5 4.5-5"/></svg></span><i class="biy-nk-cizgi"></i></button>' +
-        '<button class="biy-nokta" data-adim="1" onclick="BIY.sonucAdim(1)" title="إِجابات المُشارِكين"><span class="biy-nk-ikon"><svg viewBox="0 0 24 24" class="biy-nk-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.6" cy="6.4" r="2.3"/><path d="M11.4 6.4h8.6"/><circle cx="6.6" cy="12.4" r="2.3"/><path d="M11.4 12.4h8.6"/><circle cx="6.6" cy="18.4" r="2.3"/><path d="M11.4 18.4h8.6"/></svg></span><i class="biy-nk-cizgi"></i></button>' +
-        '<button class="biy-nokta" data-adim="2" onclick="BIY.sonucAdim(2)" title="النَّتائِج"><span class="biy-nk-ikon"><svg viewBox="0 0 24 24" class="biy-nk-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.4 20.6h17.2"/><rect x="3.9" y="14.2" width="4.6" height="6.4" rx="1.2"/><rect x="9.7" y="10.6" width="4.6" height="10" rx="1.2"/><rect x="15.5" y="16" width="4.6" height="4.6" rx="1.2"/><path d="M12 2.4l1.15 2.33 2.57.38-1.86 1.81.44 2.56L12 8.27 9.7 9.48l.44-2.56L8.28 5.12l2.57-.38z"/></svg></span><i class="biy-nk-cizgi"></i></button>' +
+        '<button class="biy-nokta" data-adim="0" onclick="BIY.sonucAdim(0)" title="السُّؤال وَالإِجابَة الصَّحيحَة"><span class="biy-nk-ikon"><svg viewBox="0 0 24 24" class="biy-nk-svg" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M8.2 12.4l2.6 2.6 5-5.8"/></svg></span><i class="biy-nk-cizgi"></i></button>' +
+        '<button class="biy-nokta" data-adim="1" onclick="BIY.sonucAdim(1)" title="إِجابات المُشارِكين"><span class="biy-nk-ikon"><svg viewBox="0 0 24 24" class="biy-nk-svg" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.6" cy="6" r="1.5"/><path d="M10 6h8.4"/><circle cx="5.6" cy="12" r="1.5"/><path d="M10 12h8.4"/><circle cx="5.6" cy="18" r="1.5"/><path d="M10 18h8.4"/></svg></span><i class="biy-nk-cizgi"></i></button>' +
+        '<button class="biy-nokta" data-adim="2" onclick="BIY.sonucAdim(2)" title="النَّتائِج"><span class="biy-nk-ikon"><svg viewBox="0 0 24 24" class="biy-nk-svg" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="13" width="4.6" height="7.4" rx="1.2"/><rect x="9.7" y="8.4" width="4.6" height="12" rx="1.2"/><rect x="15.4" y="15" width="4.6" height="5.4" rx="1.2"/></svg></span><i class="biy-nk-cizgi"></i></button>' +
       '</div>' +
       '<div class="biy-oyun-kontrol"><button class="biy-btn biy-btn-buyuk" onclick="BIY.sonrakiSoru()">'+
         (ber ? ((BIY._beraberlikCozuldu() || state.berNo >= state.yedekSorular.length) ? '🏁 اعْتِماد التَّرْتيب' : 'سُؤال التَّعادُل التّالي ›')
@@ -1977,10 +2077,10 @@ const BIY = {
     $("takimIcerik").className = "biy-oyun-orta";
     $("takimIcerik").innerHTML =
       '<div class="biy-t-kimlik">'+(state.takimKrk ? krkSvg(state.takimKrk, "biy-krk-mini") : '<span class="biy-t-kimlik-nokta"></span>')+'<span class="biy-t-kimlik-ad">'+kacis(state.takimAd)+'</span></div>' +
-      '<div class="biy-t-ust"><span class="biy-soru-tip">'+t.emoji+' '+t.ad+'</span>' +
-        '<span class="biy-bicim-rozet">'+bb.emoji+' '+bb.ad+'</span>' +
+      '<div class="biy-t-ust"><span></span>' +
         '<span class="biy-t-sayac" id="sayacNum">'+kalan+'</span></div>' +
-      '<div class="biy-oyun-soru">'+kacis(s.soru)+'</div>' +
+      etiketHtml(s) +
+      '<div class="biy-oyun-soru">'+soruHtml(s)+'</div>' +
       (s.arapca ? '<div class="biy-oyun-arapca">'+kacis(s.arapca)+'</div>' : '') +
       BIY._takimAlanHtml(s, kilit) + alt;
     BIY._dragKur();
