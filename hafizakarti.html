@@ -48,7 +48,7 @@ body, button, div, span {
   .screen.active{ display:flex; }
 
   /* Back (global) */
-  .header-navigation{ position:absolute; top:10px; left:10px; z-index:200; }
+  .header-navigation{ position:absolute; top:25px; left:10px; z-index:200; }
   .back-btn{ background:none; border:none; cursor:pointer; padding:5px; }
   .back-btn svg{ width:35px; height:35px; fill:var(--text-color); transition:.2s; opacity:.85;
                  filter: drop-shadow(0 1px 2px var(--shadow-light)); }
@@ -146,7 +146,7 @@ body, button, div, span {
     flex: 0 0 clamp(70px, 10%, 110px);
     height: 85vh; /* Boyu biraz kısalttık (85vh idi) */
     margin-top: auto; /* Kutuları aşağıya iter */
-    margin-bottom: 20px; /* Alttan biraz boşluk bırakır */
+    margin-bottom: 35px; /* Alttan biraz boşluk bırakır */
     
     display: flex;
     flex-direction: column;
@@ -179,7 +179,7 @@ body, button, div, span {
 
 .nav-back-btn {
     position: absolute;
-    top: 20px;
+    top: 25px;
     left: 20px; /* Sol üst köşeye sabitler */
     background: var(--surface-color);
     border: 2px solid var(--primary-color);
@@ -286,7 +286,7 @@ body, button, div, span {
     justify-content: center;
     width: 100%;
     position: relative;
-    margin-bottom: 10px; /* Kartlarla arasındaki mesafe */
+    margin-bottom: 35px; /* Kartlarla arasındaki mesafe */
     padding: 5px 0;
 }
 
@@ -346,7 +346,7 @@ body, button, div, span {
 /* Görselin kartın içinde kesilmeden tam görünmesini sağlar */
 .card-back img {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 100dvh;
     width: auto;
     height: auto;
     object-fit: contain; /* Görselin oranını bozmadan çerçeveye sığdırır */
@@ -438,7 +438,7 @@ body, button, div, span {
         #rotate-message {
             display: none; 
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0; width: 100%; height: 100dvh;
             background-color: #2c3e50; 
             z-index: 99999; 
             flex-direction: column;
@@ -449,11 +449,11 @@ body, button, div, span {
             width: 60px; height: 100px;
             border: 4px solid white; border-radius: 10px;
             animation: rotate-phone 2s infinite ease-in-out;
-            margin-bottom: 20px; position: relative;
+            margin-bottom: 35px; position: relative;
         }
         .phone-animation::before {
             content: ''; position: absolute;
-            top: 10px; left: 50%; transform: translateX(-50%);
+            top: 25px; left: 50%; transform: translateX(-50%);
             width: 20%; height: 4px; background: white; border-radius: 2px;
         }
         @keyframes rotate-phone {
@@ -546,63 +546,9 @@ body, button, div, span {
 }
   </style>
 
-    <!-- EBA SCORM Cihaz Döndürme Uyarısını Kapatma Hack'i -->
-    <script>
-    (function() {
-        // EBA SCORM Player DOM'una müdahale et (CORS izin verirse)
-        try {
-            var frames = [window.parent, window.top];
-            frames.forEach(function(frm) {
-                if(frm && frm.document) {
-                    var style = frm.document.createElement('style');
-                    style.innerHTML = `
-                        #rotate, #rotateDevice, .rotateDevice, #orientation-alert, 
-                        .orientation-alert, #portrait-warning, .portrait-warning, 
-                        [id*='rotate'], [class*='rotate-device'], [class*='orientation-'] 
-                        { display: none !important; z-index: -9999 !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
-                    `;
-                    frm.document.head.appendChild(style);
-                }
-            });
-        } catch(e) { }
+    
 
-        // Tarayıcının orientation (döndürme) API'sini maskele
-        try {
-            Object.defineProperty(window.screen, 'orientation', {
-                get: function() { return { type: 'landscape-primary', angle: 90 }; }
-            });
-        } catch(e) { }
-        
-        try {
-            Object.defineProperty(window, 'orientation', {
-                get: function() { return 90; }
-            });
-        } catch(e) { }
-    })();
-    </script>
-
-    <!-- Düşük Çözünürlük ve Küçük Mobil Ekranlar İçin Daraltma -->
-    <style>
-    /* Düşük çözünürlüklü PC'ler ve akıllı tahtalar (örn: 1366x768 veya 1024x768) */
-    @media screen and (max-height: 800px) {
-        body { zoom: 0.9; }
-    }
-    @media screen and (max-height: 700px) {
-        body { zoom: 0.85; }
-    }
-    @media screen and (max-width: 900px), screen and (max-height: 600px) {
-        body { zoom: 0.8; }
-    }
-    @media screen and (max-width: 650px), screen and (max-height: 500px) {
-        body { zoom: 0.75; }
-    }
-    @media screen and (max-width: 450px), screen and (max-height: 400px) {
-        body { zoom: 0.65; }
-    }
-    @media screen and (max-height: 350px) {
-        body { zoom: 0.5; }
-    }
-    </style>
+    
 </head>
 <body>
 
@@ -623,7 +569,7 @@ body, button, div, span {
 
         <h1 class="start-title">لُعْبَة الذّاكِرَة</h1>
 
-        <p style="font-size: 2.5rem; color: var(--primary-color); margin-top: -10px; margin-bottom: 20px; font-family: 'Arakom', sans-serif !important;">
+        <p style="font-size: 2.5rem; color: var(--primary-color); margin-top: -10px; margin-bottom: 35px; font-family: 'Arakom', sans-serif !important;">
             .اِخْتَر اللُّعْبَة، ثُمَّ جِد الكَلِمات وَالصُّوَر المُتَطابِقَة
         </p>
 
@@ -1087,10 +1033,10 @@ const WordCardGame = {
         gameScreen.classList.add('single-player-mode'); 
         
         gameScreen.innerHTML = `
-            <div id="game-container-inner" style="display: flex; flex-direction: column; width: 100%; height: 100%; align-items: center; padding: 10px; box-sizing: border-box;">
+            <div id="game-container-inner" style="display: flex; flex-direction: column; width: 100%; height: 100dvh; align-items: center; padding: 10px; box-sizing: border-box;">
                 
                 <div class="game-header" style="width: 100%; position: relative; margin-bottom: 0; height: 0; display: flex; align-items: center; justify-content: center;">
-                    <div style="position: absolute; top: 10px; left: 10px; z-index: 200;">
+                    <div style="position: absolute; top: 25px; left: 10px; z-index: 200;">
                         <button class="back-btn" title="Geri">
                             <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
                         </button>
@@ -1098,7 +1044,7 @@ const WordCardGame = {
                     <h2 class="game-instruction-title">اُنْظُرْ إِلى الصّورَة، خَمِّن المَعْنى، ثُمَّ اضْغَطْ‫.‬</h2>
                 </div>
 
-                <div id="game-board" style="display: grid; width: 100%; height: 100%; gap: 12px; justify-content: center; align-content: center;"></div>
+                <div id="game-board" style="display: grid; width: 100%; height: 100dvh; gap: 12px; justify-content: center; align-content: center;"></div>
             </div>
         `;
 
