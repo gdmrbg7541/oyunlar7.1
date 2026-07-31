@@ -1323,7 +1323,7 @@ h1 { font-size: 2rem; margin: 6px 0 10px; color: #16A085; font-weight: 700; }
 /* ---- ana sayfa: konu ve havuz seçimi ---- */
 #ekranAnasayfa .biy-konu-label { font-size: 1.54rem; }
 #ekranAnasayfa .biy-konu-select { font-size: 2.05rem; }
-#ekranAnasayfa .biy-soru-sec-btn { font-size: 1.65rem; }
+#ekranAnasayfa .biy-soru-sec-btn { font-size: 2.05rem; }   /* v80: ders seç ile aynı */
 #ekranAnasayfa .biy-pdf-rozet { font-size: 0.77rem; }
 #ekranAnasayfa .biy-pdf-baslik { font-size: 0.8rem; }
 #ekranAnasayfa .biy-pdf-indir { font-size: 1.31rem; }
@@ -1421,6 +1421,7 @@ h1 { font-size: 2rem; margin: 6px 0 10px; color: #16A085; font-weight: 700; }
 /* ---- dar ekran: aynı oranı koru, ama taşmayı engelle ---- */
 @media (max-width: 640px) {
   #ekranAnasayfa .biy-konu-select { font-size: 1.78rem; }
+  #ekranAnasayfa .biy-soru-sec-btn { font-size: 1.78rem; }   /* v80: ders seç ile aynı */
   #ekranAnasayfa .biy-baslik { font-size: 1.72rem; }
   #ekranAnasayfa .biy-menu-ad { font-size: 1.75rem; }
   #ekranAnasayfa .biy-seviye-label { font-size: 1.58rem; }
@@ -1896,3 +1897,31 @@ button.biy-sayi-etiket .biy-svg-sayi { transition: transform .2s ease; }
 .biy-reveal-tablo td.biy-rev-sik,
 [dir="rtl"] .biy-reveal-tablo td.biy-rev-sik { text-align: center; }
 .biy-rev-cift { align-items: center; }
+
+/* ===================== v80 — havuz sayaç rozetleri & tümünü-seç durumu ===================== */
+/* grup sayacı: (0/87) yerine parantezsiz şık rozet */
+.biy-hs-baslik .biy-hs-say {
+  display: inline-flex; align-items: baseline; gap: 3px;
+  background: #F1F5F9; color: #94A3B8; border-radius: 999px; padding: 3px 14px 5px;
+  font-weight: 800; line-height: 1.25; direction: ltr; unicode-bidi: isolate;
+  transition: background .25s ease, color .25s ease;
+}
+.biy-hs-say b { color: #16A085; font-size: 1.18em; font-weight: 800; }
+.biy-hs-say i { font-style: normal; opacity: .55; }
+.biy-hs-say.dolu { background: #E9FBF4; color: #0E9E86; }
+.biy-hs-say.tam { background: #16A085; color: #fff; }
+.biy-hs-say.tam b { color: #fff; }
+/* üstteki المُحَدَّد sayısı da yuvarlak rozet */
+.biy-say-rozet {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.75em; height: 1.75em; padding: 0 .45em; margin-inline-start: 6px;
+  border-radius: 999px; background: #16A085; color: #fff;
+  font-size: .92em; font-weight: 800; line-height: 1;
+  direction: ltr; unicode-bidi: isolate;
+}
+/* tümünü-seç: normalde gri ve tik çizilip siliniyor; grup TAM seçilince
+   o başlıkta animasyon durur, tik çizili kalır ve yeşil olur */
+.biy-hs-tumu { background: #F1F5F9; color: #94A3B8; transition: background .25s ease, color .25s ease; }
+.biy-hs-tumu:hover { color: #64748B; }
+.biy-hs-tumu.tam { background: #E9FBF4; color: #16A085; }
+.biy-hs-tumu.tam .biy-ea-ciz { animation: none; stroke-dashoffset: 0; }

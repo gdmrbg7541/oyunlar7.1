@@ -885,7 +885,7 @@ const BIY = {
       html += '<div class="biy-hs-grup'+(acik?' acik':'')+'" data-konu="'+k.id+'">' +
         '<div class="biy-hs-baslik" onclick="BIY.soruSecAkordiyon(\''+k.id+'\')">' +
         '<span class="biy-hs-ok">▸</span>' +
-        '<b>'+kacis(k.ad)+'</b> <span class="biy-hs-say">('+seciliSay+'/'+k.sorular.length+')</span>' +
+        '<b>'+kacis(k.ad)+'</b> <span class="biy-hs-say'+(seciliSay>0?' dolu':'')+(seciliSay===k.sorular.length?' tam':'')+'"><b>'+seciliSay+'</b><i>/</i>'+k.sorular.length+'</span>' +
         '<button class="biy-hs-tumu" title="تَحْديد الكُلّ" aria-label="تَحْديد الكُلّ" onclick="event.stopPropagation();BIY.soruSecTumu(\''+k.id+'\')">' +
           '<svg viewBox="0 0 24 24" class="biy-hs-tumu-svg" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
           '<rect x="3.2" y="3.2" width="17.6" height="17.6" rx="4.5"/><path class="biy-ea-ciz" d="M7.4 12.6l3 3 6.2-7.2"/></svg></button></div>' +
@@ -910,9 +910,17 @@ const BIY = {
     document.querySelectorAll(".biy-hs-grup").forEach(g => {
       const k = KONULAR.find(x => x.id === g.getAttribute("data-konu")); if (!k) return;
       const sec = k.sorular.filter(q => set.has(k.id + "#" + q.id)).length;
-      const sp = g.querySelector(".biy-hs-say"); if (sp) sp.textContent = "(" + sec + "/" + k.sorular.length + ")";
+      const sp = g.querySelector(".biy-hs-say");
+      if (sp){
+        sp.innerHTML = "<b>" + sec + "</b><i>/</i>" + k.sorular.length;
+        sp.classList.toggle("dolu", sec > 0);
+        sp.classList.toggle("tam", sec === k.sorular.length);
+      }
+      // tümünü-seç: grup tam seçiliyse animasyon durur, tik yeşil kalır
+      const tb = g.querySelector(".biy-hs-tumu");
+      if (tb) tb.classList.toggle("tam", sec === k.sorular.length);
     });
-    const say = $("soruSecSecili"); if (say) say.textContent = "المُحَدَّد: " + set.size;
+    const say = $("soruSecSecili"); if (say) say.innerHTML = 'المُحَدَّد <b class="biy-say-rozet">' + set.size + '</b>';
     BIY._soruSecSayiGuncelle();
   },
   // tek satır: yeniden çizmeden aç/kapa (kaydırma korunur)
