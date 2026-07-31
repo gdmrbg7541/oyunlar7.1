@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bilgi Yarışması — 7. Sınıf 1. Ünite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Harmattan:wght@400;700&family=Marhey:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="bilgiyarismasivezinler.css?v=58">
+
+<!-- Firebase 8.10.1 (compat) — proje: bilgiyarismasi7sinif1unite -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<!-- firebase-auth.js kaldirildi: ogretmen girisi ve anonim giris artik yok -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<!-- QR üretimi -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<div id="biy-app">
+
+  <!-- Yükleniyor -->
+  <section id="ekranYukleniyor" class="biy-ekran">
+    <div class="biy-spinner"></div>
+    <p>Yükleniyor…</p>
+  </section>
+
+  <!-- Hata ekrani: giris kapisi kaldirildi, burasi yalnizca acilis sirasinda
+       beklenmedik bir hata olursa gorunur. -->
+  <section id="ekranGirisKapisi" class="biy-ekran gizli">
+    <div class="biy-kart biy-orta">
+      <div class="biy-logo">⚠️</div>
+      <h1>Yarışma açılamadı</h1>
+      <p class="biy-alt">Sayfayı yenilemeyi deneyin. Sorun sürerse internet bağlantınızı kontrol edin.</p>
+      <a class="biy-btn biy-btn-mavi" href="index.html">Oyunlara dön</a>
+      <p id="girisRolNot" class="biy-not"></p>
+    </div>
+  </section>
+
+  <!-- ADMIN — Ana sayfa -->
+  <section id="ekranAnasayfa" class="biy-ekran gizli">
+    <header class="biy-header">
+      <div class="biy-header-sol">
+        <button class="biy-geri-tus" onclick="BIY.geriDon()" title="Açıldığın yere dön"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></button>
+        <span class="biy-baslik">🏆 Bilgi Yarışması</span>
+      </div>
+      <div class="biy-header-sag">
+        <span id="adminAd" class="biy-admin-ad"></span>
+      </div>
+    </header>
+
+    <div class="biy-konu-panel">
+      <div class="biy-konu-secim">
+        <label for="konuSecim" class="biy-konu-label">Konu</label>
+        <select id="konuSecim" class="biy-konu-select" onchange="BIY.konuSec(this.value)"></select>
+      </div>
+      <div class="biy-soru-sec-secim">
+        <span class="biy-konu-label">Soru Seç</span>
+        <button class="biy-btn biy-soru-sec-btn" id="soruSecBtn" onclick="BIY.soruSecAc()">🎯 Havuzdan seç <b id="soruSecSayi">(0)</b></button>
+      </div>
+      <div class="biy-pdf-onizleme">
+        <a class="biy-pdf-a4" id="pdfKart" target="_blank" rel="noopener" title="PDF'i aç">
+          <span class="biy-pdf-rozet">PDF</span>
+          <span class="biy-pdf-baslik" id="pdfBaslik"></span>
+          <span class="biy-pdf-cizgiler"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        </a>
+        <a class="biy-btn biy-btn-mavi biy-pdf-indir" id="pdfIndir" download>⬇ İndir</a>
+      </div>
+    </div>
+
+    <div class="biy-seviye-secim biy-sorusayi-secim">
+      <span class="biy-seviye-label">Soru sayısı:</span>
+      <button class="biy-sayi-btn" data-sayi="10" onclick="BIY.setSoruSayisi(10)">10</button>
+      <button class="biy-sayi-btn" data-sayi="15" onclick="BIY.setSoruSayisi(15)">15</button>
+      <button class="biy-sayi-btn" data-sayi="20" onclick="BIY.setSoruSayisi(20)">20</button>
+      <button class="biy-sayi-btn" data-sayi="25" onclick="BIY.setSoruSayisi(25)">25</button>
+      <button class="biy-sayi-btn" data-sayi="50" onclick="BIY.setSoruSayisi(50)">50</button>
+      <input id="soruSayiInput" class="biy-sayi-input" type="number" min="1" max="50" step="1" placeholder="Özel"
+             onchange="BIY.setSoruSayisiManuel(this.value)" title="Konudaki soru sayısına kadar">
+    </div>
+
+    <div class="biy-menu">
+      <button class="biy-menu-kart" id="kartSinif" onclick="BIY.acSinif()">
+        <span class="biy-menu-emoji">🏫</span>
+        <span class="biy-menu-ad">Sınıf Modu</span>
+        <span class="biy-menu-desc">İnternetsiz · soruları sınıfça çöz, cevabı göster</span>
+      </button>
+      <button class="biy-menu-kart" id="kartTakim" onclick="BIY.acLobi('takim')">
+        <span class="biy-bagli-rozet gizli"></span>
+        <span class="biy-menu-emoji">👥</span>
+        <span class="biy-menu-ad">Takım Modu</span>
+        <span class="biy-menu-desc">Her takıma ayrı karekod · takımlar yarışır</span>
+      </button>
+      <button class="biy-menu-kart" id="kartBirey" onclick="BIY.acLobi('birey')">
+        <span class="biy-bagli-rozet gizli"></span>
+        <span class="biy-menu-emoji">🙋</span>
+        <span class="biy-menu-ad">Birey Modu</span>
+        <span class="biy-menu-desc">Tek karekod · herkes kendi adıyla katılır</span>
+      </button>
+      <button class="biy-menu-kart" id="kartOkul" onclick="BIY.acLobi('okul')">
+        <span class="biy-bagli-rozet gizli"></span>
+        <span class="biy-menu-emoji">🏫</span>
+        <span class="biy-menu-ad">Okul Modu</span>
+        <span class="biy-menu-desc">Sınıflar yarışır · sınıf ortalamasına göre sıralama</span>
+      </button>
+    </div>
+    <p id="menuNot" class="biy-menu-not gizli">Başlamak için yukarıdan konu (ya da havuzdan soru) ve soru sayısını seçin.</p>
+  </section>
+
+  <!-- ADMIN — Sorular önizleme -->
+  <section id="ekranSorular" class="biy-ekran gizli">
+    <div class="biy-ust-bar">
+      <button class="biy-geri-tus" onclick="BIY.anasayfa()" title="Üst menüye dön"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></button>
+      <h2>Örnek Sorular</h2>
+    </div>
+    <div class="biy-sekme-bar">
+      <button class="biy-sekme secili" data-z="1" onclick="BIY.sorularSekme(1)">Kolay</button>
+      <button class="biy-sekme" data-z="2" onclick="BIY.sorularSekme(2)">Orta</button>
+      <button class="biy-sekme" data-z="3" onclick="BIY.sorularSekme(3)">Zor</button>
+    </div>
+    <div id="sorularListe" class="biy-sorular-liste"></div>
+  </section>
+
+  <!-- ADMIN — Sınıf Modu (çevrimdışı: sorular & cevaplar sınıfta) -->
+  <section id="ekranSinif" class="biy-ekran gizli">
+    <div class="biy-ust-bar">
+      <button class="biy-geri-tus" onclick="BIY.anasayfa()" title="Üst menüye dön"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></button>
+      <h2>Sınıf Modu</h2>
+      <span id="sinifKaynak" class="biy-sinif-kaynak"></span>
+    </div>
+    <div id="sinifGovde" class="biy-sinif-govde"></div>
+    <div class="biy-sinif-nav">
+      <button class="biy-btn biy-btn-mavi" onclick="BIY.sinifGit(-1)">◀ Önceki</button>
+      <span id="sinifSayac" class="biy-sinif-sayac">0 / 0</span>
+      <button class="biy-btn biy-btn-yesil" id="sinifCevapBtn" onclick="BIY.sinifCevap()">Cevabı Göster</button>
+      <button class="biy-btn biy-btn-mavi" onclick="BIY.sinifGit(1)">Sonraki ▶</button>
+    </div>
+  </section>
+
+  <!-- ADMIN — Takım oluştur + lobi -->
+  <section id="ekranTakimlar" class="biy-ekran gizli">
+    <div class="biy-ust-bar">
+      <button class="biy-geri-tus" onclick="BIY.anasayfa()" title="Üst menüye dön"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></button>
+      <h2 id="lobiBaslik">Takım Oluştur &amp; Lobi</h2>
+    </div>
+
+    <!-- TAKIM MODU: takım adlarını yaz, her takım kendi karekodunu okutur -->
+    <div id="takimYapAlan" class="biy-takim-yap">
+      <input id="takimAdiInput" type="text" placeholder="Takım / Sınıf" maxlength="24"
+             onkeydown="if(event.key==='Enter')BIY.takimEkle()">
+      <button class="biy-btn biy-btn-yesil" onclick="BIY.takimEkle()">+ Takım Ekle</button>
+    </div>
+
+    <!-- OKUL MODU: yarışacak sınıfları tanımla -->
+    <div id="lobiSinifAlan" class="biy-sinif-yap gizli">
+      <input id="sinifAdiInput" type="text" placeholder="Sınıf adı (7/A)" maxlength="14"
+             onkeydown="if(event.key==='Enter')BIY.sinifEkle()">
+      <button class="biy-btn biy-btn-yesil" onclick="BIY.sinifEkle()">+ Sınıf Ekle</button>
+      <div id="siniflarKutu" class="biy-siniflar-kutu"></div>
+    </div>
+
+    <!-- BİREY / OKUL MODU: tek karekod -->
+    <div id="lobiOdaAlan" class="biy-oda-alan gizli"></div>
+
+    <!-- BİREY / OKUL MODU: onay bekleyen katılımcılar -->
+    <div id="lobiBekleyen" class="biy-bekleyen-alan gizli"></div>
+
+    <div id="takimlarGrid" class="biy-takimlar-grid"></div>
+
+    <div class="biy-baslat-alan">
+      <button id="baslatBtn" class="biy-btn biy-btn-buyuk gizli" onclick="BIY.yarisiBaslat()">🚀 Yarışı Başlat</button>
+      <p id="baslatNot" class="biy-not"></p>
+    </div>
+  </section>
+
+  <!-- ÖĞRENCİ — tek karekodla katılım (birey / okul modu) -->
+  <section id="ekranKatil" class="biy-ekran gizli">
+    <div id="katilKart" class="biy-kart biy-orta biy-katil-kart">
+      <div class="biy-logo">🙋</div>
+      <h1>Yarışmaya Katıl</h1>
+      <p class="biy-alt">Adını yaz, öğretmenin onayladığında yarışma başlayacak.</p>
+      <input id="katilAdInput" class="biy-katil-input" type="text" placeholder="Adın Soyadın" maxlength="18"
+             autocomplete="off" autocorrect="off" spellcheck="false"
+             onkeydown="if(event.key==='Enter')BIY.katilGonder()">
+      <div id="katilSinifAlan" class="biy-katil-sinif gizli">
+        <select id="katilSinifSelect" class="biy-katil-select"></select>
+      </div>
+      <button class="biy-btn biy-btn-yesil biy-katil-btn" onclick="BIY.katilGonder()">Katıl</button>
+      <p id="katilNot" class="biy-not"></p>
+    </div>
+    <div id="katilBekle" class="biy-katil-bekle gizli"></div>
+  </section>
+
+  <!-- TAKIM MODU — katılım / lobi / oyun -->
+  <section id="ekranTakim" class="biy-ekran gizli">
+    <div id="takimIcerik" class="biy-orta"></div>
+  </section>
+
+  <!-- ADMIN — canlı oyun (yansıtılan ekran) -->
+  <section id="ekranOyunAdmin" class="biy-ekran gizli"></section>
+
+  <!-- canlı yarışmadan çıkış (onaylı) -->
+  <button id="cikisTus" class="biy-cikis-tus gizli" onclick="BIY.yaristanCik()" title="Yarışmadan çık">✕ Çık</button>
+
+</div>
+
+<script src="bilgiyarismasivezinler.js?v=70"></script>
+<script id="kidef-koruma">
+/* KAYNAK KORUMA (CAYDIRICI) — sag tik + gelistirici araclari kisayollari.
+   Not: Tam guvenlik degildir; asil koruma Firestore kurallarindadir. */
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault();},false);
+  document.addEventListener('keydown',function(e){
+    var k=(e.key||'').toLowerCase(), m=e.ctrlKey||e.metaKey;
+    if(e.keyCode===123||(m&&e.shiftKey&&(k==='i'||k==='j'||k==='c'))||(m&&k==='u')){e.preventDefault();return false;}
+  },false);
+})();
+</script>
+</body>
+</html>
